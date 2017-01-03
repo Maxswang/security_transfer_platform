@@ -1,5 +1,6 @@
 #include "connection.h"
 #include "libevent_thread.h"
+#include "tcp_event_server.h"
 
 Connection::Connection(int fd) : fd_(fd)
 {
@@ -14,19 +15,18 @@ Connection::~Connection()
 
 void Connection::ProcessReadEvent()
 {
-    thread_->ProcessReadEvent(this);
+    thread_->GetTcpEventServer()->ReadEvent(this);
 }
 
 void Connection::ProcessWriteEvent()
 {
-    thread_->ProcessWriteEvent(this);
+    thread_->GetTcpEventServer()->WriteEvent(this);
 }
 
 void Connection::ProcessCloseEvent(short events)
 {
-    thread_->ProcessCloseEvent(this, events);
+    thread_->GetTcpEventServer()->CloseEvent(this, events);
     thread_->DeleteConnection(this);
-    
 }
 
 ConnectionQueue::ConnectionQueue()

@@ -29,9 +29,6 @@ public:
     
     void SignalExit();
     void ProcessListenerEvent(evutil_socket_t fd);
-    void ProcessReadEvent(Connection* conn);
-    void ProcessWriteEvent(Connection* conn);
-    void ProcessCloseEvent(Connection* conn, short events);
     void DeleteConnection(Connection* conn);
     void FreeEventBase();
     

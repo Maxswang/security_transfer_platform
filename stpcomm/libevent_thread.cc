@@ -60,21 +60,6 @@ void LibeventThread::ProcessListenerEvent(evutil_socket_t fd)
 	write(thread_data_.notify_send_fd, &fd, sizeof(evutil_socket_t)); // TODO writen
 }
 
-void LibeventThread::ProcessReadEvent(Connection *conn)
-{
-    thread_data_.tcp_event_server->ReadEvent(conn);
-}
-
-void LibeventThread::ProcessWriteEvent(Connection* conn)
-{
-    thread_data_.tcp_event_server->WriteEvent(conn);
-}
-
-void LibeventThread::ProcessCloseEvent(Connection* conn, short events)
-{
-    thread_data_.tcp_event_server->CloseEvent(conn, events);
-}
-
 void LibeventThread::DeleteConnection(Connection *conn)
 {
     thread_data_.conn_queue.DeleteConnection(conn);
