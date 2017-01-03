@@ -112,7 +112,7 @@ void TcpEventServer::SetupThread(LibeventThread *me)
 	//建立libevent事件处理机制    
     LibeventThreadData& thread_data = me->thread_data_;
     
-    thread_data.tcpConnect = this;
+    thread_data.tcp_event_server = this;
 	thread_data.base = event_base_new();
 	if( NULL == thread_data.base )
 		ErrorQuit("event base new error");
@@ -121,15 +121,15 @@ void TcpEventServer::SetupThread(LibeventThread *me)
 	int fds[2];
 	if( pipe(fds) )
 		ErrorQuit("create pipe error");
-	thread_data.notifyReceiveFd = fds[0];
-	thread_data.notifySendFd = fds[1];
+	thread_data.notify_recv_fd = fds[0];
+	thread_data.notify_send_fd = fds[1];
 
 	//让子线程的状态机监听管道
-	event_set( &thread_data.notifyEvent, thread_data.notifyReceiveFd,
+	event_set( &thread_data.notify_event, thread_data.notify_recv_fd,
 		EV_READ | EV_PERSIST, ThreadProcess, me );
     
-	event_base_set(thread_data.base, &thread_data.notifyEvent);
-	if ( event_add(&thread_data.notifyEvent, 0) == -1 )
+	event_base_set(thread_data.base, &thread_data.notify_event);
+	if ( event_add(&thread_data.notify_event, 0) == -1 )
 		ErrorQuit("Can't monitor libevent notify pipe\n");
 }
 
@@ -178,7 +178,7 @@ void TcpEventServer::StopRun(timeval *tv)
 	//向各个子线程的管理中写入EXIT_CODE，通知它们退出
 	for(int i=0; i<thread_cnt_; i++)
 	{
-		write(threads_[i].thread_data_.notifySendFd, &contant, sizeof(int));
+		write(threads_[i].thread_data_.notify_send_fd, &contant, sizeof(int));
 	}
 	//结果主线程的事件循环
 	event_base_loopexit(main_base_.base, tv);
@@ -194,7 +194,7 @@ void TcpEventServer::ListenerEventCb(struct evconnlistener *listener,
 
 	//随机选择一个子线程，通过管道向其传递socket描述符
 	int num = rand() % server->thread_cnt_;
-	int sendfd = server->threads_[num].thread_data_.notifySendFd;
+	int sendfd = server->threads_[num].thread_data_.notify_send_fd;
 	write(sendfd, &fd, sizeof(evutil_socket_t));
 }
 
@@ -204,7 +204,7 @@ void TcpEventServer::ThreadProcess(int fd, short which, void *arg)
     LibeventThreadData& thread_data = me->thread_data_;
 
 	//从管道中读取数据（socket的描述符或操作码）
-	int pipefd = thread_data.notifyReceiveFd;
+	int pipefd = thread_data.notify_recv_fd;
 	evutil_socket_t confd;
 	read(pipefd, &confd, sizeof(evutil_socket_t));
 
@@ -226,7 +226,7 @@ void TcpEventServer::ThreadProcess(int fd, short which, void *arg)
 	}
 
 	//将该链接放入队列
-	Connection *conn = thread_data.connectQueue.InsertConnection(confd, me);
+	Connection *conn = thread_data.conn_queue.InsertConnection(confd, me);
 
 	//准备从socket中读写数据
 	bufferevent_setcb(bev, ReadEventCallback, WriteEventCallback, CloseEventCallback, conn);
@@ -234,7 +234,7 @@ void TcpEventServer::ThreadProcess(int fd, short which, void *arg)
 	bufferevent_enable(bev, EV_READ);
 
 	//调用用户自定义的连接事件处理函数
-	me->thread_data_.tcpConnect->ConnectionEvent(conn);
+	me->thread_data_.tcp_event_server->ConnectionEvent(conn);
 }
 
 void TcpEventServer::ReadEventCallback(struct bufferevent *bev, void *data)
@@ -245,7 +245,7 @@ void TcpEventServer::ReadEventCallback(struct bufferevent *bev, void *data)
 	conn->write_buf_ = bufferevent_get_output(bev);
 
 	//调用用户自定义的读取事件处理函数
-	conn->thread_->thread_data_.tcpConnect->ReadEvent(conn);
+	conn->thread_->thread_data_.tcp_event_server->ReadEvent(conn);
 } 
 
 void TcpEventServer::WriteEventCallback(struct bufferevent *bev, void *data)
@@ -255,7 +255,7 @@ void TcpEventServer::WriteEventCallback(struct bufferevent *bev, void *data)
 	conn->write_buf_ = bufferevent_get_output(bev);
 
 	//调用用户自定义的写入事件处理函数
-	conn->thread_->thread_data_.tcpConnect->WriteEvent(conn);
+	conn->thread_->thread_data_.tcp_event_server->WriteEvent(conn);
 
 }
 
@@ -263,8 +263,8 @@ void TcpEventServer::CloseEventCallback(struct bufferevent *bev, short events, v
 {
 	Connection *conn = reinterpret_cast<Connection*>(data);
 	//调用用户自定义的断开事件处理函数
-	conn->thread_->thread_data_.tcpConnect->CloseEvent(conn, events);
-	conn->thread()->thread_data_.connectQueue.DeleteConnection(conn);
+	conn->thread_->thread_data_.tcp_event_server->CloseEvent(conn, events);
+	conn->thread()->thread_data_.conn_queue.DeleteConnection(conn);
 	bufferevent_free(bev);
 }
 
