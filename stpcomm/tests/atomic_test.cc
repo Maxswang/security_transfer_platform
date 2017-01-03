@@ -1,6 +1,6 @@
 
-#include "libstp/atomic.h"
-#include "libstp/thread.h"
+#include "stpcomm//atomic.h"
+#include "stpcomm//thread.h"
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

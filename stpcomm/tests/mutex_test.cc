@@ -1,6 +1,6 @@
 
-#include "libstp/mutex.h"
-#include "libstp/thread.h"
+#include "stpcomm/mutex.h"
+#include "stpcomm/thread.h"
 #include <stdio.h>
 
 
