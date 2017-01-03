@@ -42,8 +42,8 @@ void TestServer::WriteEvent(Connection *conn)
 
 void TestServer::ConnectionEvent(Connection *conn)
 {
-	TestServer *me = static_cast<TestServer*>(conn->thread()->thread_data_.tcp_event_server);
-	printf("new connection: %lu\n", conn->thread()->thread_data_.thread_id);
+	TestServer *me = static_cast<TestServer*>(conn->thread()->GetTcpEventServer());
+	printf("new connection: %u\n", conn->thread()->thread_id());
 	me->vec.push_back(conn);
 }
 
