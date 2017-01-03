@@ -1,6 +1,8 @@
 set(STPCOMM_SRCS
 mutex.cc
 thread.cc 
+connection.cc
+libevent_thread.cc
 tcp_event_server.cc
 )	                                                                                                                                                                            
 add_library(stpcomm ${STPCOMM_SRCS})
