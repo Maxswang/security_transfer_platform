@@ -9,8 +9,7 @@ TcpEventServer::TcpEventServer(int16_t port, int thread_cnt)
 	//初始化各项数据
 //	m_MainBase = new LibeventThread;
 //	threads_ = new LibeventThread[thread_cnt_];
-	main_base_.thread_id = pthread_self();
-	main_base_.base = event_base_new();
+	event_base_ = event_base_new();
 
 	//初始化各个子线程的结构体
 	for(int i=0; i < thread_cnt_; i++)
@@ -23,43 +22,33 @@ TcpEventServer::~TcpEventServer()
 {
 	//停止事件循环（如果事件循环没开始，则没效果）
 	StopRun(NULL);
-
-	//释放内存
-	event_base_free(main_base_.base);
+	event_base_free(event_base_);
 	for(int i=0; i < thread_cnt_; ++i)
         delete threads_[i];
-		// threads_[i].FreeEventBase();
-
-//	delete [] threads_;
 }
 
-void TcpEventServer::ErrorQuit(const char *str)
+void TcpEventServer::HandleErrorQuit(const char *str)
 {
-	//输出错误信息，退出程序
-	fprintf(stderr, "%s", str);   
-	if( errno != 0 )    
-		fprintf(stderr, " : %s", strerror(errno));    
-	fprintf(stderr, "\n");        
-	exit(1);    
+    LOG(FATAL) << str << ", errno = " << errno << ", reason is " << strerror(errno);
 }
 
 bool TcpEventServer::StartRun()
 {
-	evconnlistener *listener;
+	evconnlistener *listener = NULL;
 
-	//如果端口号不是EXIT_CODE，就监听该端口号
-	if( port_ != EXIT_CODE )
+	//如果端口号不是-1，就监听该端口号
+	if( port_ != -1 )
 	{
 		sockaddr_in sin;
 		memset(&sin, 0, sizeof(sin));
 		sin.sin_family = AF_INET;
 		sin.sin_port = htons(port_);
-		listener = evconnlistener_new_bind(main_base_.base, 
+		listener = evconnlistener_new_bind(event_base_, 
 			ListenerEventCallback, this,
 			LEV_OPT_REUSEABLE|LEV_OPT_CLOSE_ON_FREE, -1,
 			reinterpret_cast<sockaddr*>(&sin), sizeof(sockaddr_in));
 		if( NULL == listener )
-			ErrorQuit("TCP listen error");
+			HandleErrorQuit("TCP listen error");
 	}
 
 	//开启各个子线程
@@ -69,7 +58,7 @@ bool TcpEventServer::StartRun()
 	}
 
 	//开启主线程的事件循环
-	event_base_dispatch(main_base_.base);
+	event_base_dispatch(event_base_);
 
 	//事件循环结果，释放监听者的内存
 	if( port_ != EXIT_CODE )
@@ -82,13 +71,13 @@ bool TcpEventServer::StartRun()
 
 void TcpEventServer::StopRun(timeval *tv)
 {
-	//向各个子线程的管理中写入EXIT_CODE，通知它们退出
+	//向各个子线程的socketpair中写入-1，通知它们退出
 	for(int i=0; i<thread_cnt_; i++)
 	{
         threads_[i]->SignalExit();
 	}
 	//结果主线程的事件循环
-	event_base_loopexit(main_base_.base, tv);
+	event_base_loopexit(event_base_, tv);
 }
 
 void TcpEventServer::ListenerEventCallback(struct evconnlistener *listener, 
@@ -141,7 +130,7 @@ void TcpEventServer::CloseEventCallback(struct bufferevent *bev, short events, v
 bool TcpEventServer::AddSignalEvent(int sig, void (*ptr)(int, short, void*))
 {
 	//新建一个信号事件
-	event *ev = evsignal_new(main_base_.base, sig, ptr, this);
+	event *ev = evsignal_new(event_base_, sig, ptr, this);
 	if ( !ev || event_add(ev, NULL) < 0 )
 	{
 		event_del(ev);
@@ -175,7 +164,7 @@ event *TcpEventServer::AddTimerEvent(void (*ptr)(int, short, void *),
 
 	//新建定时器信号事件
 	event *ev = new event;
-	event_assign(ev, main_base_.base, -1, flag, ptr, this);
+	event_assign(ev, event_base_, -1, flag, ptr, this);
 	if( event_add(ev, &tv) < 0 )
 	{
 		event_del(ev);

@@ -53,12 +53,10 @@ public:
 	static void CloseEventCallback(struct bufferevent *bev, short events, void *data);
     
 private:
-    int16_t port_;							//监听的端口
-	int thread_cnt_;					//子线程数
-//	LibeventThread *m_MainBase;			//主线程的libevent事件处理机
-//	LibeventThread *m_Threads;			//存储各个子线程信息的数组
+    int16_t port_; //监听的端口
+	int thread_cnt_; //子线程数
     
-    LibeventThreadData main_base_;
+    event_base* event_base_;
     std::vector<LibeventThread*> threads_;
     
 	std::map<int, event*> signal_events_;	//自定义的信号处理
@@ -66,20 +64,20 @@ public:
 	//这五个虚函数，一般是要被子类继承，并在其中处理具体业务的
 
 	//新建连接成功后，会调用该函数
-	virtual void ConnectionEvent(Connection *conn) { }
+	virtual void HandleConnectionEvent(Connection *conn) { }
 
 	//读取完数据后，会调用该函数
-	virtual void ReadEvent(Connection *conn) { }
+	virtual void HandleReadEvent(Connection *conn) { }
 
 	//发送完成功后，会调用该函数（因为串包的问题，所以并不是每次发送完数据都会被调用）
-	virtual void WriteEvent(Connection *conn) { }
+	virtual void HandleWriteEvent(Connection *conn) { }
 
 	//断开连接（客户自动断开或异常断开）后，会调用该函数
-	virtual void CloseEvent(Connection *conn, short events) { }
+	virtual void HandleCloseEvent(Connection *conn, short events) { }
 
 	//发生致命错误（如果创建子线程失败等）后，会调用该函数
 	//该函数的默认操作是输出错误提示，终止程序
-	virtual void ErrorQuit(const char *str);
+	virtual void HandleErrorQuit(const char *str);
 };
 
 #endif

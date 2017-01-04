@@ -16,10 +16,10 @@ private:
 	vector<Connection*> vec;
 protected:
 	//重载各个处理业务的虚函数
-	void ReadEvent(Connection *conn);
-	void WriteEvent(Connection *conn);
-	void ConnectionEvent(Connection *conn);
-	void CloseEvent(Connection *conn, short events);
+	void HandleReadEvent(Connection *conn);
+	void HandleWriteEvent(Connection *conn);
+	void HandleConnectionEvent(Connection *conn);
+	void HandleCloseEvent(Connection *conn, short events);
 public:
 	TestServer(uint16_t port, int count) : TcpEventServer(port, count) { }
 	~TestServer() { } 
@@ -30,24 +30,24 @@ public:
 	static void TimeOutCb(int id, int short events, void *data);
 };
 
-void TestServer::ReadEvent(Connection *conn)
+void TestServer::HandleReadEvent(Connection *conn)
 {
 	conn->MoveBufferData();
 }
 
-void TestServer::WriteEvent(Connection *conn)
+void TestServer::HandleWriteEvent(Connection *conn)
 {
 
 }
 
-void TestServer::ConnectionEvent(Connection *conn)
+void TestServer::HandleConnectionEvent(Connection *conn)
 {
 	TestServer *me = static_cast<TestServer*>(conn->thread()->GetTcpEventServer());
 	printf("new connection: %u\n", conn->thread()->thread_id());
 	me->vec.push_back(conn);
 }
 
-void TestServer::CloseEvent(Connection *conn, short events)
+void TestServer::HandleCloseEvent(Connection *conn, short events)
 {
 	printf("connection closed: %d\n", conn->GetFd());
 }

@@ -15,17 +15,17 @@ Connection::~Connection()
 
 void Connection::ProcessReadEvent()
 {
-    thread_->GetTcpEventServer()->ReadEvent(this);
+    thread_->GetTcpEventServer()->HandleReadEvent(this);
 }
 
 void Connection::ProcessWriteEvent()
 {
-    thread_->GetTcpEventServer()->WriteEvent(this);
+    thread_->GetTcpEventServer()->HandleWriteEvent(this);
 }
 
 void Connection::ProcessCloseEvent(short events)
 {
-    thread_->GetTcpEventServer()->CloseEvent(this, events);
+    thread_->GetTcpEventServer()->HandleCloseEvent(this, events);
     thread_->DeleteConnection(this);
 }
 

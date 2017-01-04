@@ -7,19 +7,6 @@
 
 class TcpEventServer;
 
-struct LibeventThreadData
-{
-	unsigned long thread_id;				//线程的ID
-	struct event_base* base;	//libevent的事件处理机
-	struct event notify_event;	//监听管理的事件机
-	int notify_recv_fd;		//管理的接收端
-	int notify_send_fd;			//管道的发送端
-	ConnectionQueue conn_queue;		//socket连接的链表
-	//在libevent的事件处理中要用到很多回调函数，不能使用类隐含的this指针
-	//所以用这样方式将TcpBaseServer的类指针传过去
-	TcpEventServer *tcp_event_server;	 //TcpBaseServer类的指针
-};
-
 class LibeventThread : public Thread
 {
 public:
@@ -31,15 +18,23 @@ public:
     void ProcessListenerEvent(evutil_socket_t fd);
     void DeleteConnection(Connection* conn);
     void FreeEventBase();
+
+    TcpEventServer* GetTcpEventServer() 
+    { return tcp_event_server_; }
+    
+private:
     
     //（主线程收到请求后），对应子线程的处理函数
 	static void ThreadProcess(int fd, short which, void *arg);
     
-    TcpEventServer* GetTcpEventServer() 
-    { return thread_data_.tcp_event_server; }
-    
-private:
-    LibeventThreadData thread_data_;
+    struct event_base* event_base_;	//libevent的事件处理机
+	struct event notify_event_;	//监听管理的事件机
+	int notify_recv_fd_;		//管理的接收端
+	int notify_send_fd_;			//管道的发送端
+	ConnectionQueue conn_queue_;		//socket连接的链表
+	//在libevent的事件处理中要用到很多回调函数，不能使用类隐含的this指针
+	//所以用这样方式将TcpBaseServer的类指针传过去
+	TcpEventServer *tcp_event_server_;	 //TcpBaseServer类的指针
     
 };
 
