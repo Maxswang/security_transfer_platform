@@ -16,15 +16,15 @@ public:
     {
         
     }
-	virtual ~Connection() {}
+	~Connection() {}
     
-    virtual void ProcessReadEvent() 
+    void ProcessReadEvent() 
     { event_notifier_->HandleReadEvent(this); }
     
-    virtual void ProcessWriteEvent()
+    void ProcessWriteEvent()
     { event_notifier_->HandleWriteEvent(this); }
     
-    virtual void ProcessCloseEvent(short events)
+    void ProcessCloseEvent(short events)
     { event_notifier_->HandleCloseEvent(this, events); }
 
 	int GetFd() { return fd_; }
