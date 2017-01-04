@@ -14,9 +14,10 @@
 
 #include "stpcomm/thread.h"
 #include "libevent_thread.h"
+#include "event_notifier.h"
 
 class Connection;
-class TcpEventServer
+class TcpEventServer : public EventNotifier
 {
 public:
     static const int EXIT_CODE = -1;

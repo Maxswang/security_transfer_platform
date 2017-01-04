@@ -99,8 +99,7 @@ void TcpEventServer::ReadEventCallback(struct bufferevent *bev, void *data)
 {
 	Connection *conn = reinterpret_cast<Connection*>(data);
     
-	conn->read_buf_ = bufferevent_get_input(bev);
-	conn->write_buf_ = bufferevent_get_output(bev);
+    conn->SetBuffer(bufferevent_get_input(bev), bufferevent_get_output(bev));
 
 	//调用用户自定义的读取事件处理函数
     conn->ProcessReadEvent();
@@ -109,8 +108,8 @@ void TcpEventServer::ReadEventCallback(struct bufferevent *bev, void *data)
 void TcpEventServer::WriteEventCallback(struct bufferevent *bev, void *data)
 {
 	Connection *conn = reinterpret_cast<Connection*>(data);
-	conn->read_buf_ = bufferevent_get_input(bev);
-	conn->write_buf_ = bufferevent_get_output(bev);
+	
+    conn->SetBuffer(bufferevent_get_input(bev), bufferevent_get_output(bev));
 
 	//调用用户自定义的写入事件处理函数
 //	conn->thread_->thread_data_.tcp_event_server->WriteEvent(conn);
