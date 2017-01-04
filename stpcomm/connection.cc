@@ -2,32 +2,6 @@
 #include "libevent_thread.h"
 #include "tcp_event_server.h"
 
-Connection::Connection(int fd) : fd_(fd)
-{
-	prev_conn_ = NULL;
-	next_conn_ = NULL;
-}
-
-Connection::~Connection()
-{
-    
-}
-
-void Connection::ProcessReadEvent()
-{
-    thread_->GetTcpEventServer()->HandleReadEvent(this);
-}
-
-void Connection::ProcessWriteEvent()
-{
-    thread_->GetTcpEventServer()->HandleWriteEvent(this);
-}
-
-void Connection::ProcessCloseEvent(short events)
-{
-    thread_->GetTcpEventServer()->HandleCloseEvent(this, events);
-    thread_->DeleteConnection(this);
-}
 
 ConnectionQueue::ConnectionQueue()
 {
@@ -54,8 +28,7 @@ ConnectionQueue::~ConnectionQueue()
 
 Connection *ConnectionQueue::InsertConnection(int fd, LibeventThread *t)
 {
-	Connection *c = new Connection(fd);
-	c->thread_ = t;
+	Connection *c = new Connection(t->GetTcpEventServer(), fd);
 	Connection *next = head_->next_conn_;
 
 	c->prev_conn_ = head_;
