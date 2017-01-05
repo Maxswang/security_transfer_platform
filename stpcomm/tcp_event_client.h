@@ -3,9 +3,20 @@
 
 #include "event_notifier.h"
 
+#include <event.h>
+
 class TcpEventClient  : public EventNotifier
 {
 public:
+    TcpEventClient(const char* ip, int16_t port);
+    virtual ~TcpEventClient();
+    void StartRun();
+    void StopRun(timeval *tv);
+    
+    static void ReadEventCallback(struct bufferevent *bev, void *data);
+	static void WriteEventCallback(struct bufferevent *bev, void *data); 
+	static void CloseEventCallback(struct bufferevent *bev, short events, void *data);
+    
     //新建连接成功后，会调用该函数
 	virtual void HandleConnectionEvent(Connection *conn) { }
 
@@ -24,6 +35,9 @@ public:
     
 private:
     Connection* conn_;
+    struct event_base* event_base_;
+    struct bufferevent* buffer_event_;
+    
 };
 
 #endif
