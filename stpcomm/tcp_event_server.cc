@@ -6,12 +6,9 @@
 TcpEventServer::TcpEventServer(int16_t port, int thread_cnt)
     : port_(port), thread_cnt_(thread_cnt)
 {
-	//初始化各项数据
-//	m_MainBase = new LibeventThread;
-//	threads_ = new LibeventThread[thread_cnt_];
 	event_base_ = event_base_new();
 
-	//初始化各个子线程的结构体
+	// 初始化各个子线程的结构体
 	for(int i=0; i < thread_cnt_; i++)
 	{
 		threads_.push_back(new LibeventThread(this));
@@ -27,16 +24,11 @@ TcpEventServer::~TcpEventServer()
         delete threads_[i];
 }
 
-void TcpEventServer::HandleErrorQuit(const char *str)
-{
-    LOG(FATAL) << str << ", errno = " << errno << ", reason is " << strerror(errno);
-}
-
 bool TcpEventServer::StartRun()
 {
 	evconnlistener *listener = NULL;
 
-	//如果端口号不是-1，就监听该端口号
+	// 如果端口号不是-1，就监听该端口号
 	if( port_ != -1 )
 	{
 		sockaddr_in sin;
@@ -44,26 +36,29 @@ bool TcpEventServer::StartRun()
 		sin.sin_family = AF_INET;
 		sin.sin_port = htons(port_);
 		listener = evconnlistener_new_bind(event_base_, 
-			ListenerEventCallback, this,
-			LEV_OPT_REUSEABLE|LEV_OPT_CLOSE_ON_FREE, -1,
-			reinterpret_cast<sockaddr*>(&sin), sizeof(sockaddr_in));
+                                           ListenerEventCallback, 
+                                           this, 
+                                           LEV_OPT_REUSEABLE | LEV_OPT_CLOSE_ON_FREE, 
+                                           -1, 
+                                           reinterpret_cast<sockaddr*>(&sin), 
+                                           sizeof(sockaddr_in));
 		if( NULL == listener )
-			HandleErrorQuit("TCP listen error");
+			LOG(FATAL) << "TCP listen error!";
 	}
 
-	//开启各个子线程
+	// 开启各个子线程
 	for(int i=0; i<thread_cnt_; i++)
 	{
         threads_[i]->Start();
 	}
 
-	//开启主线程的事件循环
+	// 开启主线程的事件循环
 	event_base_dispatch(event_base_);
 
-	//事件循环结果，释放监听者的内存
-	if( port_ != EXIT_CODE )
+	// 事件循环结果，释放监听者的内存
+	if(port_ != -1)
 	{
-		printf("free listen\n");
+		LOG(INFO) << "free listen";
 		evconnlistener_free(listener);
 	}
     return true;
@@ -71,12 +66,12 @@ bool TcpEventServer::StartRun()
 
 void TcpEventServer::StopRun(timeval *tv)
 {
-	//向各个子线程的socketpair中写入-1，通知它们退出
+	// 向各个子线程的socketpair中写入-1，通知它们退出
 	for(int i=0; i<thread_cnt_; i++)
 	{
         threads_[i]->SignalExit();
 	}
-	//结果主线程的事件循环
+	// 结果主线程的事件循环
 	event_base_loopexit(event_base_, tv);
 }
 
@@ -87,48 +82,15 @@ void TcpEventServer::ListenerEventCallback(struct evconnlistener *listener,
 									void *user_data)
 {
 	TcpEventServer *server = reinterpret_cast<TcpEventServer*>(user_data);
-
-	//随机选择一个子线程，通过管道向其传递socket描述符
+	// 随机选择一个子线程，通过socketpair向其传递socket描述符
 	int num = rand() % server->thread_cnt_;
     server->threads_[num]->ProcessListenerEvent(fd);
 
 }
 
-
-void TcpEventServer::ReadEventCallback(struct bufferevent *bev, void *data)
-{
-	Connection *conn = reinterpret_cast<Connection*>(data);
-    
-    conn->SetBuffer(bufferevent_get_input(bev), bufferevent_get_output(bev));
-
-	//调用用户自定义的读取事件处理函数
-    conn->ProcessReadEvent();
-} 
-
-void TcpEventServer::WriteEventCallback(struct bufferevent *bev, void *data)
-{
-	Connection *conn = reinterpret_cast<Connection*>(data);
-	
-    conn->SetBuffer(bufferevent_get_input(bev), bufferevent_get_output(bev));
-
-	//调用用户自定义的写入事件处理函数
-//	conn->thread_->thread_data_.tcp_event_server->WriteEvent(conn);
-    conn->ProcessWriteEvent();
-}
-
-void TcpEventServer::CloseEventCallback(struct bufferevent *bev, short events, void *data)
-{
-	Connection *conn = reinterpret_cast<Connection*>(data);
-	//调用用户自定义的断开事件处理函数
-//	conn->thread_->thread_data_.tcp_event_server->CloseEvent(conn, events);
-    conn->ProcessCloseEvent(events);
-	
-	bufferevent_free(bev);
-}
-
 bool TcpEventServer::AddSignalEvent(int sig, void (*ptr)(int, short, void*))
 {
-	//新建一个信号事件
+	// 新建一个信号事件
 	event *ev = evsignal_new(event_base_, sig, ptr, this);
 	if ( !ev || event_add(ev, NULL) < 0 )
 	{
@@ -136,7 +98,7 @@ bool TcpEventServer::AddSignalEvent(int sig, void (*ptr)(int, short, void*))
 		return false;
 	}
 
-	//删除旧的信号事件（同一个信号只能有一个信号事件）
+	// 删除旧的信号事件（同一个信号只能有一个信号事件）
 	DeleteSignalEvent(sig);
 	signal_events_[sig] = ev;
 
@@ -161,7 +123,7 @@ event *TcpEventServer::AddTimerEvent(void (*ptr)(int, short, void *),
 	if( !once )
 		flag = EV_PERSIST;
 
-	//新建定时器信号事件
+	// 新建定时器信号事件
 	event *ev = new event;
 	event_assign(ev, event_base_, -1, flag, ptr, this);
 	if( event_add(ev, &tv) < 0 )
