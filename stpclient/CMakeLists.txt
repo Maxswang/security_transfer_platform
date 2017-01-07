@@ -1,4 +1,5 @@
 set(STPCLNT_SRCS
+config_parser.cc
 stpclnt_msg_dispatcher.cc
 stp_client.cc
 main.cc

@@ -1,9 +1,11 @@
 #include "stp_client.h"
+#include "config_parser.h"
 #include <glog/logging.h>
 
 StpClient& StpClient::GetInstance()
 {
-    static StpClient s_Instance("127.0.0.1", 9999);
+    static StpClient s_Instance(ConfigParser::GetInstance().svr_ip(), 
+                                ConfigParser::GetInstance().svr_port());
     return s_Instance;
 }
 
