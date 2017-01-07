@@ -7,6 +7,7 @@
 #include "stpcomm/tcp_event_server.h"
 #include <set>
 #include <vector>
+#include <glog/logging.h>
 using namespace std;
 
 //测试示例
@@ -32,6 +33,7 @@ public:
 
 void TestServer::HandleReadEvent(Connection *conn)
 {
+    LOG(INFO) << "fd: " << conn->GetFd() << ", datalen=" << conn->GetReadBufferLen();
 	conn->MoveBufferData();
 }
 
@@ -42,14 +44,21 @@ void TestServer::HandleWriteEvent(Connection *conn)
 
 void TestServer::HandleConnectionEvent(Connection *conn)
 {
-	TestServer *me = static_cast<TestServer*>(conn->event_notifier());
-//	printf("new connection: %u\n", conn->thread()->thread_id());
-	me->vec.push_back(conn);
+    LOG(INFO) << "new connection fd: " << conn->GetFd();
+	vec.push_back(conn);
 }
 
 void TestServer::HandleCloseEvent(Connection *conn, short events)
 {
-	printf("connection closed: %d\n", conn->GetFd());
+    LOG(INFO) << "connection closed fd: " << conn->GetFd();
+    for (size_t i = 0; i < vec.size(); ++i)
+    {
+        if (vec[i]->GetFd() == conn->GetFd())
+        {
+            vec.erase(vec.begin() + i);
+            break;
+        }
+    }
 }
 
 void TestServer::QuitCb(int sig, short events, void *data)

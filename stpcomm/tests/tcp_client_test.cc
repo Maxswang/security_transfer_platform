@@ -47,11 +47,7 @@ void TestClient::HandleReadEvent(Connection *conn)
             break;
         }
         size -= read;
-        for (int i = 0; i < read; ++i)
-        {
-            printf("%c", buf[i]);
-        }
-        printf("\n");
+        LOG(INFO).write(buf, read);
     }
 }
 
@@ -62,9 +58,7 @@ void TestClient::HandleWriteEvent(Connection *conn)
 
 void TestClient::HandleConnectionEvent(Connection *conn)
 {
-	TestClient *me = static_cast<TestClient*>(conn->event_notifier());
 	printf("new connection: %d\n", conn->GetFd());
-	me->vec.push_back(conn);
 }
 
 void TestClient::HandleCloseEvent(Connection *conn, short events)
