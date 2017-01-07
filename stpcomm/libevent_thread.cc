@@ -1,21 +1,20 @@
 #include "libevent_thread.h"
-#include "tcp_event_server.h"
+#include "event_notifier.h"
 
 #include <assert.h>
 #include <glog/logging.h>
-
 #include <event2/util.h>
 
-LibeventThread::LibeventThread(TcpEventServer *server)
-    : tcp_event_server_(server)
+LibeventThread::LibeventThread(EventNotifier *notifier)
+    : event_notifier_(notifier)
 {
-    assert(server != NULL);
-    //建立libevent事件处理机制    
+    assert(notifier != NULL);
+    // 建立libevent事件处理机制    
 	event_base_ = event_base_new();
 	if( event_base_ == NULL)
        LOG(FATAL) << "event base new error";
 
-	//在主线程和子线程之间建立管道
+	// 在主线程和子线程之间建立socketpair
 	int fds[2];
     int domain = 0;
 #ifdef WIN32
@@ -29,7 +28,7 @@ LibeventThread::LibeventThread(TcpEventServer *server)
 	notify_recv_fd_ = fds[0];
 	notify_send_fd_ = fds[1];
 
-	//让子线程的状态机监听管道
+	// 让子线程的状态机监听socketpair
 	event_set( &notify_event_, notify_recv_fd_,
 		EV_READ | EV_PERSIST, &LibeventThread::ThreadProcess, this );
     
@@ -45,9 +44,9 @@ LibeventThread::~LibeventThread()
 
 void LibeventThread::Run()
 {
-	printf("thread %ud started\n", thread_id());
+    LOG(INFO) << "libevent thread "<< thread_id() << " started";
 	event_base_dispatch(event_base_);
-    printf("subthread done\n");
+    LOG(INFO) << "libevent thread "<< thread_id() << " end";
 }
 
 void LibeventThread::SignalExit()
@@ -70,18 +69,18 @@ void LibeventThread::ThreadProcess(int fd, short which, void *arg)
 {
     LibeventThread* me = reinterpret_cast<LibeventThread*>(arg);
 
-	//从socketpair中读取数据（socket的描述符或操作码）
+	// 从socketpair中读取数据（socket的描述符或操作码）
 	evutil_socket_t confd;
 	read(me->notify_recv_fd_, &confd, sizeof(evutil_socket_t));
 
-	//如果操作码是-1，则终止事件循环
+	// 如果操作码是-1，则终止事件循环
 	if(confd == -1)
 	{
 		event_base_loopbreak(me->event_base_);
 		return;
 	}
 
-	//新建连接
+	// 新建连接
 	struct bufferevent *bev;
 	bev = bufferevent_socket_new(me->event_base_, confd, BEV_OPT_CLOSE_ON_FREE);
 	if (!bev)
@@ -91,20 +90,30 @@ void LibeventThread::ThreadProcess(int fd, short which, void *arg)
 		return;
 	}
 
-	//将该链接放入队列
-	Connection *conn = me->conn_queue_.InsertConnection(confd, me);
+	// 将该链接放入队列
+	Connection *conn = me->conn_queue_.NewConnection(me->event_notifier_, confd);
 
-	//准备从socket中读写数据
-	bufferevent_setcb(bev, &TcpEventServer::ReadEventCallback, &TcpEventServer::WriteEventCallback, 
-                      &TcpEventServer::CloseEventCallback, conn);
+	// 准备从socket中读写数据
+	bufferevent_setcb(bev, &EventNotifier::ReadEventCallback, 
+                      &EventNotifier::WriteEventCallback, 
+                      &EventNotifier::CloseEventCallback, conn);
 	bufferevent_enable(bev, EV_WRITE);
 	bufferevent_enable(bev, EV_READ);
 
-	//调用用户自定义的连接事件处理函数
-	me->tcp_event_server_->HandleConnectionEvent(conn);
+	// 调用用户自定义的连接事件处理函数
+	me->event_notifier_->HandleConnectionEvent(conn);
 }
 
 void LibeventThread::FreeEventBase()
 {
-     event_base_free(event_base_);
+    if (event_base_ != NULL)
+    {
+        event_base_free(event_base_);
+        event_base_ = NULL;
+    }
+}
+
+EventNotifier *LibeventThread::GetEventNotifier() 
+{ 
+    return event_notifier_; 
 }
