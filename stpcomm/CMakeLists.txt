@@ -1,4 +1,6 @@
 set(STPCOMM_SRCS
+json/jsoncpp.cc
+json_parser.cc
 mutex.cc
 thread.cc 
 connection.cc
