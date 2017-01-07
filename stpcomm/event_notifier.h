@@ -8,7 +8,7 @@ class EventNotifier
 public:
 	static void ReadEventCallback(struct bufferevent *bev, void *data);
 	static void WriteEventCallback(struct bufferevent *bev, void *data); 
-	static void CloseEventCallback(struct bufferevent *bev, short events, void *data);
+	static void BufferEventCallback(struct bufferevent *bev, short events, void *data);
 	
 	// 新建连接成功后，会调用该函数
 	virtual void HandleConnectionEvent(Connection *conn) = 0;

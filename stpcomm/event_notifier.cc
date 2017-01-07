@@ -20,7 +20,7 @@ void EventNotifier::WriteEventCallback(bufferevent *bev, void *data)
     conn->ProcessWriteEvent();
 }
 
-void EventNotifier::CloseEventCallback(bufferevent *bev, short events, void *data)
+void EventNotifier::BufferEventCallback(bufferevent *bev, short events, void *data)
 {
     Connection *conn = reinterpret_cast<Connection*>(data);
     

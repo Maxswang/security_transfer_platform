@@ -50,7 +50,7 @@ bool TcpEventClient::StartRun()
     buffer_event_ = bufferevent_socket_new(event_base_, -1, BEV_OPT_CLOSE_ON_FREE);
     bufferevent_setcb(buffer_event_, &EventNotifier::ReadEventCallback, 
                       &EventNotifier::WriteEventCallback, 
-                      &EventNotifier::CloseEventCallback, conn_);
+                      &EventNotifier::BufferEventCallback, conn_);
     bufferevent_enable(buffer_event_, EV_READ | EV_WRITE);
     
     if (bufferevent_socket_connect(buffer_event_, 

@@ -96,7 +96,7 @@ void LibeventThread::ThreadProcess(int fd, short which, void *arg)
 	// 准备从socket中读写数据
 	bufferevent_setcb(bev, &EventNotifier::ReadEventCallback, 
                       &EventNotifier::WriteEventCallback, 
-                      &EventNotifier::CloseEventCallback, conn);
+                      &EventNotifier::BufferEventCallback, conn);
 	bufferevent_enable(bev, EV_WRITE);
 	bufferevent_enable(bev, EV_READ);
 
