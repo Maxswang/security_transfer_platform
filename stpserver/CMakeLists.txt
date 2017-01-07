@@ -1,4 +1,5 @@
 set(STPSVR_SRCS
+config_parser.cc
 stpsvr_msg_dispatcher.cc
 stp_server.cc
 main.cc

@@ -1,0 +1,4 @@
+{
+	"svr_port" : 9999,
+	"event_thread_cnt" : 3
+}

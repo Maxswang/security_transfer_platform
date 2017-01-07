@@ -1,9 +1,11 @@
 #include "stp_server.h"
+#include "config_parser.h"
 #include <glog/logging.h>
 
 StpServer& StpServer::GetInstance()
 {
-    static StpServer s_Instance(9999, 3);
+    static StpServer s_Instance(ConfigParser::GetInstance().svr_port(), 
+                                ConfigParser::GetInstance().event_thread_cnt());
     return s_Instance;
 }
 
