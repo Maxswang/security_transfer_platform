@@ -1,0 +1,15 @@
+package rpc;
+
+message Request
+{
+	required string method = 1;
+	optional bytes serialized_request = 2;
+};
+
+message C2S_Ping
+{
+};
+
+message S2C_Ping
+{
+};
