@@ -11,13 +11,13 @@ set(CXX_FLAGS
  -D_FILE_OFFSET_BITS=64
  -Wall
  -Wextra
- -Werror
- -Wconversion
+ #-Werror
+ #-Wconversion
  -Wno-unused-parameter
  -Wold-style-cast
  -Woverloaded-virtual
  -Wpointer-arith
- -Wshadow
+ #-Wshadow
  -Wwrite-strings
  #-march=native
  # -MMD
@@ -38,6 +38,11 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_subdirectory(stpcomm)
+add_subdirectory(codec)
+add_subdirectory(stpclient)
+add_subdirectory(stpserver)
+add_subdirectory(stpinterface)
+
 
 #string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)
 message(STATUS "CXX_FLAGS = " ${CMAKE_CXX_FLAGS} " " ${CMAKE_CXX_FLAGS_${BUILD_TYPE}})
