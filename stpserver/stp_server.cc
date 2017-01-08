@@ -1,5 +1,7 @@
 #include "stp_server.h"
 #include "config_parser.h"
+#include "stpsvr_msg_dispatcher.h"
+
 #include <glog/logging.h>
 
 StpServer& StpServer::GetInstance()
@@ -24,7 +26,15 @@ void StpServer::HandleConnectionEvent(Connection *conn)
 
 void StpServer::HandleReadEvent(Connection *conn)
 {
+    if (conn == NULL)
+        return;
     
+    std::string pkt;
+    if (conn->GetOneUnpackedPacket(pkt))
+    {
+        static StpSvrMsgDispatcher s_Dispatcher;
+        s_Dispatcher.OnceDispatch(conn, pkt.data(), pkt.size());
+    }
 }
 
 void StpServer::HandleWriteEvent(Connection *conn)
