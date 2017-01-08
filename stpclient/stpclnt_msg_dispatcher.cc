@@ -20,5 +20,5 @@ StpClntMsgDispatcher::StpClntMsgDispatcher()
 }
 
 PROCESS_MESSAGE_START(S2C_Ping)
-    // StpServer::GetInstance().HandleProtocol_Ping(conn, rst);
+     StpClientc::GetInstance().HandleProtocol_Ping(conn, rst);
 PROCESS_MESSAGE_END
