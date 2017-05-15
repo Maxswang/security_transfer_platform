@@ -11,12 +11,27 @@ StpClient& StpClient::GetInstance()
     return s_Instance;
 }
 
-void StpClient::QuitStpServerCallback(int sig, short events, void *data)
+void StpClient::QuitStpClientCallback(int sig, short events, void *data)
 { 
     LOG(INFO) << "Catch the SIGINT signal, quit StpServer in one second";
     StpClient *me = reinterpret_cast<StpClient*>(data);
     timeval tv = {1, 0};
     me->StopRun(&tv);
+}
+
+void StpClient::TimerHeartBeatCallback(int sig, short events, void *data)
+{
+    LOG(INFO) << "process heart beat";
+    StpClient *me = reinterpret_cast<StpClient*>(data);
+    rpc::C2S_Ping msg;
+    char send_buf[2048] = {0};
+    msg.SerializeToArray(send_buf, sizeof(send_buf));
+    
+    rpc::Request req;
+    req.set_method(msg.GetTypeName());
+    req.set_serialized_request(send_buf, msg.GetCachedSize());
+    req.SerializeToArray(send_buf, sizeof(send_buf));
+    me->conn_->PackNetHeadPacket(send_buf, req.GetCachedSize());
 }
 
 void StpClient::HandleConnectionEvent(Connection *conn)

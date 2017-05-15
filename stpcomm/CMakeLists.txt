@@ -4,10 +4,12 @@ json_parser.cc
 mutex.cc
 thread.cc 
 connection.cc
-libevent_thread.cc
 event_notifier.cc
 tcp_event_client.cc
 tcp_event_server.cc
+security/aes_core.c
+security/md5.cpp
+security/base64.cpp
 )	                                                                                                                                                                            
 add_library(stpcomm ${STPCOMM_SRCS})
 target_link_libraries(stpcomm pthread rt glog.a event.a)		                                                                                                                                                                            

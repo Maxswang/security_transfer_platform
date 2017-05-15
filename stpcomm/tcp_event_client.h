@@ -5,13 +5,12 @@
 
 #include <event.h>
 
-class TcpEventClient  : public EventNotifier
+class TcpEventClient : public EventNotifier
 {
 public:
     TcpEventClient(const char* ip, int16_t port);
     virtual ~TcpEventClient();
     bool StartRun();
-    void StopRun(timeval *tv);
     
     //新建连接成功后，会调用该函数
 	virtual void HandleConnectionEvent(Connection *conn) = 0;
@@ -25,12 +24,10 @@ public:
 	//断开连接（客户自动断开或异常断开）后，会调用该函数
 	virtual void HandleCloseEvent(Connection *conn, short events) = 0;
     
-private:
+protected:
     Connection* conn_;
-    struct event_base* event_base_;
     struct bufferevent* buffer_event_;
     struct sockaddr_in server_addr_;
-    
 };
 
 #endif

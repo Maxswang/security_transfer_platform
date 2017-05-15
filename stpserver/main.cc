@@ -1,8 +1,12 @@
 #include "stp_server.h"
 #include "config_parser.h"
 #include <glog/logging.h>
+#include <errno.h>
+#include <signal.h>
+
 int main()
 {
+    google::InstallFailureSignalHandler();
     ConfigParser& parser = ConfigParser::GetInstance();
     if (!parser.ParseProfile())
     {

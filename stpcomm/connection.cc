@@ -1,12 +1,11 @@
 #include "connection.h"
-#include "libevent_thread.h"
 #include "event_notifier.h"
 
 #include <string.h>
 #include <assert.h>
 
 Connection::Connection(EventNotifier *notifier, int fd) 
-    : event_notifier_(notifier), fd_(fd), prev_conn_(NULL), next_conn_(NULL)
+    : event_notifier_(notifier), fd_(fd)
 {
     
 }
@@ -37,16 +36,6 @@ void Connection::ProcessCloseEvent(short events)
 void Connection::DeleteConnection(Connection *c)
 {
     assert(c != NULL);
-    // TODO 优化
-    // 判断的原因是因为TcpEventClient的prev_conn_和next_conn_都为NULL
-    if (c->prev_conn_ != NULL)
-    {
-        c->prev_conn_->next_conn_ = c->next_conn_;
-    }
-    if (c->next_conn_ != NULL)
-    {
-        c->next_conn_->prev_conn_ = c->prev_conn_;
-    }
     delete c;
 }
 
@@ -150,51 +139,4 @@ bool Connection::GetOneUnpackedPacket(std::string& packet)
     read_buf_list_.pop_front();
     
     return true;
-}
-
-
-ConnectionQueue::ConnectionQueue()
-{
-	// 建立头尾结点，并调整其指针
-	head_ = new Connection(NULL);
-	tail_ = new Connection(NULL);
-	head_->prev_conn_ = tail_->next_conn_ = NULL;
-	head_->next_conn_ = tail_;
-	tail_->prev_conn_ = head_;
-}
-
-ConnectionQueue::~ConnectionQueue()
-{
-	Connection *cur, *next;
-	cur = head_;
-	// 循环删除链表中的各个结点
-	while(cur != NULL)
-	{
-		next = cur->next_conn_;
-		delete cur;
-		cur = next;
-	}
-}
-
-Connection *ConnectionQueue::NewConnection(EventNotifier *notifier, int fd)
-{
-	Connection *c = new Connection(notifier, fd);
-    if (c == NULL)
-        return NULL;
-    
-	Connection *next = head_->next_conn_;
-
-	c->prev_conn_ = head_;
-	c->next_conn_ = head_->next_conn_;
-	head_->next_conn_ = c;
-	next->prev_conn_ = c;
-	return c;
-}
-
-void ConnectionQueue::DeleteConnection(Connection *c)
-{
-    assert(c != NULL);
-	c->prev_conn_->next_conn_ = c->next_conn_;
-	c->next_conn_->prev_conn_ = c->prev_conn_;
-	delete c;
 }

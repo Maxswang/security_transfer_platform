@@ -77,8 +77,6 @@ private:
     int fd_;				//socket的ID
 	evbuffer *ev_read_buf_;		//读数据的缓冲区
 	evbuffer *ev_write_buf_;		//写数据的缓冲区
-    Connection *prev_conn_;				//前一个结点的指针
-	Connection *next_conn_;				//后一个结点的指针
     
     
     BufferList read_buf_list_;
@@ -87,21 +85,5 @@ private:
 //    char write_buf_[1024];
 };
 
-
-//带头尾结点的双链表类，每个结点存储一个连接的数据
-class ConnectionQueue
-{
-public:
-	ConnectionQueue();
-	~ConnectionQueue();
-    
-	Connection* NewConnection(EventNotifier* notifier, int fd);
-	void DeleteConnection(Connection *c);
-    
-	//void PrintQueue();
-private:
-	Connection *head_;
-	Connection *tail_;
-};
 
 #endif

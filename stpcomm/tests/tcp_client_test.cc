@@ -18,10 +18,10 @@ private:
 	vector<Connection*> vec;
 protected:
 	//重载各个处理业务的虚函数
-	void HandleReadEvent(Connection *conn);
-	void HandleWriteEvent(Connection *conn);
-	void HandleConnectionEvent(Connection *conn);
-	void HandleCloseEvent(Connection *conn, short events);
+	virtual void HandleReadEvent(Connection *conn);
+	virtual void HandleWriteEvent(Connection *conn);
+	virtual void HandleConnectionEvent(Connection *conn);
+	virtual void HandleCloseEvent(Connection *conn, short events);
 public:
 	TestClient(const char* ip, int16_t port) : TcpEventClient(ip, port) 
     { }
@@ -35,20 +35,11 @@ public:
 
 void TestClient::HandleReadEvent(Connection *conn)
 {
-	size_t size = conn->GetReadBufferLen();
-    char buf[512] = {0};
-    int read = 0;
-    LOG(INFO) << "recv data" ;
-    while (size > 0) 
-    {
-        read = static_cast<int>(std::min(sizeof(buf), size));
-        if (conn->GetReadBuffer(buf, read) == 0)
-        {
-            break;
-        }
-        size -= read;
-        LOG(INFO).write(buf, read);
-    }
+    std::string packet;
+    if (conn->GetOneUnpackedPacket(packet))
+        LOG(INFO) << "recv data " << packet;
+    else
+        LOG(INFO) << "not recv data " << packet;
 }
 
 void TestClient::HandleWriteEvent(Connection *conn)
@@ -85,6 +76,7 @@ void TestClient::TimeOutCb(int id, short events, void *data)
 
 int main()
 {
+    google::InstallFailureSignalHandler();
 	printf("pid: %d\n", getpid());
 	TestClient client("127.0.0.1", 2111);
 //	client.AddSignalEvent(SIGINT, TestClient::QuitCb);

@@ -8,7 +8,11 @@
 #include <set>
 #include <vector>
 #include <glog/logging.h>
+#include "stpcomm/connection.h"
 using namespace std;
+
+#include <errno.h>
+#include <signal.h>
 
 //测试示例
 class TestServer : public TcpEventServer
@@ -22,7 +26,7 @@ protected:
 	void HandleConnectionEvent(Connection *conn);
 	void HandleCloseEvent(Connection *conn, short events);
 public:
-	TestServer(uint16_t port, int count) : TcpEventServer(port, count) { }
+	TestServer(uint16_t port) : TcpEventServer(port) { }
 	~TestServer() { } 
 	
 	//退出事件，响应Ctrl+C
@@ -39,7 +43,7 @@ void TestServer::HandleReadEvent(Connection *conn)
 
 void TestServer::HandleWriteEvent(Connection *conn)
 {
-
+    LOG(INFO) << "HandleWriteEvent ";
 }
 
 void TestServer::HandleConnectionEvent(Connection *conn)
@@ -75,15 +79,22 @@ void TestServer::TimeOutCb(int id, short events, void *data)
 	TestServer *me = reinterpret_cast<TestServer*>(data);
 	char temp[33] = "hello, world\n";
 	for(size_t i=0; i<me->vec.size(); i++)
-		me->vec[i]->AddToWriteBuffer(temp, strlen(temp));
+	{
+        Connection* conn = me->vec[i];
+        bool ret = conn->PackNetHeadPacket(temp, strlen(temp));
+//        int ret = me->vec[i]->AddToWriteBuffer(temp, strlen(temp));
+        LOG(INFO) << "AddToWriteBuffer ret: " << ret;
+    }
+		
 }
 
 int main()
 {
+    google::InstallFailureSignalHandler();
 	printf("pid: %d\n", getpid());
-	TestServer server(2111, 3);
+	TestServer server(2111);
 	server.AddSignalEvent(SIGINT, TestServer::QuitCb);
-	timeval tv = {10, 0};
+	timeval tv = {2, 0};
 	server.AddTimerEvent(TestServer::TimeOutCb, tv, false);
 	server.StartRun();
 	printf("done\n");

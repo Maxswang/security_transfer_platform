@@ -27,7 +27,7 @@ public:
     void HandleProtocol_Ping(Connection* conn, rpc::C2S_Ping* msg);
     
 private:
-    StpServer(int16_t port, int thread_cnt);
+    StpServer(int16_t port);
     virtual ~StpServer();
     
 };

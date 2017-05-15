@@ -9,7 +9,9 @@ class StpClient : public TcpEventClient
 public:
     static StpClient& GetInstance();
     
-    static void QuitStpServerCallback(int sig, short events, void *data);
+    static void QuitStpClientCallback(int sig, short events, void *data);
+    
+    static void TimerHeartBeatCallback(int sig, short events, void *data);
     
     // 新建连接成功后，会调用该函数
 	virtual void HandleConnectionEvent(Connection *conn);

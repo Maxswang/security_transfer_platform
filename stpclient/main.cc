@@ -3,7 +3,7 @@
 #include <glog/logging.h>
 int main()
 {
-    
+    google::InstallFailureSignalHandler();
     ConfigParser& parser = ConfigParser::GetInstance();
     if (!parser.ParseProfile())
     {
@@ -12,7 +12,8 @@ int main()
     
     
     StpClient& client = StpClient::GetInstance();
-    
+    timeval tv = {2, 0};
+    client.AddTimerEvent(StpClient::TimerHeartBeatCallback, tv, false);
     if (!client.StartRun())
     {
         LOG(FATAL) << "Start run StpServer failed!";
