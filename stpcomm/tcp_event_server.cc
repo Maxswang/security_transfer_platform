@@ -80,6 +80,7 @@ void TcpEventServer::ListenerEventCallback(struct evconnlistener *listener,
     bufferevent_enable(bev, EV_READ);
     
     // 调用用户自定义的连接事件处理函数
+    conn->SetBuffer(bufferevent_get_input(bev), bufferevent_get_output(bev));
     server->HandleConnectionEvent(conn);
 }
 

@@ -54,6 +54,7 @@ bool TcpEventClient::StartRun()
     }
     
     conn_->SetFd(bufferevent_getfd(buffer_event_));
+    conn_->SetBuffer(bufferevent_get_input(buffer_event_), bufferevent_get_output(buffer_event_));
     HandleConnectionEvent(conn_);
     
     EventNotifier::StartRun();
