@@ -68,7 +68,7 @@ void StpClient::HandleProtocol_Ping(Connection *conn, rpc::S2C_Ping *msg)
     if (conn == NULL || msg == NULL)
         return;
     
-    
+    LOG(INFO) << "recv S2C_Ping";
 }
 
 StpClient::StpClient(const char *ip, int16_t port)
