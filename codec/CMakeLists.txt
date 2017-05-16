@@ -1,6 +1,7 @@
 set(CODEC_SRCS
 rpc.pb.cc
 proto_msg_dispatcher.cc
+proto_msg_serialization.cc
 )	                                                                                                                                                                            
 add_library(codec ${CODEC_SRCS})
 target_link_libraries(codec pthread rt glog.a event.a protobuf.a)		                                                                                                                                                                            
