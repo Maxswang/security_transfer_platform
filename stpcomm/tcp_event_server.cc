@@ -69,7 +69,6 @@ void TcpEventServer::ListenerEventCallback(struct evconnlistener *listener,
         return;
     }
     
-    // 将该链接放入队列
     Connection *conn = new Connection(server, fd);
     
     // 准备从socket中读写数据

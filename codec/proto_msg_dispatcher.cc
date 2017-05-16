@@ -31,7 +31,7 @@ google::protobuf::Message* MsgDispatcher::Parse(Connection* conn, const void* pD
     
     if (!req.ParseFromArray(pData, uSize))
     {
-        printf("Dispatcher Error:Request parse failure!\n");
+        LOG(WARNING) << "Dispatcher Error:Request parse failure!";
         return NULL;
     }
     
@@ -41,7 +41,7 @@ google::protobuf::Message* MsgDispatcher::Parse(Connection* conn, const void* pD
     {
         if (!message->ParseFromArray(req.serialized_request().c_str(), req.serialized_request().length()))
         {
-            printf("Dispatcher Error:%s parse failure!\n", req.method().c_str());
+            LOG(WARNING) << "Dispatcher Error: parse " << req.method() << " failure!";
         }
     }
     
@@ -76,7 +76,7 @@ bool MsgDispatcher::OnceDispatch(Connection* conn, const void* pData, unsigned i
     
     if (!req.ParseFromArray(pData, uSize))
     {
-        printf("Dispatcher Error:Request parse failure!\n");
+        LOG(WARNING) << "Dispatcher Error:Request parse failure!";
         return false;
     }
     
@@ -87,7 +87,7 @@ bool MsgDispatcher::OnceDispatch(Connection* conn, const void* pData, unsigned i
     {
         if (!message->ParseFromArray(req.serialized_request().c_str(), req.serialized_request().length()))
         {
-            printf("Dispatcher Error:%s parse failure!\n", req.method().c_str());
+            LOG(WARNING) << "Dispatcher Error: parse " << req.method() << " failure!";
         }
         else
         {

@@ -8,8 +8,6 @@
 #include <list>
 #include <string>
 
-class LibeventThread;
-
 const uint8_t kNetHeadPacketVersion = 10;
 
 #pragma pack(2) 

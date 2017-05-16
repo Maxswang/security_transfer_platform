@@ -11,7 +11,7 @@
 
 
 TcpEventClient::TcpEventClient(const char *ip, int16_t port)
-    : conn_(NULL), buffer_event_(NULL), EventNotifier(ENT_CLIENT)
+    : EventNotifier(ENT_CLIENT), conn_(NULL), buffer_event_(NULL)
 {
     assert(ip != NULL);
     
