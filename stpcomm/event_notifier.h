@@ -52,6 +52,8 @@ public:
 	event *AddTimerEvent(void(*ptr)(int, short, void*), timeval tv, bool once);
 	bool DeleteTimerEvent(event *ev);
     
+    
+    
 protected:
     event_base* event_base_;
     

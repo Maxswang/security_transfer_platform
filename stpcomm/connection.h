@@ -71,6 +71,7 @@ public:
     bool PackNetHeadPacket(const void* buffer, size_t len);
     bool GetOneUnpackedPacket(std::string &packet);
     void DelteUnpacketPacket(BufferListIterator& it);
+    bool SendNetPacket(const void* buffer, size_t len);
     
 private:
     EventNotifier* event_notifier_;

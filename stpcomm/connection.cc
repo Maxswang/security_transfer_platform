@@ -101,6 +101,7 @@ bool Connection::UnpackNetHeadPacket()
     read_buf_list_.push_back(std::string(""));
     std::string& pkt_body = read_buf_list_.back();
     pkt_body.resize(pkt_len);
+    pkt_body.clear();
     
     while (pkt_len > 0) 
     {
@@ -139,4 +140,9 @@ bool Connection::GetOneUnpackedPacket(std::string& packet)
     read_buf_list_.pop_front();
     
     return true;
+}
+
+bool Connection::SendNetPacket(const void *buffer, size_t len)
+{
+    return PackNetHeadPacket(buffer, len);
 }

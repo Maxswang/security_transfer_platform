@@ -31,7 +31,6 @@ public:
 private:
     StpClient(const char* ip, int16_t port);
     virtual ~StpClient();
-    
 };
 
 #endif

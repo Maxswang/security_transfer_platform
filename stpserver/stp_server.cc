@@ -33,7 +33,7 @@ void StpServer::HandleReadEvent(Connection *conn)
     if (conn->GetOneUnpackedPacket(pkt))
     {
         static StpSvrMsgDispatcher s_Dispatcher;
-        s_Dispatcher.OnceDispatch(conn, pkt.data(), pkt.size());
+        s_Dispatcher.OnceDispatch(conn, pkt.data(), pkt.length());
     }
 }
 
