@@ -1,4 +1,4 @@
-#include "stp_interface.h"
+#include "stp_crypto.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,6 +8,8 @@
 #include "stpcomm/security/aes_locl.h"
 #include "stpcomm/security/base64.h"
 #include "stpcomm/security/md5.h"
+
+using std::string;
 
 uint32_t ReadUint32(uchar_t *buf)
 {

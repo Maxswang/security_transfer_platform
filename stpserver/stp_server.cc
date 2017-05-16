@@ -2,6 +2,7 @@
 #include "config_parser.h"
 #include "stpsvr_msg_dispatcher.h"
 #include "stpcomm/connection.h"
+#include "codec/proto_msg_serialization.h"
 
 #include <glog/logging.h>
 
@@ -51,6 +52,14 @@ void StpServer::HandleProtocol_Ping(Connection *conn, rpc::C2S_Ping *msg)
 {
     if (conn == NULL || msg == NULL)
         return;
+    
+    rpc::S2C_Ping rsp;
+    int size = sizeof(send_buf_);
+    if (SerializeToArray(rsp, send_buf_, size))
+    {
+        conn->SendNetPacket(send_buf_, size);
+    }
+   
     
     LOG(INFO) << "recv client heart beat";
 }

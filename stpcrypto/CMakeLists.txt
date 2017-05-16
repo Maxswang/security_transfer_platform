@@ -1,9 +1,9 @@
-set(STPINTERFACE_SRCS
-stp_interface.cc
+set(STP_CRYPTO_SRCS
+stp_crypto.cc
 )	                                                                                                                                                                            
-add_library(stpinterface ${STPINTERFACE_SRCS})
+add_library(stpcrypto ${STP_CRYPTO_SRCS})
 #target_link_libraries(stpinterface pthread rt glog.a event.a)		                                                                                                                                                                            
-install(TARGETS stpinterface DESTINATION lib)
+install(TARGETS stpcrypto DESTINATION lib)
 file(GLOB HEADERS "*.h")
 #install(FILES ${HEADERS} DESTINATION include/stpinterface)		                                                                                                                                                                            
 if(NOT CMAKE_BUILD_NO_EXAMPLES)

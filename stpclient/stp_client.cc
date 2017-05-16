@@ -2,6 +2,7 @@
 #include "config_parser.h"
 #include "stpclnt_msg_dispatcher.h"
 #include "stpcomm/connection.h"
+#include "codec/proto_msg_serialization.h"
 #include <glog/logging.h>
 
 StpClient& StpClient::GetInstance()
@@ -23,16 +24,13 @@ void StpClient::TimerHeartBeatCallback(int sig, short events, void *data)
 {
     LOG(INFO) << "process heart beat";
     StpClient *me = reinterpret_cast<StpClient*>(data);
-    rpc::C2S_Ping msg;
+    rpc::C2S_Ping req;
     char send_buf[2048];
-    msg.SerializeToArray(send_buf, sizeof(send_buf));
-    
-    rpc::Request req;
-    req.set_method(msg.GetTypeName());
-    req.set_serialized_request(send_buf, msg.GetCachedSize());
-    req.SerializeToArray(send_buf, sizeof(send_buf));
-    
-    me->conn_->SendNetPacket(send_buf, req.GetCachedSize());
+    int size = static_cast<int>(sizeof(send_buf));
+    if (SerializeToArray(req, send_buf, size))
+    {
+        me->conn_->SendNetPacket(send_buf, size);
+    }
 }
 
 void StpClient::HandleConnectionEvent(Connection *conn)

@@ -29,7 +29,7 @@ public:
 private:
     StpServer(int16_t port);
     virtual ~StpServer();
-    
+    char send_buf_[1024];
 };
 
 #endif

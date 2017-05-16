@@ -41,7 +41,7 @@ add_subdirectory(stpcomm)
 add_subdirectory(codec)
 add_subdirectory(stpclient)
 add_subdirectory(stpserver)
-add_subdirectory(stpinterface)
+add_subdirectory(stpcrypto)
 
 
 #string(TOUPPER ${CMAKE_BUILD_TYPE} BUILD_TYPE)

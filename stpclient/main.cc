@@ -10,9 +10,8 @@ int main()
         LOG(FATAL) << "StpClient parse config file failed!";
     }
     
-    
     StpClient& client = StpClient::GetInstance();
-    timeval tv = {2, 0};
+    timeval tv = {30, 0};
     client.AddTimerEvent(StpClient::TimerHeartBeatCallback, tv, false);
     if (!client.StartRun())
     {

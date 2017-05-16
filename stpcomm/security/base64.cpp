@@ -1,10 +1,4 @@
-//
-//  base64.cpp
-//  pushservice
-//
-//  Created by yunfan on 14/12/18.
-//  Copyright (c) 2014年 yunfan. All rights reserved.
-//
+
 
 #include <stdio.h>
 #include <iostream>
