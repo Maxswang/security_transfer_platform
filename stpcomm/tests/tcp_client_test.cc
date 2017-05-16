@@ -36,7 +36,7 @@ public:
 void TestClient::HandleReadEvent(Connection *conn)
 {
     std::string packet;
-    if (conn->GetOneUnpackedPacket(packet))
+    if (conn->GetNetMessage(packet))
         LOG(INFO) << "recv data " << packet;
     else
         LOG(INFO) << "not recv data " << packet;

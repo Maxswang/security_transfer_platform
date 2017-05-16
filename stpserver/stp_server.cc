@@ -31,7 +31,7 @@ void StpServer::HandleReadEvent(Connection *conn)
         return;
     
     std::string pkt;
-    if (conn->GetOneUnpackedPacket(pkt))
+    if (conn->GetNetMessage(pkt))
     {
         static StpSvrMsgDispatcher s_Dispatcher;
         s_Dispatcher.OnceDispatch(conn, pkt.data(), pkt.length());
@@ -57,7 +57,7 @@ void StpServer::HandleProtocol_Ping(Connection *conn, rpc::C2S_Ping *msg)
     int size = sizeof(send_buf_);
     if (SerializeToArray(rsp, send_buf_, size))
     {
-        conn->SendNetPacket(send_buf_, size);
+        conn->SendNetMessage(send_buf_, size);
     }
    
     

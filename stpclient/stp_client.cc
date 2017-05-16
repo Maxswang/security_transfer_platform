@@ -29,7 +29,7 @@ void StpClient::TimerHeartBeatCallback(int sig, short events, void *data)
     int size = static_cast<int>(sizeof(send_buf));
     if (SerializeToArray(req, send_buf, size))
     {
-        me->conn_->SendNetPacket(send_buf, size);
+        me->conn_->SendNetMessage(send_buf, size);
     }
 }
 
@@ -45,7 +45,7 @@ void StpClient::HandleReadEvent(Connection *conn)
     
     std::string pkt;
     
-    if (conn->GetOneUnpackedPacket(pkt))
+    if (conn->GetNetMessage(pkt))
     {
         static StpClntMsgDispatcher s_Dispatcher;
         s_Dispatcher.OnceDispatch(conn, pkt.data(), pkt.size());

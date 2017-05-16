@@ -17,7 +17,7 @@ Connection::~Connection()
 
 void Connection::ProcessReadEvent() 
 {
-    if (UnpackNetHeadPacket())
+    if (RecvNetMessage())
     {
         event_notifier_->HandleReadEvent(this);
     }
@@ -76,7 +76,7 @@ void Connection::MoveBufferData()
     evbuffer_add_buffer(ev_write_buf_, ev_read_buf_); 
 }
 
-bool Connection::UnpackNetHeadPacket()
+bool Connection::RecvNetMessage()
 {
     size_t head_size = sizeof(NetHeadPacket);
     size_t read_buf_len = GetReadBufferLen();
@@ -116,20 +116,21 @@ bool Connection::UnpackNetHeadPacket()
     return true;
 }
 
-bool Connection::PackNetHeadPacket(const void *buffer, size_t len)
+bool Connection::SendNetMessage(const void *buffer, size_t len)
 {
     NetHeadPacket head;
     memset(&head, 0, sizeof(head));
     head.version = htons(kNetHeadPacketVersion);
     head.pkt_len = htonl(len);
     
-    AddToWriteBuffer(&head, sizeof(head));
-    AddToWriteBuffer(buffer, len);
+    if (AddToWriteBuffer(&head, sizeof(head)) == 0 
+            && AddToWriteBuffer(buffer, len) == 0)
+        return true;
     
-    return true;
+    return false;
 }
 
-bool Connection::GetOneUnpackedPacket(std::string& packet)
+bool Connection::GetNetMessage(std::string& packet)
 {
     if (read_buf_list_.empty())
     {
@@ -140,9 +141,4 @@ bool Connection::GetOneUnpackedPacket(std::string& packet)
     read_buf_list_.pop_front();
     
     return true;
-}
-
-bool Connection::SendNetPacket(const void *buffer, size_t len)
-{
-    return PackNetHeadPacket(buffer, len);
 }

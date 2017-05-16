@@ -81,7 +81,7 @@ void TestServer::TimeOutCb(int id, short events, void *data)
 	for(size_t i=0; i<me->vec.size(); i++)
 	{
         Connection* conn = me->vec[i];
-        bool ret = conn->PackNetHeadPacket(temp, strlen(temp));
+        bool ret = conn->SendNetMessage(temp, strlen(temp));
 //        int ret = me->vec[i]->AddToWriteBuffer(temp, strlen(temp));
         LOG(INFO) << "AddToWriteBuffer ret: " << ret;
     }

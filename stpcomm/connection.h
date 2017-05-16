@@ -22,7 +22,6 @@ struct NetHeadPacket
 
 class Connection
 {
-    friend class ConnectionQueue;
 public:
     typedef std::list<std::string> BufferList;
     typedef BufferList::iterator BufferListIterator;
@@ -66,12 +65,11 @@ public:
 
 	// 将读缓冲区中的数据移动到写缓冲区
 	void MoveBufferData();
-    
-    bool UnpackNetHeadPacket();
-    bool PackNetHeadPacket(const void* buffer, size_t len);
-    bool GetOneUnpackedPacket(std::string &packet);
-    void DelteUnpacketPacket(BufferListIterator& it);
-    bool SendNetPacket(const void* buffer, size_t len);
+
+public:
+    bool RecvNetMessage();
+    bool SendNetMessage(const void* buffer, size_t len);
+    bool GetNetMessage(std::string &packet);
     
 private:
     EventNotifier* event_notifier_;
