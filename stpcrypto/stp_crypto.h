@@ -32,45 +32,32 @@ extern "C" {
 /**
 *  对消息加密
 *
-*  @param pInData  待加密的消息内容指针
-*  @param nInLen   待加密消息内容长度
-*  @param pOutData 加密后的文本
-*  @param nOutLen  加密后的文本长度
+*  @param plain  待加密的消息内容指针
+*  @param plain_len   待加密消息内容长度
+*  @param cipher 加密后的文本
+*  @param cipher_len  加密后的文本长度
 *
 *  @return 返回 0-成功; 其他-失败
 */
-DLL_MODIFIER int EncryptMsg(const char* pInData, uint32_t nInLen, char** pOutData, uint32_t& nOutLen);
-
+DLL_MODIFIER int EncryptPlain(const char* plain, uint32_t plain_len, char** cipher, uint32_t& cipher_len);
 /**
 *  对消息解密
 *
-*  @param pInData  待解密的消息内容指针
-*  @param nInLen   待解密消息内容长度
-*  @param pOutData 解密后的文本
-*  @param nOutLen  解密后的文本长度
+*  @param cipher  待解密的消息内容指针
+*  @param cipher_len   待解密消息内容长度
+*  @param plain 解密后的文本
+*  @param plain_len  解密后的文本长度
 *
 *  @return 返回 0-成功; 其他-失败
 */
-DLL_MODIFIER int DecryptMsg(const char* pInData, uint32_t nInLen, char** pOutData, uint32_t& nOutLen);
+DLL_MODIFIER int DecryptCipher(const char* cipher, uint32_t cipher_len, char** plain, uint32_t& plain_len);
 
-/**
-*  对密码进行加密
-*
-*  @param pInData  待解密的消息内容指针
-*  @param nInLen   待解密消息内容长度
-*  @param pOutData 解密后的文本
-*  @param nOutLen  解密后的文本长度
-*  @param pKey     32位密钥
-*
-*  @return 返回 0-成功; 其他-失败
-*/
-DLL_MODIFIER int EncryptPass(const char* pInData, uint32_t nInLen, char** pOutData, uint32_t& nOutLen);
 /**
 *  释放资源
 *
-*  @param pOutData 需要释放的资源
+*  @param ptr 需要释放的资源
 */
-DLL_MODIFIER void Free(char* pOutData);
+DLL_MODIFIER void Free(char* ptr);
     
     
 #ifdef __cplusplus

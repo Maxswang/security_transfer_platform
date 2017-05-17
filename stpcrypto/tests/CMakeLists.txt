@@ -1,3 +1,3 @@
-#add_executable(stp_interface_test stp_interface_test.cc)
-#target_link_libraries(stp_interface_test stpinterface)
+add_executable(crypto_test crypto_test.cc)
+target_link_libraries(crypto_test stpcrypto stpcomm)
 

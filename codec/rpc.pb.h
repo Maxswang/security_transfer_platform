@@ -36,6 +36,8 @@ void protobuf_ShutdownFile_rpc_2eproto();
 class Request;
 class C2S_Ping;
 class S2C_Ping;
+class C2S_StpRequest;
+class S2C_StpResponse;
 
 // ===================================================================
 
@@ -283,6 +285,220 @@ class S2C_Ping : public ::google::protobuf::Message {
   void InitAsDefaultInstance();
   static S2C_Ping* default_instance_;
 };
+// -------------------------------------------------------------------
+
+class C2S_StpRequest : public ::google::protobuf::Message {
+ public:
+  C2S_StpRequest();
+  virtual ~C2S_StpRequest();
+
+  C2S_StpRequest(const C2S_StpRequest& from);
+
+  inline C2S_StpRequest& operator=(const C2S_StpRequest& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const C2S_StpRequest& default_instance();
+
+  void Swap(C2S_StpRequest* other);
+
+  // implements Message ----------------------------------------------
+
+  C2S_StpRequest* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const C2S_StpRequest& from);
+  void MergeFrom(const C2S_StpRequest& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::int32 version() const;
+  inline void set_version(::google::protobuf::int32 value);
+
+  // optional bool use_agree_key = 2;
+  inline bool has_use_agree_key() const;
+  inline void clear_use_agree_key();
+  static const int kUseAgreeKeyFieldNumber = 2;
+  inline bool use_agree_key() const;
+  inline void set_use_agree_key(bool value);
+
+  // optional bytes data = 3;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 3;
+  inline const ::std::string& data() const;
+  inline void set_data(const ::std::string& value);
+  inline void set_data(const char* value);
+  inline void set_data(const void* value, size_t size);
+  inline ::std::string* mutable_data();
+  inline ::std::string* release_data();
+  inline void set_allocated_data(::std::string* data);
+
+  // @@protoc_insertion_point(class_scope:rpc.C2S_StpRequest)
+ private:
+  inline void set_has_version();
+  inline void clear_has_version();
+  inline void set_has_use_agree_key();
+  inline void clear_has_use_agree_key();
+  inline void set_has_data();
+  inline void clear_has_data();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int32 version_;
+  bool use_agree_key_;
+  ::std::string* data_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2eproto();
+  friend void protobuf_AssignDesc_rpc_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2eproto();
+
+  void InitAsDefaultInstance();
+  static C2S_StpRequest* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class S2C_StpResponse : public ::google::protobuf::Message {
+ public:
+  S2C_StpResponse();
+  virtual ~S2C_StpResponse();
+
+  S2C_StpResponse(const S2C_StpResponse& from);
+
+  inline S2C_StpResponse& operator=(const S2C_StpResponse& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const S2C_StpResponse& default_instance();
+
+  void Swap(S2C_StpResponse* other);
+
+  // implements Message ----------------------------------------------
+
+  S2C_StpResponse* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const S2C_StpResponse& from);
+  void MergeFrom(const S2C_StpResponse& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int32 version = 1;
+  inline bool has_version() const;
+  inline void clear_version();
+  static const int kVersionFieldNumber = 1;
+  inline ::google::protobuf::int32 version() const;
+  inline void set_version(::google::protobuf::int32 value);
+
+  // optional bool use_agree_key = 2;
+  inline bool has_use_agree_key() const;
+  inline void clear_use_agree_key();
+  static const int kUseAgreeKeyFieldNumber = 2;
+  inline bool use_agree_key() const;
+  inline void set_use_agree_key(bool value);
+
+  // optional bytes data = 3;
+  inline bool has_data() const;
+  inline void clear_data();
+  static const int kDataFieldNumber = 3;
+  inline const ::std::string& data() const;
+  inline void set_data(const ::std::string& value);
+  inline void set_data(const char* value);
+  inline void set_data(const void* value, size_t size);
+  inline ::std::string* mutable_data();
+  inline ::std::string* release_data();
+  inline void set_allocated_data(::std::string* data);
+
+  // @@protoc_insertion_point(class_scope:rpc.S2C_StpResponse)
+ private:
+  inline void set_has_version();
+  inline void clear_has_version();
+  inline void set_has_use_agree_key();
+  inline void clear_has_use_agree_key();
+  inline void set_has_data();
+  inline void clear_has_data();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int32 version_;
+  bool use_agree_key_;
+  ::std::string* data_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2eproto();
+  friend void protobuf_AssignDesc_rpc_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2eproto();
+
+  void InitAsDefaultInstance();
+  static S2C_StpResponse* default_instance_;
+};
 // ===================================================================
 
 
@@ -437,6 +653,242 @@ inline void Request::set_allocated_serialized_request(::std::string* serialized_
 // -------------------------------------------------------------------
 
 // S2C_Ping
+
+// -------------------------------------------------------------------
+
+// C2S_StpRequest
+
+// optional int32 version = 1;
+inline bool C2S_StpRequest::has_version() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void C2S_StpRequest::set_has_version() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void C2S_StpRequest::clear_has_version() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void C2S_StpRequest::clear_version() {
+  version_ = 0;
+  clear_has_version();
+}
+inline ::google::protobuf::int32 C2S_StpRequest::version() const {
+  return version_;
+}
+inline void C2S_StpRequest::set_version(::google::protobuf::int32 value) {
+  set_has_version();
+  version_ = value;
+}
+
+// optional bool use_agree_key = 2;
+inline bool C2S_StpRequest::has_use_agree_key() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void C2S_StpRequest::set_has_use_agree_key() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void C2S_StpRequest::clear_has_use_agree_key() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void C2S_StpRequest::clear_use_agree_key() {
+  use_agree_key_ = false;
+  clear_has_use_agree_key();
+}
+inline bool C2S_StpRequest::use_agree_key() const {
+  return use_agree_key_;
+}
+inline void C2S_StpRequest::set_use_agree_key(bool value) {
+  set_has_use_agree_key();
+  use_agree_key_ = value;
+}
+
+// optional bytes data = 3;
+inline bool C2S_StpRequest::has_data() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void C2S_StpRequest::set_has_data() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void C2S_StpRequest::clear_has_data() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void C2S_StpRequest::clear_data() {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
+    data_->clear();
+  }
+  clear_has_data();
+}
+inline const ::std::string& C2S_StpRequest::data() const {
+  return *data_;
+}
+inline void C2S_StpRequest::set_data(const ::std::string& value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void C2S_StpRequest::set_data(const char* value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void C2S_StpRequest::set_data(const void* value, size_t size) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* C2S_StpRequest::mutable_data() {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  return data_;
+}
+inline ::std::string* C2S_StpRequest::release_data() {
+  clear_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = data_;
+    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void C2S_StpRequest::set_allocated_data(::std::string* data) {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
+    delete data_;
+  }
+  if (data) {
+    set_has_data();
+    data_ = data;
+  } else {
+    clear_has_data();
+    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// S2C_StpResponse
+
+// optional int32 version = 1;
+inline bool S2C_StpResponse::has_version() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void S2C_StpResponse::set_has_version() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void S2C_StpResponse::clear_has_version() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void S2C_StpResponse::clear_version() {
+  version_ = 0;
+  clear_has_version();
+}
+inline ::google::protobuf::int32 S2C_StpResponse::version() const {
+  return version_;
+}
+inline void S2C_StpResponse::set_version(::google::protobuf::int32 value) {
+  set_has_version();
+  version_ = value;
+}
+
+// optional bool use_agree_key = 2;
+inline bool S2C_StpResponse::has_use_agree_key() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void S2C_StpResponse::set_has_use_agree_key() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void S2C_StpResponse::clear_has_use_agree_key() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void S2C_StpResponse::clear_use_agree_key() {
+  use_agree_key_ = false;
+  clear_has_use_agree_key();
+}
+inline bool S2C_StpResponse::use_agree_key() const {
+  return use_agree_key_;
+}
+inline void S2C_StpResponse::set_use_agree_key(bool value) {
+  set_has_use_agree_key();
+  use_agree_key_ = value;
+}
+
+// optional bytes data = 3;
+inline bool S2C_StpResponse::has_data() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void S2C_StpResponse::set_has_data() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void S2C_StpResponse::clear_has_data() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void S2C_StpResponse::clear_data() {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
+    data_->clear();
+  }
+  clear_has_data();
+}
+inline const ::std::string& S2C_StpResponse::data() const {
+  return *data_;
+}
+inline void S2C_StpResponse::set_data(const ::std::string& value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void S2C_StpResponse::set_data(const char* value) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(value);
+}
+inline void S2C_StpResponse::set_data(const void* value, size_t size) {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  data_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* S2C_StpResponse::mutable_data() {
+  set_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    data_ = new ::std::string;
+  }
+  return data_;
+}
+inline ::std::string* S2C_StpResponse::release_data() {
+  clear_has_data();
+  if (data_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = data_;
+    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void S2C_StpResponse::set_allocated_data(::std::string* data) {
+  if (data_ != &::google::protobuf::internal::kEmptyString) {
+    delete data_;
+  }
+  if (data) {
+    set_has_data();
+    data_ = data;
+  } else {
+    clear_has_data();
+    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
 
 
 // @@protoc_insertion_point(namespace_scope)

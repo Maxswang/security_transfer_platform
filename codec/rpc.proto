@@ -13,3 +13,18 @@ message C2S_Ping
 message S2C_Ping
 {
 };
+
+message C2S_StpRequest
+{
+    optional int32 version = 1;
+    optional bool use_agree_key = 2;
+    optional bytes crypto_data = 3;
+};
+
+message S2C_StpResponse
+{
+    optional int32 version = 1;
+    optional bool use_agree_key = 2;
+    optional bytes crypto_data = 3;
+};
+
