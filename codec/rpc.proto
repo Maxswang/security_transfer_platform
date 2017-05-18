@@ -6,6 +6,16 @@ message Request
 	optional bytes serialized_request = 2;
 };
 
+enum StpResult
+{
+	SR_OK 							= 0; // 通用表示成功的结果
+	SR_NegotiateFailed 			= 1; // 密钥协商失败
+	SR_InvalidToken 			= 2; // 非法的token
+	SR_TokenExpired 			= 3; // token过期
+	SR_InvalidGuid 				= 4; // 非法的guid
+	SR_ReportStatusFailed 		= 5; // 上报状态失败
+};
+
 message C2S_Ping
 {
 };
@@ -14,17 +24,44 @@ message S2C_Ping
 {
 };
 
-message C2S_StpRequest
+// 通用请求
+message C2S_StpCryptoReq
 {
-    optional int32 version = 1;
-    optional bool use_agree_key = 2;
-    optional bytes crypto_data = 3;
+	optional string token = 1;
+	optional bytes data = 2;
 };
 
-message S2C_StpResponse
+// 通用回复
+message S2C_StpCryptoRsp
 {
-    optional int32 version = 1;
-    optional bool use_agree_key = 2;
-    optional bytes crypto_data = 3;
+	optional StpResult res = 1;
+	optional string token = 2;
+	optional bytes 	data = 3;
 };
+
+// 密钥协商
+message C2S_StpCryptoNegotiate
+{
+	optional int64 stp_guid = 1;
+};
+
+// 密钥协商
+message S2C_StpCryptoNegotiate
+{
+	optional StpResult res = 1;
+	optional int64 stp_guid = 2;
+	optional string token = 3;
+};
+
+// 上报Stp状态
+message S2D_StpReportStatus
+{
+	optional int64 stp_guid = 1;
+	optional string key = 2;
+	optional string expires = 3;
+	optional int32 group = 4;
+	optional int32 idx = 5;
+	optional string ip = 6;
+};
+
 

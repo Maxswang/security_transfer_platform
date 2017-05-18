@@ -23,6 +23,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -36,9 +37,35 @@ void protobuf_ShutdownFile_rpc_2eproto();
 class Request;
 class C2S_Ping;
 class S2C_Ping;
-class C2S_StpRequest;
-class S2C_StpResponse;
+class C2S_StpCryptoReq;
+class S2C_StpCryptoRsp;
+class C2S_StpCryptoNegotiate;
+class S2C_StpCryptoNegotiate;
+class S2D_StpReportStatus;
 
+enum StpResult {
+  SR_OK = 0,
+  SR_NegotiateFailed = 1,
+  SR_InvalidToken = 2,
+  SR_TokenExpired = 3,
+  SR_InvalidGuid = 4,
+  SR_ReportStatusFailed = 5
+};
+bool StpResult_IsValid(int value);
+const StpResult StpResult_MIN = SR_OK;
+const StpResult StpResult_MAX = SR_ReportStatusFailed;
+const int StpResult_ARRAYSIZE = StpResult_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* StpResult_descriptor();
+inline const ::std::string& StpResult_Name(StpResult value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    StpResult_descriptor(), value);
+}
+inline bool StpResult_Parse(
+    const ::std::string& name, StpResult* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<StpResult>(
+    StpResult_descriptor(), name, value);
+}
 // ===================================================================
 
 class Request : public ::google::protobuf::Message {
@@ -287,14 +314,14 @@ class S2C_Ping : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class C2S_StpRequest : public ::google::protobuf::Message {
+class C2S_StpCryptoReq : public ::google::protobuf::Message {
  public:
-  C2S_StpRequest();
-  virtual ~C2S_StpRequest();
+  C2S_StpCryptoReq();
+  virtual ~C2S_StpCryptoReq();
 
-  C2S_StpRequest(const C2S_StpRequest& from);
+  C2S_StpCryptoReq(const C2S_StpCryptoReq& from);
 
-  inline C2S_StpRequest& operator=(const C2S_StpRequest& from) {
+  inline C2S_StpCryptoReq& operator=(const C2S_StpCryptoReq& from) {
     CopyFrom(from);
     return *this;
   }
@@ -308,17 +335,17 @@ class C2S_StpRequest : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const C2S_StpRequest& default_instance();
+  static const C2S_StpCryptoReq& default_instance();
 
-  void Swap(C2S_StpRequest* other);
+  void Swap(C2S_StpCryptoReq* other);
 
   // implements Message ----------------------------------------------
 
-  C2S_StpRequest* New() const;
+  C2S_StpCryptoReq* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const C2S_StpRequest& from);
-  void MergeFrom(const C2S_StpRequest& from);
+  void CopyFrom(const C2S_StpCryptoReq& from);
+  void MergeFrom(const C2S_StpCryptoReq& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -341,24 +368,22 @@ class C2S_StpRequest : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 version = 1;
-  inline bool has_version() const;
-  inline void clear_version();
-  static const int kVersionFieldNumber = 1;
-  inline ::google::protobuf::int32 version() const;
-  inline void set_version(::google::protobuf::int32 value);
+  // optional string token = 1;
+  inline bool has_token() const;
+  inline void clear_token();
+  static const int kTokenFieldNumber = 1;
+  inline const ::std::string& token() const;
+  inline void set_token(const ::std::string& value);
+  inline void set_token(const char* value);
+  inline void set_token(const char* value, size_t size);
+  inline ::std::string* mutable_token();
+  inline ::std::string* release_token();
+  inline void set_allocated_token(::std::string* token);
 
-  // optional bool use_agree_key = 2;
-  inline bool has_use_agree_key() const;
-  inline void clear_use_agree_key();
-  static const int kUseAgreeKeyFieldNumber = 2;
-  inline bool use_agree_key() const;
-  inline void set_use_agree_key(bool value);
-
-  // optional bytes data = 3;
+  // optional bytes data = 2;
   inline bool has_data() const;
   inline void clear_data();
-  static const int kDataFieldNumber = 3;
+  static const int kDataFieldNumber = 2;
   inline const ::std::string& data() const;
   inline void set_data(const ::std::string& value);
   inline void set_data(const char* value);
@@ -367,41 +392,38 @@ class C2S_StpRequest : public ::google::protobuf::Message {
   inline ::std::string* release_data();
   inline void set_allocated_data(::std::string* data);
 
-  // @@protoc_insertion_point(class_scope:rpc.C2S_StpRequest)
+  // @@protoc_insertion_point(class_scope:rpc.C2S_StpCryptoReq)
  private:
-  inline void set_has_version();
-  inline void clear_has_version();
-  inline void set_has_use_agree_key();
-  inline void clear_has_use_agree_key();
+  inline void set_has_token();
+  inline void clear_has_token();
   inline void set_has_data();
   inline void clear_has_data();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::int32 version_;
-  bool use_agree_key_;
+  ::std::string* token_;
   ::std::string* data_;
 
   mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+  ::google::protobuf::uint32 _has_bits_[(2 + 31) / 32];
 
   friend void  protobuf_AddDesc_rpc_2eproto();
   friend void protobuf_AssignDesc_rpc_2eproto();
   friend void protobuf_ShutdownFile_rpc_2eproto();
 
   void InitAsDefaultInstance();
-  static C2S_StpRequest* default_instance_;
+  static C2S_StpCryptoReq* default_instance_;
 };
 // -------------------------------------------------------------------
 
-class S2C_StpResponse : public ::google::protobuf::Message {
+class S2C_StpCryptoRsp : public ::google::protobuf::Message {
  public:
-  S2C_StpResponse();
-  virtual ~S2C_StpResponse();
+  S2C_StpCryptoRsp();
+  virtual ~S2C_StpCryptoRsp();
 
-  S2C_StpResponse(const S2C_StpResponse& from);
+  S2C_StpCryptoRsp(const S2C_StpCryptoRsp& from);
 
-  inline S2C_StpResponse& operator=(const S2C_StpResponse& from) {
+  inline S2C_StpCryptoRsp& operator=(const S2C_StpCryptoRsp& from) {
     CopyFrom(from);
     return *this;
   }
@@ -415,17 +437,17 @@ class S2C_StpResponse : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const S2C_StpResponse& default_instance();
+  static const S2C_StpCryptoRsp& default_instance();
 
-  void Swap(S2C_StpResponse* other);
+  void Swap(S2C_StpCryptoRsp* other);
 
   // implements Message ----------------------------------------------
 
-  S2C_StpResponse* New() const;
+  S2C_StpCryptoRsp* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const S2C_StpResponse& from);
-  void MergeFrom(const S2C_StpResponse& from);
+  void CopyFrom(const S2C_StpCryptoRsp& from);
+  void MergeFrom(const S2C_StpCryptoRsp& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -448,19 +470,24 @@ class S2C_StpResponse : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int32 version = 1;
-  inline bool has_version() const;
-  inline void clear_version();
-  static const int kVersionFieldNumber = 1;
-  inline ::google::protobuf::int32 version() const;
-  inline void set_version(::google::protobuf::int32 value);
+  // optional .rpc.StpResult res = 1;
+  inline bool has_res() const;
+  inline void clear_res();
+  static const int kResFieldNumber = 1;
+  inline ::rpc::StpResult res() const;
+  inline void set_res(::rpc::StpResult value);
 
-  // optional bool use_agree_key = 2;
-  inline bool has_use_agree_key() const;
-  inline void clear_use_agree_key();
-  static const int kUseAgreeKeyFieldNumber = 2;
-  inline bool use_agree_key() const;
-  inline void set_use_agree_key(bool value);
+  // optional string token = 2;
+  inline bool has_token() const;
+  inline void clear_token();
+  static const int kTokenFieldNumber = 2;
+  inline const ::std::string& token() const;
+  inline void set_token(const ::std::string& value);
+  inline void set_token(const char* value);
+  inline void set_token(const char* value, size_t size);
+  inline ::std::string* mutable_token();
+  inline ::std::string* release_token();
+  inline void set_allocated_token(::std::string* token);
 
   // optional bytes data = 3;
   inline bool has_data() const;
@@ -474,20 +501,20 @@ class S2C_StpResponse : public ::google::protobuf::Message {
   inline ::std::string* release_data();
   inline void set_allocated_data(::std::string* data);
 
-  // @@protoc_insertion_point(class_scope:rpc.S2C_StpResponse)
+  // @@protoc_insertion_point(class_scope:rpc.S2C_StpCryptoRsp)
  private:
-  inline void set_has_version();
-  inline void clear_has_version();
-  inline void set_has_use_agree_key();
-  inline void clear_has_use_agree_key();
+  inline void set_has_res();
+  inline void clear_has_res();
+  inline void set_has_token();
+  inline void clear_has_token();
   inline void set_has_data();
   inline void clear_has_data();
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::int32 version_;
-  bool use_agree_key_;
+  ::std::string* token_;
   ::std::string* data_;
+  int res_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
@@ -497,7 +524,343 @@ class S2C_StpResponse : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_rpc_2eproto();
 
   void InitAsDefaultInstance();
-  static S2C_StpResponse* default_instance_;
+  static S2C_StpCryptoRsp* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class C2S_StpCryptoNegotiate : public ::google::protobuf::Message {
+ public:
+  C2S_StpCryptoNegotiate();
+  virtual ~C2S_StpCryptoNegotiate();
+
+  C2S_StpCryptoNegotiate(const C2S_StpCryptoNegotiate& from);
+
+  inline C2S_StpCryptoNegotiate& operator=(const C2S_StpCryptoNegotiate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const C2S_StpCryptoNegotiate& default_instance();
+
+  void Swap(C2S_StpCryptoNegotiate* other);
+
+  // implements Message ----------------------------------------------
+
+  C2S_StpCryptoNegotiate* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const C2S_StpCryptoNegotiate& from);
+  void MergeFrom(const C2S_StpCryptoNegotiate& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int64 stp_guid = 1;
+  inline bool has_stp_guid() const;
+  inline void clear_stp_guid();
+  static const int kStpGuidFieldNumber = 1;
+  inline ::google::protobuf::int64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:rpc.C2S_StpCryptoNegotiate)
+ private:
+  inline void set_has_stp_guid();
+  inline void clear_has_stp_guid();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int64 stp_guid_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2eproto();
+  friend void protobuf_AssignDesc_rpc_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2eproto();
+
+  void InitAsDefaultInstance();
+  static C2S_StpCryptoNegotiate* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class S2C_StpCryptoNegotiate : public ::google::protobuf::Message {
+ public:
+  S2C_StpCryptoNegotiate();
+  virtual ~S2C_StpCryptoNegotiate();
+
+  S2C_StpCryptoNegotiate(const S2C_StpCryptoNegotiate& from);
+
+  inline S2C_StpCryptoNegotiate& operator=(const S2C_StpCryptoNegotiate& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const S2C_StpCryptoNegotiate& default_instance();
+
+  void Swap(S2C_StpCryptoNegotiate* other);
+
+  // implements Message ----------------------------------------------
+
+  S2C_StpCryptoNegotiate* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const S2C_StpCryptoNegotiate& from);
+  void MergeFrom(const S2C_StpCryptoNegotiate& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional .rpc.StpResult res = 1;
+  inline bool has_res() const;
+  inline void clear_res();
+  static const int kResFieldNumber = 1;
+  inline ::rpc::StpResult res() const;
+  inline void set_res(::rpc::StpResult value);
+
+  // optional int64 stp_guid = 2;
+  inline bool has_stp_guid() const;
+  inline void clear_stp_guid();
+  static const int kStpGuidFieldNumber = 2;
+  inline ::google::protobuf::int64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::int64 value);
+
+  // optional string token = 3;
+  inline bool has_token() const;
+  inline void clear_token();
+  static const int kTokenFieldNumber = 3;
+  inline const ::std::string& token() const;
+  inline void set_token(const ::std::string& value);
+  inline void set_token(const char* value);
+  inline void set_token(const char* value, size_t size);
+  inline ::std::string* mutable_token();
+  inline ::std::string* release_token();
+  inline void set_allocated_token(::std::string* token);
+
+  // @@protoc_insertion_point(class_scope:rpc.S2C_StpCryptoNegotiate)
+ private:
+  inline void set_has_res();
+  inline void clear_has_res();
+  inline void set_has_stp_guid();
+  inline void clear_has_stp_guid();
+  inline void set_has_token();
+  inline void clear_has_token();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int64 stp_guid_;
+  ::std::string* token_;
+  int res_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2eproto();
+  friend void protobuf_AssignDesc_rpc_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2eproto();
+
+  void InitAsDefaultInstance();
+  static S2C_StpCryptoNegotiate* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class S2D_StpReportStatus : public ::google::protobuf::Message {
+ public:
+  S2D_StpReportStatus();
+  virtual ~S2D_StpReportStatus();
+
+  S2D_StpReportStatus(const S2D_StpReportStatus& from);
+
+  inline S2D_StpReportStatus& operator=(const S2D_StpReportStatus& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const S2D_StpReportStatus& default_instance();
+
+  void Swap(S2D_StpReportStatus* other);
+
+  // implements Message ----------------------------------------------
+
+  S2D_StpReportStatus* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const S2D_StpReportStatus& from);
+  void MergeFrom(const S2D_StpReportStatus& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional int64 stp_guid = 1;
+  inline bool has_stp_guid() const;
+  inline void clear_stp_guid();
+  static const int kStpGuidFieldNumber = 1;
+  inline ::google::protobuf::int64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::int64 value);
+
+  // optional string key = 2;
+  inline bool has_key() const;
+  inline void clear_key();
+  static const int kKeyFieldNumber = 2;
+  inline const ::std::string& key() const;
+  inline void set_key(const ::std::string& value);
+  inline void set_key(const char* value);
+  inline void set_key(const char* value, size_t size);
+  inline ::std::string* mutable_key();
+  inline ::std::string* release_key();
+  inline void set_allocated_key(::std::string* key);
+
+  // optional string expires = 3;
+  inline bool has_expires() const;
+  inline void clear_expires();
+  static const int kExpiresFieldNumber = 3;
+  inline const ::std::string& expires() const;
+  inline void set_expires(const ::std::string& value);
+  inline void set_expires(const char* value);
+  inline void set_expires(const char* value, size_t size);
+  inline ::std::string* mutable_expires();
+  inline ::std::string* release_expires();
+  inline void set_allocated_expires(::std::string* expires);
+
+  // optional int32 group = 4;
+  inline bool has_group() const;
+  inline void clear_group();
+  static const int kGroupFieldNumber = 4;
+  inline ::google::protobuf::int32 group() const;
+  inline void set_group(::google::protobuf::int32 value);
+
+  // optional int32 idx = 5;
+  inline bool has_idx() const;
+  inline void clear_idx();
+  static const int kIdxFieldNumber = 5;
+  inline ::google::protobuf::int32 idx() const;
+  inline void set_idx(::google::protobuf::int32 value);
+
+  // optional string ip = 6;
+  inline bool has_ip() const;
+  inline void clear_ip();
+  static const int kIpFieldNumber = 6;
+  inline const ::std::string& ip() const;
+  inline void set_ip(const ::std::string& value);
+  inline void set_ip(const char* value);
+  inline void set_ip(const char* value, size_t size);
+  inline ::std::string* mutable_ip();
+  inline ::std::string* release_ip();
+  inline void set_allocated_ip(::std::string* ip);
+
+  // @@protoc_insertion_point(class_scope:rpc.S2D_StpReportStatus)
+ private:
+  inline void set_has_stp_guid();
+  inline void clear_has_stp_guid();
+  inline void set_has_key();
+  inline void clear_has_key();
+  inline void set_has_expires();
+  inline void clear_has_expires();
+  inline void set_has_group();
+  inline void clear_has_group();
+  inline void set_has_idx();
+  inline void clear_has_idx();
+  inline void set_has_ip();
+  inline void clear_has_ip();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::int64 stp_guid_;
+  ::std::string* key_;
+  ::std::string* expires_;
+  ::google::protobuf::int32 group_;
+  ::google::protobuf::int32 idx_;
+  ::std::string* ip_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(6 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2eproto();
+  friend void protobuf_AssignDesc_rpc_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2eproto();
+
+  void InitAsDefaultInstance();
+  static S2D_StpReportStatus* default_instance_;
 };
 // ===================================================================
 
@@ -656,100 +1019,126 @@ inline void Request::set_allocated_serialized_request(::std::string* serialized_
 
 // -------------------------------------------------------------------
 
-// C2S_StpRequest
+// C2S_StpCryptoReq
 
-// optional int32 version = 1;
-inline bool C2S_StpRequest::has_version() const {
+// optional string token = 1;
+inline bool C2S_StpCryptoReq::has_token() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void C2S_StpRequest::set_has_version() {
+inline void C2S_StpCryptoReq::set_has_token() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void C2S_StpRequest::clear_has_version() {
+inline void C2S_StpCryptoReq::clear_has_token() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void C2S_StpRequest::clear_version() {
-  version_ = 0;
-  clear_has_version();
+inline void C2S_StpCryptoReq::clear_token() {
+  if (token_ != &::google::protobuf::internal::kEmptyString) {
+    token_->clear();
+  }
+  clear_has_token();
 }
-inline ::google::protobuf::int32 C2S_StpRequest::version() const {
-  return version_;
+inline const ::std::string& C2S_StpCryptoReq::token() const {
+  return *token_;
 }
-inline void C2S_StpRequest::set_version(::google::protobuf::int32 value) {
-  set_has_version();
-  version_ = value;
+inline void C2S_StpCryptoReq::set_token(const ::std::string& value) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void C2S_StpCryptoReq::set_token(const char* value) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void C2S_StpCryptoReq::set_token(const char* value, size_t size) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* C2S_StpCryptoReq::mutable_token() {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  return token_;
+}
+inline ::std::string* C2S_StpCryptoReq::release_token() {
+  clear_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = token_;
+    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void C2S_StpCryptoReq::set_allocated_token(::std::string* token) {
+  if (token_ != &::google::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (token) {
+    set_has_token();
+    token_ = token;
+  } else {
+    clear_has_token();
+    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
-// optional bool use_agree_key = 2;
-inline bool C2S_StpRequest::has_use_agree_key() const {
+// optional bytes data = 2;
+inline bool C2S_StpCryptoReq::has_data() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void C2S_StpRequest::set_has_use_agree_key() {
+inline void C2S_StpCryptoReq::set_has_data() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void C2S_StpRequest::clear_has_use_agree_key() {
+inline void C2S_StpCryptoReq::clear_has_data() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void C2S_StpRequest::clear_use_agree_key() {
-  use_agree_key_ = false;
-  clear_has_use_agree_key();
-}
-inline bool C2S_StpRequest::use_agree_key() const {
-  return use_agree_key_;
-}
-inline void C2S_StpRequest::set_use_agree_key(bool value) {
-  set_has_use_agree_key();
-  use_agree_key_ = value;
-}
-
-// optional bytes data = 3;
-inline bool C2S_StpRequest::has_data() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void C2S_StpRequest::set_has_data() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void C2S_StpRequest::clear_has_data() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void C2S_StpRequest::clear_data() {
+inline void C2S_StpCryptoReq::clear_data() {
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     data_->clear();
   }
   clear_has_data();
 }
-inline const ::std::string& C2S_StpRequest::data() const {
+inline const ::std::string& C2S_StpCryptoReq::data() const {
   return *data_;
 }
-inline void C2S_StpRequest::set_data(const ::std::string& value) {
+inline void C2S_StpCryptoReq::set_data(const ::std::string& value) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(value);
 }
-inline void C2S_StpRequest::set_data(const char* value) {
+inline void C2S_StpCryptoReq::set_data(const char* value) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(value);
 }
-inline void C2S_StpRequest::set_data(const void* value, size_t size) {
+inline void C2S_StpCryptoReq::set_data(const void* value, size_t size) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* C2S_StpRequest::mutable_data() {
+inline ::std::string* C2S_StpCryptoReq::mutable_data() {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   return data_;
 }
-inline ::std::string* C2S_StpRequest::release_data() {
+inline ::std::string* C2S_StpCryptoReq::release_data() {
   clear_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -759,7 +1148,7 @@ inline ::std::string* C2S_StpRequest::release_data() {
     return temp;
   }
 }
-inline void C2S_StpRequest::set_allocated_data(::std::string* data) {
+inline void C2S_StpCryptoReq::set_allocated_data(::std::string* data) {
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     delete data_;
   }
@@ -774,100 +1163,149 @@ inline void C2S_StpRequest::set_allocated_data(::std::string* data) {
 
 // -------------------------------------------------------------------
 
-// S2C_StpResponse
+// S2C_StpCryptoRsp
 
-// optional int32 version = 1;
-inline bool S2C_StpResponse::has_version() const {
+// optional .rpc.StpResult res = 1;
+inline bool S2C_StpCryptoRsp::has_res() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void S2C_StpResponse::set_has_version() {
+inline void S2C_StpCryptoRsp::set_has_res() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void S2C_StpResponse::clear_has_version() {
+inline void S2C_StpCryptoRsp::clear_has_res() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void S2C_StpResponse::clear_version() {
-  version_ = 0;
-  clear_has_version();
+inline void S2C_StpCryptoRsp::clear_res() {
+  res_ = 0;
+  clear_has_res();
 }
-inline ::google::protobuf::int32 S2C_StpResponse::version() const {
-  return version_;
+inline ::rpc::StpResult S2C_StpCryptoRsp::res() const {
+  return static_cast< ::rpc::StpResult >(res_);
 }
-inline void S2C_StpResponse::set_version(::google::protobuf::int32 value) {
-  set_has_version();
-  version_ = value;
+inline void S2C_StpCryptoRsp::set_res(::rpc::StpResult value) {
+  assert(::rpc::StpResult_IsValid(value));
+  set_has_res();
+  res_ = value;
 }
 
-// optional bool use_agree_key = 2;
-inline bool S2C_StpResponse::has_use_agree_key() const {
+// optional string token = 2;
+inline bool S2C_StpCryptoRsp::has_token() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void S2C_StpResponse::set_has_use_agree_key() {
+inline void S2C_StpCryptoRsp::set_has_token() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void S2C_StpResponse::clear_has_use_agree_key() {
+inline void S2C_StpCryptoRsp::clear_has_token() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void S2C_StpResponse::clear_use_agree_key() {
-  use_agree_key_ = false;
-  clear_has_use_agree_key();
+inline void S2C_StpCryptoRsp::clear_token() {
+  if (token_ != &::google::protobuf::internal::kEmptyString) {
+    token_->clear();
+  }
+  clear_has_token();
 }
-inline bool S2C_StpResponse::use_agree_key() const {
-  return use_agree_key_;
+inline const ::std::string& S2C_StpCryptoRsp::token() const {
+  return *token_;
 }
-inline void S2C_StpResponse::set_use_agree_key(bool value) {
-  set_has_use_agree_key();
-  use_agree_key_ = value;
+inline void S2C_StpCryptoRsp::set_token(const ::std::string& value) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void S2C_StpCryptoRsp::set_token(const char* value) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void S2C_StpCryptoRsp::set_token(const char* value, size_t size) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* S2C_StpCryptoRsp::mutable_token() {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  return token_;
+}
+inline ::std::string* S2C_StpCryptoRsp::release_token() {
+  clear_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = token_;
+    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void S2C_StpCryptoRsp::set_allocated_token(::std::string* token) {
+  if (token_ != &::google::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (token) {
+    set_has_token();
+    token_ = token;
+  } else {
+    clear_has_token();
+    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
 }
 
 // optional bytes data = 3;
-inline bool S2C_StpResponse::has_data() const {
+inline bool S2C_StpCryptoRsp::has_data() const {
   return (_has_bits_[0] & 0x00000004u) != 0;
 }
-inline void S2C_StpResponse::set_has_data() {
+inline void S2C_StpCryptoRsp::set_has_data() {
   _has_bits_[0] |= 0x00000004u;
 }
-inline void S2C_StpResponse::clear_has_data() {
+inline void S2C_StpCryptoRsp::clear_has_data() {
   _has_bits_[0] &= ~0x00000004u;
 }
-inline void S2C_StpResponse::clear_data() {
+inline void S2C_StpCryptoRsp::clear_data() {
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     data_->clear();
   }
   clear_has_data();
 }
-inline const ::std::string& S2C_StpResponse::data() const {
+inline const ::std::string& S2C_StpCryptoRsp::data() const {
   return *data_;
 }
-inline void S2C_StpResponse::set_data(const ::std::string& value) {
+inline void S2C_StpCryptoRsp::set_data(const ::std::string& value) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(value);
 }
-inline void S2C_StpResponse::set_data(const char* value) {
+inline void S2C_StpCryptoRsp::set_data(const char* value) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(value);
 }
-inline void S2C_StpResponse::set_data(const void* value, size_t size) {
+inline void S2C_StpCryptoRsp::set_data(const void* value, size_t size) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* S2C_StpResponse::mutable_data() {
+inline ::std::string* S2C_StpCryptoRsp::mutable_data() {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   return data_;
 }
-inline ::std::string* S2C_StpResponse::release_data() {
+inline ::std::string* S2C_StpCryptoRsp::release_data() {
   clear_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -877,7 +1315,7 @@ inline ::std::string* S2C_StpResponse::release_data() {
     return temp;
   }
 }
-inline void S2C_StpResponse::set_allocated_data(::std::string* data) {
+inline void S2C_StpCryptoRsp::set_allocated_data(::std::string* data) {
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     delete data_;
   }
@@ -890,6 +1328,431 @@ inline void S2C_StpResponse::set_allocated_data(::std::string* data) {
   }
 }
 
+// -------------------------------------------------------------------
+
+// C2S_StpCryptoNegotiate
+
+// optional int64 stp_guid = 1;
+inline bool C2S_StpCryptoNegotiate::has_stp_guid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void C2S_StpCryptoNegotiate::set_has_stp_guid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void C2S_StpCryptoNegotiate::clear_has_stp_guid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void C2S_StpCryptoNegotiate::clear_stp_guid() {
+  stp_guid_ = GOOGLE_LONGLONG(0);
+  clear_has_stp_guid();
+}
+inline ::google::protobuf::int64 C2S_StpCryptoNegotiate::stp_guid() const {
+  return stp_guid_;
+}
+inline void C2S_StpCryptoNegotiate::set_stp_guid(::google::protobuf::int64 value) {
+  set_has_stp_guid();
+  stp_guid_ = value;
+}
+
+// -------------------------------------------------------------------
+
+// S2C_StpCryptoNegotiate
+
+// optional .rpc.StpResult res = 1;
+inline bool S2C_StpCryptoNegotiate::has_res() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void S2C_StpCryptoNegotiate::set_has_res() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void S2C_StpCryptoNegotiate::clear_has_res() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void S2C_StpCryptoNegotiate::clear_res() {
+  res_ = 0;
+  clear_has_res();
+}
+inline ::rpc::StpResult S2C_StpCryptoNegotiate::res() const {
+  return static_cast< ::rpc::StpResult >(res_);
+}
+inline void S2C_StpCryptoNegotiate::set_res(::rpc::StpResult value) {
+  assert(::rpc::StpResult_IsValid(value));
+  set_has_res();
+  res_ = value;
+}
+
+// optional int64 stp_guid = 2;
+inline bool S2C_StpCryptoNegotiate::has_stp_guid() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void S2C_StpCryptoNegotiate::set_has_stp_guid() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void S2C_StpCryptoNegotiate::clear_has_stp_guid() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void S2C_StpCryptoNegotiate::clear_stp_guid() {
+  stp_guid_ = GOOGLE_LONGLONG(0);
+  clear_has_stp_guid();
+}
+inline ::google::protobuf::int64 S2C_StpCryptoNegotiate::stp_guid() const {
+  return stp_guid_;
+}
+inline void S2C_StpCryptoNegotiate::set_stp_guid(::google::protobuf::int64 value) {
+  set_has_stp_guid();
+  stp_guid_ = value;
+}
+
+// optional string token = 3;
+inline bool S2C_StpCryptoNegotiate::has_token() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void S2C_StpCryptoNegotiate::set_has_token() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void S2C_StpCryptoNegotiate::clear_has_token() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void S2C_StpCryptoNegotiate::clear_token() {
+  if (token_ != &::google::protobuf::internal::kEmptyString) {
+    token_->clear();
+  }
+  clear_has_token();
+}
+inline const ::std::string& S2C_StpCryptoNegotiate::token() const {
+  return *token_;
+}
+inline void S2C_StpCryptoNegotiate::set_token(const ::std::string& value) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void S2C_StpCryptoNegotiate::set_token(const char* value) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(value);
+}
+inline void S2C_StpCryptoNegotiate::set_token(const char* value, size_t size) {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  token_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* S2C_StpCryptoNegotiate::mutable_token() {
+  set_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    token_ = new ::std::string;
+  }
+  return token_;
+}
+inline ::std::string* S2C_StpCryptoNegotiate::release_token() {
+  clear_has_token();
+  if (token_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = token_;
+    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void S2C_StpCryptoNegotiate::set_allocated_token(::std::string* token) {
+  if (token_ != &::google::protobuf::internal::kEmptyString) {
+    delete token_;
+  }
+  if (token) {
+    set_has_token();
+    token_ = token;
+  } else {
+    clear_has_token();
+    token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// -------------------------------------------------------------------
+
+// S2D_StpReportStatus
+
+// optional int64 stp_guid = 1;
+inline bool S2D_StpReportStatus::has_stp_guid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void S2D_StpReportStatus::set_has_stp_guid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void S2D_StpReportStatus::clear_has_stp_guid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void S2D_StpReportStatus::clear_stp_guid() {
+  stp_guid_ = GOOGLE_LONGLONG(0);
+  clear_has_stp_guid();
+}
+inline ::google::protobuf::int64 S2D_StpReportStatus::stp_guid() const {
+  return stp_guid_;
+}
+inline void S2D_StpReportStatus::set_stp_guid(::google::protobuf::int64 value) {
+  set_has_stp_guid();
+  stp_guid_ = value;
+}
+
+// optional string key = 2;
+inline bool S2D_StpReportStatus::has_key() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void S2D_StpReportStatus::set_has_key() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void S2D_StpReportStatus::clear_has_key() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void S2D_StpReportStatus::clear_key() {
+  if (key_ != &::google::protobuf::internal::kEmptyString) {
+    key_->clear();
+  }
+  clear_has_key();
+}
+inline const ::std::string& S2D_StpReportStatus::key() const {
+  return *key_;
+}
+inline void S2D_StpReportStatus::set_key(const ::std::string& value) {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  key_->assign(value);
+}
+inline void S2D_StpReportStatus::set_key(const char* value) {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  key_->assign(value);
+}
+inline void S2D_StpReportStatus::set_key(const char* value, size_t size) {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  key_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* S2D_StpReportStatus::mutable_key() {
+  set_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    key_ = new ::std::string;
+  }
+  return key_;
+}
+inline ::std::string* S2D_StpReportStatus::release_key() {
+  clear_has_key();
+  if (key_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = key_;
+    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void S2D_StpReportStatus::set_allocated_key(::std::string* key) {
+  if (key_ != &::google::protobuf::internal::kEmptyString) {
+    delete key_;
+  }
+  if (key) {
+    set_has_key();
+    key_ = key;
+  } else {
+    clear_has_key();
+    key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional string expires = 3;
+inline bool S2D_StpReportStatus::has_expires() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void S2D_StpReportStatus::set_has_expires() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void S2D_StpReportStatus::clear_has_expires() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void S2D_StpReportStatus::clear_expires() {
+  if (expires_ != &::google::protobuf::internal::kEmptyString) {
+    expires_->clear();
+  }
+  clear_has_expires();
+}
+inline const ::std::string& S2D_StpReportStatus::expires() const {
+  return *expires_;
+}
+inline void S2D_StpReportStatus::set_expires(const ::std::string& value) {
+  set_has_expires();
+  if (expires_ == &::google::protobuf::internal::kEmptyString) {
+    expires_ = new ::std::string;
+  }
+  expires_->assign(value);
+}
+inline void S2D_StpReportStatus::set_expires(const char* value) {
+  set_has_expires();
+  if (expires_ == &::google::protobuf::internal::kEmptyString) {
+    expires_ = new ::std::string;
+  }
+  expires_->assign(value);
+}
+inline void S2D_StpReportStatus::set_expires(const char* value, size_t size) {
+  set_has_expires();
+  if (expires_ == &::google::protobuf::internal::kEmptyString) {
+    expires_ = new ::std::string;
+  }
+  expires_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* S2D_StpReportStatus::mutable_expires() {
+  set_has_expires();
+  if (expires_ == &::google::protobuf::internal::kEmptyString) {
+    expires_ = new ::std::string;
+  }
+  return expires_;
+}
+inline ::std::string* S2D_StpReportStatus::release_expires() {
+  clear_has_expires();
+  if (expires_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = expires_;
+    expires_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void S2D_StpReportStatus::set_allocated_expires(::std::string* expires) {
+  if (expires_ != &::google::protobuf::internal::kEmptyString) {
+    delete expires_;
+  }
+  if (expires) {
+    set_has_expires();
+    expires_ = expires;
+  } else {
+    clear_has_expires();
+    expires_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
+// optional int32 group = 4;
+inline bool S2D_StpReportStatus::has_group() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void S2D_StpReportStatus::set_has_group() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void S2D_StpReportStatus::clear_has_group() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void S2D_StpReportStatus::clear_group() {
+  group_ = 0;
+  clear_has_group();
+}
+inline ::google::protobuf::int32 S2D_StpReportStatus::group() const {
+  return group_;
+}
+inline void S2D_StpReportStatus::set_group(::google::protobuf::int32 value) {
+  set_has_group();
+  group_ = value;
+}
+
+// optional int32 idx = 5;
+inline bool S2D_StpReportStatus::has_idx() const {
+  return (_has_bits_[0] & 0x00000010u) != 0;
+}
+inline void S2D_StpReportStatus::set_has_idx() {
+  _has_bits_[0] |= 0x00000010u;
+}
+inline void S2D_StpReportStatus::clear_has_idx() {
+  _has_bits_[0] &= ~0x00000010u;
+}
+inline void S2D_StpReportStatus::clear_idx() {
+  idx_ = 0;
+  clear_has_idx();
+}
+inline ::google::protobuf::int32 S2D_StpReportStatus::idx() const {
+  return idx_;
+}
+inline void S2D_StpReportStatus::set_idx(::google::protobuf::int32 value) {
+  set_has_idx();
+  idx_ = value;
+}
+
+// optional string ip = 6;
+inline bool S2D_StpReportStatus::has_ip() const {
+  return (_has_bits_[0] & 0x00000020u) != 0;
+}
+inline void S2D_StpReportStatus::set_has_ip() {
+  _has_bits_[0] |= 0x00000020u;
+}
+inline void S2D_StpReportStatus::clear_has_ip() {
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline void S2D_StpReportStatus::clear_ip() {
+  if (ip_ != &::google::protobuf::internal::kEmptyString) {
+    ip_->clear();
+  }
+  clear_has_ip();
+}
+inline const ::std::string& S2D_StpReportStatus::ip() const {
+  return *ip_;
+}
+inline void S2D_StpReportStatus::set_ip(const ::std::string& value) {
+  set_has_ip();
+  if (ip_ == &::google::protobuf::internal::kEmptyString) {
+    ip_ = new ::std::string;
+  }
+  ip_->assign(value);
+}
+inline void S2D_StpReportStatus::set_ip(const char* value) {
+  set_has_ip();
+  if (ip_ == &::google::protobuf::internal::kEmptyString) {
+    ip_ = new ::std::string;
+  }
+  ip_->assign(value);
+}
+inline void S2D_StpReportStatus::set_ip(const char* value, size_t size) {
+  set_has_ip();
+  if (ip_ == &::google::protobuf::internal::kEmptyString) {
+    ip_ = new ::std::string;
+  }
+  ip_->assign(reinterpret_cast<const char*>(value), size);
+}
+inline ::std::string* S2D_StpReportStatus::mutable_ip() {
+  set_has_ip();
+  if (ip_ == &::google::protobuf::internal::kEmptyString) {
+    ip_ = new ::std::string;
+  }
+  return ip_;
+}
+inline ::std::string* S2D_StpReportStatus::release_ip() {
+  clear_has_ip();
+  if (ip_ == &::google::protobuf::internal::kEmptyString) {
+    return NULL;
+  } else {
+    ::std::string* temp = ip_;
+    ip_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+    return temp;
+  }
+}
+inline void S2D_StpReportStatus::set_allocated_ip(::std::string* ip) {
+  if (ip_ != &::google::protobuf::internal::kEmptyString) {
+    delete ip_;
+  }
+  if (ip) {
+    set_has_ip();
+    ip_ = ip;
+  } else {
+    clear_has_ip();
+    ip_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  }
+}
+
 
 // @@protoc_insertion_point(namespace_scope)
 
@@ -899,6 +1762,10 @@ inline void S2C_StpResponse::set_allocated_data(::std::string* data) {
 namespace google {
 namespace protobuf {
 
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::rpc::StpResult>() {
+  return ::rpc::StpResult_descriptor();
+}
 
 }  // namespace google
 }  // namespace protobuf
