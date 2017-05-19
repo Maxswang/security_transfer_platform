@@ -4,11 +4,11 @@
 2：若客户端向服务器发送数据，服务器收到后，再将数据回发给客户端
 */
 //tcp_server_test.cc
-#include "stpcomm/tcp_event_server.h"
+#include "stputil/tcp_event_server.h"
 #include <set>
 #include <vector>
 #include <glog/logging.h>
-#include "stpcomm/connection.h"
+#include "stputil/connection.h"
 using namespace std;
 
 #include <errno.h>

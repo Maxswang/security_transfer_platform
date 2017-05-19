@@ -1,5 +1,5 @@
 #include "tcp_event_server.h"
-#include "stpcomm/connection.h"
+#include "stputil/connection.h"
 #include <glog/logging.h>
 #include <assert.h>
 

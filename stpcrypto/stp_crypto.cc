@@ -4,10 +4,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iostream>
-#include "stpcomm/security/aes.h"
-#include "stpcomm/security/aes_locl.h"
-#include "stpcomm/security/base64.h"
-#include "stpcomm/security/md5.h"
+#include "stputil/security/aes.h"
+#include "stputil/security/aes_locl.h"
+#include "stputil/security/base64.h"
+#include "stputil/security/md5.h"
 
 using std::string;
 

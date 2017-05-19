@@ -1,4 +1,4 @@
-#include "stpcomm/thread.h"
+#include "stputil/thread.h"
 #include <stdio.h>
 
 #ifdef WIN32

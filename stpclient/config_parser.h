@@ -1,7 +1,7 @@
 #ifndef CONFIG_PARSER_H_
 #define CONFIG_PARSER_H_
 
-#include "stpcomm/json_parser.h"
+#include "stputil/json_parser.h"
 
 
 class ConfigParser

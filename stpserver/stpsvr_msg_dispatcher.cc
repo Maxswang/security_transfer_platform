@@ -1,7 +1,7 @@
 #include "stpsvr_msg_dispatcher.h"
 #include <glog/logging.h>
 #include "stp_server.h"
-#include "stpcomm/connection.h"
+#include "stputil/connection.h"
 #include "codec/rpc.pb.h"
 
 #define REGISTER_CALLBACK_IMP(msg) this->RegisterMessageCallback<rpc::msg>(Net::Delegate::from_method<StpSvrMsgDispatcher, &StpSvrMsgDispatcher::OnSync##msg>(this))

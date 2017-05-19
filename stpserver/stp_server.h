@@ -1,7 +1,7 @@
 #ifndef STP_SERVER_H_
 #define STP_SERVER_H_
 
-#include "stpcomm/tcp_event_server.h"
+#include "stputil/tcp_event_server.h"
 #include "codec/rpc.pb.h"
 
 class StpServer : public TcpEventServer

@@ -1,7 +1,7 @@
 #include "stp_server.h"
 #include "config_parser.h"
 #include "stpsvr_msg_dispatcher.h"
-#include "stpcomm/connection.h"
+#include "stputil/connection.h"
 #include "codec/proto_msg_serialization.h"
 
 #include <glog/logging.h>

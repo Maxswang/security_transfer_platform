@@ -1,7 +1,7 @@
 ﻿
 //tcp_client_test.cc
-#include "stpcomm/tcp_event_client.h"
-#include "stpcomm/connection.h"
+#include "stputil/tcp_event_client.h"
+#include "stputil/connection.h"
 #include <glog/logging.h>
 
 #include <string.h>
