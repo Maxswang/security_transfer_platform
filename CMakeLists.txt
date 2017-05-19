@@ -38,6 +38,7 @@ set(LIBRARY_OUTPUT_PATH ${PROJECT_BINARY_DIR}/lib)
 include_directories(${PROJECT_SOURCE_DIR})
 
 add_subdirectory(stputil)
+add_subdirectory(stpcomm)
 add_subdirectory(codec)
 add_subdirectory(stpclient)
 add_subdirectory(stpserver)

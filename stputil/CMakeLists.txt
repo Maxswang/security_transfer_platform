@@ -1,4 +1,4 @@
-set(STPCOMM_SRCS
+set(STPUTIL_SRCS
 json/jsoncpp.cc
 json_parser.cc
 mutex.cc
@@ -11,7 +11,7 @@ security/aes_core.c
 security/md5.cpp
 security/base64.cpp
 )	                                                                                                                                                                            
-add_library(stputil ${STPCOMM_SRCS})
+add_library(stputil ${STPUTIL_SRCS})
 target_link_libraries(stputil pthread rt glog.a event.a)		                                                                                                                                                                            
 install(TARGETS stputil DESTINATION lib)
 file(GLOB HEADERS "*.h")

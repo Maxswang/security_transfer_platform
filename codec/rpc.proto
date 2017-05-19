@@ -42,26 +42,34 @@ message S2C_StpCryptoRsp
 // 密钥协商
 message C2S_StpCryptoNegotiate
 {
-	optional int64 stp_guid = 1;
+	optional uint64 stp_guid = 1;
 };
 
 // 密钥协商
 message S2C_StpCryptoNegotiate
 {
 	optional StpResult res = 1;
-	optional int64 stp_guid = 2;
+	optional uint64 stp_guid = 2;
 	optional string token = 3;
 };
 
 // 上报Stp状态
 message S2D_StpReportStatus
 {
-	optional int64 stp_guid = 1;
+	optional uint64 stp_guid = 1;
 	optional string key = 2;
 	optional string expires = 3;
 	optional int32 group = 4;
 	optional int32 idx = 5;
 	optional string ip = 6;
+};
+
+message StpToken
+{
+	optional uint64 stp_guid = 1;
+	optional int32 group = 2;
+	optional int32 idx = 3;
+	optional int64 expires = 4;
 };
 
 

@@ -44,6 +44,9 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* S2D_StpReportStatus_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   S2D_StpReportStatus_reflection_ = NULL;
+const ::google::protobuf::Descriptor* StpToken_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  StpToken_reflection_ = NULL;
 const ::google::protobuf::EnumDescriptor* StpResult_descriptor_ = NULL;
 
 }  // namespace
@@ -184,6 +187,24 @@ void protobuf_AssignDesc_rpc_2eproto() {
       ::google::protobuf::DescriptorPool::generated_pool(),
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(S2D_StpReportStatus));
+  StpToken_descriptor_ = file->message_type(8);
+  static const int StpToken_offsets_[4] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, stp_guid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, group_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, idx_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, expires_),
+  };
+  StpToken_reflection_ =
+    new ::google::protobuf::internal::GeneratedMessageReflection(
+      StpToken_descriptor_,
+      StpToken::default_instance_,
+      StpToken_offsets_,
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, _has_bits_[0]),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, _unknown_fields_),
+      -1,
+      ::google::protobuf::DescriptorPool::generated_pool(),
+      ::google::protobuf::MessageFactory::generated_factory(),
+      sizeof(StpToken));
   StpResult_descriptor_ = file->enum_type(0);
 }
 
@@ -213,6 +234,8 @@ void protobuf_RegisterTypes(const ::std::string&) {
     S2C_StpCryptoNegotiate_descriptor_, &S2C_StpCryptoNegotiate::default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
     S2D_StpReportStatus_descriptor_, &S2D_StpReportStatus::default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+    StpToken_descriptor_, &StpToken::default_instance());
 }
 
 }  // namespace
@@ -234,6 +257,8 @@ void protobuf_ShutdownFile_rpc_2eproto() {
   delete S2C_StpCryptoNegotiate_reflection_;
   delete S2D_StpReportStatus::default_instance_;
   delete S2D_StpReportStatus_reflection_;
+  delete StpToken::default_instance_;
+  delete StpToken_reflection_;
 }
 
 void protobuf_AddDesc_rpc_2eproto() {
@@ -249,16 +274,17 @@ void protobuf_AddDesc_rpc_2eproto() {
     "oken\030\001 \001(\t\022\014\n\004data\030\002 \001(\014\"L\n\020S2C_StpCrypt"
     "oRsp\022\033\n\003res\030\001 \001(\0162\016.rpc.StpResult\022\r\n\005tok"
     "en\030\002 \001(\t\022\014\n\004data\030\003 \001(\014\"*\n\026C2S_StpCryptoN"
-    "egotiate\022\020\n\010stp_guid\030\001 \001(\003\"V\n\026S2C_StpCry"
+    "egotiate\022\020\n\010stp_guid\030\001 \001(\004\"V\n\026S2C_StpCry"
     "ptoNegotiate\022\033\n\003res\030\001 \001(\0162\016.rpc.StpResul"
-    "t\022\020\n\010stp_guid\030\002 \001(\003\022\r\n\005token\030\003 \001(\t\"m\n\023S2"
-    "D_StpReportStatus\022\020\n\010stp_guid\030\001 \001(\003\022\013\n\003k"
+    "t\022\020\n\010stp_guid\030\002 \001(\004\022\r\n\005token\030\003 \001(\t\"m\n\023S2"
+    "D_StpReportStatus\022\020\n\010stp_guid\030\001 \001(\004\022\013\n\003k"
     "ey\030\002 \001(\t\022\017\n\007expires\030\003 \001(\t\022\r\n\005group\030\004 \001(\005"
-    "\022\013\n\003idx\030\005 \001(\005\022\n\n\002ip\030\006 \001(\t*\207\001\n\tStpResult\022"
-    "\t\n\005SR_OK\020\000\022\026\n\022SR_NegotiateFailed\020\001\022\023\n\017SR"
-    "_InvalidToken\020\002\022\023\n\017SR_TokenExpired\020\003\022\022\n\016"
-    "SR_InvalidGuid\020\004\022\031\n\025SR_ReportStatusFaile"
-    "d\020\005", 603);
+    "\022\013\n\003idx\030\005 \001(\005\022\n\n\002ip\030\006 \001(\t\"I\n\010StpToken\022\020\n"
+    "\010stp_guid\030\001 \001(\004\022\r\n\005group\030\002 \001(\005\022\013\n\003idx\030\003 "
+    "\001(\005\022\017\n\007expires\030\004 \001(\003*\207\001\n\tStpResult\022\t\n\005SR"
+    "_OK\020\000\022\026\n\022SR_NegotiateFailed\020\001\022\023\n\017SR_Inva"
+    "lidToken\020\002\022\023\n\017SR_TokenExpired\020\003\022\022\n\016SR_In"
+    "validGuid\020\004\022\031\n\025SR_ReportStatusFailed\020\005", 678);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "rpc.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -269,6 +295,7 @@ void protobuf_AddDesc_rpc_2eproto() {
   C2S_StpCryptoNegotiate::default_instance_ = new C2S_StpCryptoNegotiate();
   S2C_StpCryptoNegotiate::default_instance_ = new S2C_StpCryptoNegotiate();
   S2D_StpReportStatus::default_instance_ = new S2D_StpReportStatus();
+  StpToken::default_instance_ = new StpToken();
   Request::default_instance_->InitAsDefaultInstance();
   C2S_Ping::default_instance_->InitAsDefaultInstance();
   S2C_Ping::default_instance_->InitAsDefaultInstance();
@@ -277,6 +304,7 @@ void protobuf_AddDesc_rpc_2eproto() {
   C2S_StpCryptoNegotiate::default_instance_->InitAsDefaultInstance();
   S2C_StpCryptoNegotiate::default_instance_->InitAsDefaultInstance();
   S2D_StpReportStatus::default_instance_->InitAsDefaultInstance();
+  StpToken::default_instance_->InitAsDefaultInstance();
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_rpc_2eproto);
 }
 
@@ -1505,7 +1533,7 @@ C2S_StpCryptoNegotiate::C2S_StpCryptoNegotiate(const C2S_StpCryptoNegotiate& fro
 
 void C2S_StpCryptoNegotiate::SharedCtor() {
   _cached_size_ = 0;
-  stp_guid_ = GOOGLE_LONGLONG(0);
+  stp_guid_ = GOOGLE_ULONGLONG(0);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1541,7 +1569,7 @@ C2S_StpCryptoNegotiate* C2S_StpCryptoNegotiate::New() const {
 
 void C2S_StpCryptoNegotiate::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    stp_guid_ = GOOGLE_LONGLONG(0);
+    stp_guid_ = GOOGLE_ULONGLONG(0);
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -1553,12 +1581,12 @@ bool C2S_StpCryptoNegotiate::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int64 stp_guid = 1;
+      // optional uint64 stp_guid = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &stp_guid_)));
           set_has_stp_guid();
         } else {
@@ -1586,9 +1614,9 @@ bool C2S_StpCryptoNegotiate::MergePartialFromCodedStream(
 
 void C2S_StpCryptoNegotiate::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional int64 stp_guid = 1;
+  // optional uint64 stp_guid = 1;
   if (has_stp_guid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->stp_guid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->stp_guid(), output);
   }
 
   if (!unknown_fields().empty()) {
@@ -1599,9 +1627,9 @@ void C2S_StpCryptoNegotiate::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* C2S_StpCryptoNegotiate::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional int64 stp_guid = 1;
+  // optional uint64 stp_guid = 1;
   if (has_stp_guid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->stp_guid(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->stp_guid(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1615,10 +1643,10 @@ int C2S_StpCryptoNegotiate::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int64 stp_guid = 1;
+    // optional uint64 stp_guid = 1;
     if (has_stp_guid()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->stp_guid());
     }
 
@@ -1716,7 +1744,7 @@ S2C_StpCryptoNegotiate::S2C_StpCryptoNegotiate(const S2C_StpCryptoNegotiate& fro
 void S2C_StpCryptoNegotiate::SharedCtor() {
   _cached_size_ = 0;
   res_ = 0;
-  stp_guid_ = GOOGLE_LONGLONG(0);
+  stp_guid_ = GOOGLE_ULONGLONG(0);
   token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1757,7 +1785,7 @@ S2C_StpCryptoNegotiate* S2C_StpCryptoNegotiate::New() const {
 void S2C_StpCryptoNegotiate::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     res_ = 0;
-    stp_guid_ = GOOGLE_LONGLONG(0);
+    stp_guid_ = GOOGLE_ULONGLONG(0);
     if (has_token()) {
       if (token_ != &::google::protobuf::internal::kEmptyString) {
         token_->clear();
@@ -1794,13 +1822,13 @@ bool S2C_StpCryptoNegotiate::MergePartialFromCodedStream(
         break;
       }
 
-      // optional int64 stp_guid = 2;
+      // optional uint64 stp_guid = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
          parse_stp_guid:
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &stp_guid_)));
           set_has_stp_guid();
         } else {
@@ -1851,9 +1879,9 @@ void S2C_StpCryptoNegotiate::SerializeWithCachedSizes(
       1, this->res(), output);
   }
 
-  // optional int64 stp_guid = 2;
+  // optional uint64 stp_guid = 2;
   if (has_stp_guid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(2, this->stp_guid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->stp_guid(), output);
   }
 
   // optional string token = 3;
@@ -1879,9 +1907,9 @@ void S2C_StpCryptoNegotiate::SerializeWithCachedSizes(
       1, this->res(), target);
   }
 
-  // optional int64 stp_guid = 2;
+  // optional uint64 stp_guid = 2;
   if (has_stp_guid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(2, this->stp_guid(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->stp_guid(), target);
   }
 
   // optional string token = 3;
@@ -1911,10 +1939,10 @@ int S2C_StpCryptoNegotiate::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->res());
     }
 
-    // optional int64 stp_guid = 2;
+    // optional uint64 stp_guid = 2;
     if (has_stp_guid()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->stp_guid());
     }
 
@@ -2029,7 +2057,7 @@ S2D_StpReportStatus::S2D_StpReportStatus(const S2D_StpReportStatus& from)
 
 void S2D_StpReportStatus::SharedCtor() {
   _cached_size_ = 0;
-  stp_guid_ = GOOGLE_LONGLONG(0);
+  stp_guid_ = GOOGLE_ULONGLONG(0);
   key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   expires_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   group_ = 0;
@@ -2079,7 +2107,7 @@ S2D_StpReportStatus* S2D_StpReportStatus::New() const {
 
 void S2D_StpReportStatus::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    stp_guid_ = GOOGLE_LONGLONG(0);
+    stp_guid_ = GOOGLE_ULONGLONG(0);
     if (has_key()) {
       if (key_ != &::google::protobuf::internal::kEmptyString) {
         key_->clear();
@@ -2108,12 +2136,12 @@ bool S2D_StpReportStatus::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional int64 stp_guid = 1;
+      // optional uint64 stp_guid = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
           DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
-                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &stp_guid_)));
           set_has_stp_guid();
         } else {
@@ -2224,9 +2252,9 @@ bool S2D_StpReportStatus::MergePartialFromCodedStream(
 
 void S2D_StpReportStatus::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional int64 stp_guid = 1;
+  // optional uint64 stp_guid = 1;
   if (has_stp_guid()) {
-    ::google::protobuf::internal::WireFormatLite::WriteInt64(1, this->stp_guid(), output);
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->stp_guid(), output);
   }
 
   // optional string key = 2;
@@ -2274,9 +2302,9 @@ void S2D_StpReportStatus::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* S2D_StpReportStatus::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional int64 stp_guid = 1;
+  // optional uint64 stp_guid = 1;
   if (has_stp_guid()) {
-    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(1, this->stp_guid(), target);
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->stp_guid(), target);
   }
 
   // optional string key = 2;
@@ -2330,10 +2358,10 @@ int S2D_StpReportStatus::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional int64 stp_guid = 1;
+    // optional uint64 stp_guid = 1;
     if (has_stp_guid()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::Int64Size(
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->stp_guid());
     }
 
@@ -2457,6 +2485,334 @@ void S2D_StpReportStatus::Swap(S2D_StpReportStatus* other) {
   ::google::protobuf::Metadata metadata;
   metadata.descriptor = S2D_StpReportStatus_descriptor_;
   metadata.reflection = S2D_StpReportStatus_reflection_;
+  return metadata;
+}
+
+
+// ===================================================================
+
+#ifndef _MSC_VER
+const int StpToken::kStpGuidFieldNumber;
+const int StpToken::kGroupFieldNumber;
+const int StpToken::kIdxFieldNumber;
+const int StpToken::kExpiresFieldNumber;
+#endif  // !_MSC_VER
+
+StpToken::StpToken()
+  : ::google::protobuf::Message() {
+  SharedCtor();
+}
+
+void StpToken::InitAsDefaultInstance() {
+}
+
+StpToken::StpToken(const StpToken& from)
+  : ::google::protobuf::Message() {
+  SharedCtor();
+  MergeFrom(from);
+}
+
+void StpToken::SharedCtor() {
+  _cached_size_ = 0;
+  stp_guid_ = GOOGLE_ULONGLONG(0);
+  group_ = 0;
+  idx_ = 0;
+  expires_ = GOOGLE_LONGLONG(0);
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+}
+
+StpToken::~StpToken() {
+  SharedDtor();
+}
+
+void StpToken::SharedDtor() {
+  if (this != default_instance_) {
+  }
+}
+
+void StpToken::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* StpToken::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return StpToken_descriptor_;
+}
+
+const StpToken& StpToken::default_instance() {
+  if (default_instance_ == NULL) protobuf_AddDesc_rpc_2eproto();
+  return *default_instance_;
+}
+
+StpToken* StpToken::default_instance_ = NULL;
+
+StpToken* StpToken::New() const {
+  return new StpToken;
+}
+
+void StpToken::Clear() {
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    stp_guid_ = GOOGLE_ULONGLONG(0);
+    group_ = 0;
+    idx_ = 0;
+    expires_ = GOOGLE_LONGLONG(0);
+  }
+  ::memset(_has_bits_, 0, sizeof(_has_bits_));
+  mutable_unknown_fields()->Clear();
+}
+
+bool StpToken::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!(EXPRESSION)) return false
+  ::google::protobuf::uint32 tag;
+  while ((tag = input->ReadTag()) != 0) {
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional uint64 stp_guid = 1;
+      case 1: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
+                 input, &stp_guid_)));
+          set_has_stp_guid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(16)) goto parse_group;
+        break;
+      }
+
+      // optional int32 group = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_group:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &group_)));
+          set_has_group();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(24)) goto parse_idx;
+        break;
+      }
+
+      // optional int32 idx = 3;
+      case 3: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_idx:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &idx_)));
+          set_has_idx();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(32)) goto parse_expires;
+        break;
+      }
+
+      // optional int64 expires = 4;
+      case 4: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_VARINT) {
+         parse_expires:
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int64, ::google::protobuf::internal::WireFormatLite::TYPE_INT64>(
+                 input, &expires_)));
+          set_has_expires();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectAtEnd()) return true;
+        break;
+      }
+
+      default: {
+      handle_uninterpreted:
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          return true;
+        }
+        DO_(::google::protobuf::internal::WireFormat::SkipField(
+              input, tag, mutable_unknown_fields()));
+        break;
+      }
+    }
+  }
+  return true;
+#undef DO_
+}
+
+void StpToken::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // optional uint64 stp_guid = 1;
+  if (has_stp_guid()) {
+    ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->stp_guid(), output);
+  }
+
+  // optional int32 group = 2;
+  if (has_group()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->group(), output);
+  }
+
+  // optional int32 idx = 3;
+  if (has_idx()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->idx(), output);
+  }
+
+  // optional int64 expires = 4;
+  if (has_expires()) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->expires(), output);
+  }
+
+  if (!unknown_fields().empty()) {
+    ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
+        unknown_fields(), output);
+  }
+}
+
+::google::protobuf::uint8* StpToken::SerializeWithCachedSizesToArray(
+    ::google::protobuf::uint8* target) const {
+  // optional uint64 stp_guid = 1;
+  if (has_stp_guid()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->stp_guid(), target);
+  }
+
+  // optional int32 group = 2;
+  if (has_group()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->group(), target);
+  }
+
+  // optional int32 idx = 3;
+  if (has_idx()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->idx(), target);
+  }
+
+  // optional int64 expires = 4;
+  if (has_expires()) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->expires(), target);
+  }
+
+  if (!unknown_fields().empty()) {
+    target = ::google::protobuf::internal::WireFormat::SerializeUnknownFieldsToArray(
+        unknown_fields(), target);
+  }
+  return target;
+}
+
+int StpToken::ByteSize() const {
+  int total_size = 0;
+
+  if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    // optional uint64 stp_guid = 1;
+    if (has_stp_guid()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::UInt64Size(
+          this->stp_guid());
+    }
+
+    // optional int32 group = 2;
+    if (has_group()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->group());
+    }
+
+    // optional int32 idx = 3;
+    if (has_idx()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int32Size(
+          this->idx());
+    }
+
+    // optional int64 expires = 4;
+    if (has_expires()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::Int64Size(
+          this->expires());
+    }
+
+  }
+  if (!unknown_fields().empty()) {
+    total_size +=
+      ::google::protobuf::internal::WireFormat::ComputeUnknownFieldsSize(
+        unknown_fields());
+  }
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = total_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void StpToken::MergeFrom(const ::google::protobuf::Message& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  const StpToken* source =
+    ::google::protobuf::internal::dynamic_cast_if_available<const StpToken*>(
+      &from);
+  if (source == NULL) {
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+    MergeFrom(*source);
+  }
+}
+
+void StpToken::MergeFrom(const StpToken& from) {
+  GOOGLE_CHECK_NE(&from, this);
+  if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
+    if (from.has_stp_guid()) {
+      set_stp_guid(from.stp_guid());
+    }
+    if (from.has_group()) {
+      set_group(from.group());
+    }
+    if (from.has_idx()) {
+      set_idx(from.idx());
+    }
+    if (from.has_expires()) {
+      set_expires(from.expires());
+    }
+  }
+  mutable_unknown_fields()->MergeFrom(from.unknown_fields());
+}
+
+void StpToken::CopyFrom(const ::google::protobuf::Message& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void StpToken::CopyFrom(const StpToken& from) {
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool StpToken::IsInitialized() const {
+
+  return true;
+}
+
+void StpToken::Swap(StpToken* other) {
+  if (other != this) {
+    std::swap(stp_guid_, other->stp_guid_);
+    std::swap(group_, other->group_);
+    std::swap(idx_, other->idx_);
+    std::swap(expires_, other->expires_);
+    std::swap(_has_bits_[0], other->_has_bits_[0]);
+    _unknown_fields_.Swap(&other->_unknown_fields_);
+    std::swap(_cached_size_, other->_cached_size_);
+  }
+}
+
+::google::protobuf::Metadata StpToken::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = StpToken_descriptor_;
+  metadata.reflection = StpToken_reflection_;
   return metadata;
 }
 

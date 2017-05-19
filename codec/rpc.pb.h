@@ -42,6 +42,7 @@ class S2C_StpCryptoRsp;
 class C2S_StpCryptoNegotiate;
 class S2C_StpCryptoNegotiate;
 class S2D_StpReportStatus;
+class StpToken;
 
 enum StpResult {
   SR_OK = 0,
@@ -582,12 +583,12 @@ class C2S_StpCryptoNegotiate : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int64 stp_guid = 1;
+  // optional uint64 stp_guid = 1;
   inline bool has_stp_guid() const;
   inline void clear_stp_guid();
   static const int kStpGuidFieldNumber = 1;
-  inline ::google::protobuf::int64 stp_guid() const;
-  inline void set_stp_guid(::google::protobuf::int64 value);
+  inline ::google::protobuf::uint64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::uint64 value);
 
   // @@protoc_insertion_point(class_scope:rpc.C2S_StpCryptoNegotiate)
  private:
@@ -596,7 +597,7 @@ class C2S_StpCryptoNegotiate : public ::google::protobuf::Message {
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::int64 stp_guid_;
+  ::google::protobuf::uint64 stp_guid_;
 
   mutable int _cached_size_;
   ::google::protobuf::uint32 _has_bits_[(1 + 31) / 32];
@@ -671,12 +672,12 @@ class S2C_StpCryptoNegotiate : public ::google::protobuf::Message {
   inline ::rpc::StpResult res() const;
   inline void set_res(::rpc::StpResult value);
 
-  // optional int64 stp_guid = 2;
+  // optional uint64 stp_guid = 2;
   inline bool has_stp_guid() const;
   inline void clear_stp_guid();
   static const int kStpGuidFieldNumber = 2;
-  inline ::google::protobuf::int64 stp_guid() const;
-  inline void set_stp_guid(::google::protobuf::int64 value);
+  inline ::google::protobuf::uint64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::uint64 value);
 
   // optional string token = 3;
   inline bool has_token() const;
@@ -701,7 +702,7 @@ class S2C_StpCryptoNegotiate : public ::google::protobuf::Message {
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::int64 stp_guid_;
+  ::google::protobuf::uint64 stp_guid_;
   ::std::string* token_;
   int res_;
 
@@ -771,12 +772,12 @@ class S2D_StpReportStatus : public ::google::protobuf::Message {
 
   // accessors -------------------------------------------------------
 
-  // optional int64 stp_guid = 1;
+  // optional uint64 stp_guid = 1;
   inline bool has_stp_guid() const;
   inline void clear_stp_guid();
   static const int kStpGuidFieldNumber = 1;
-  inline ::google::protobuf::int64 stp_guid() const;
-  inline void set_stp_guid(::google::protobuf::int64 value);
+  inline ::google::protobuf::uint64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::uint64 value);
 
   // optional string key = 2;
   inline bool has_key() const;
@@ -845,7 +846,7 @@ class S2D_StpReportStatus : public ::google::protobuf::Message {
 
   ::google::protobuf::UnknownFieldSet _unknown_fields_;
 
-  ::google::protobuf::int64 stp_guid_;
+  ::google::protobuf::uint64 stp_guid_;
   ::std::string* key_;
   ::std::string* expires_;
   ::google::protobuf::int32 group_;
@@ -861,6 +862,118 @@ class S2D_StpReportStatus : public ::google::protobuf::Message {
 
   void InitAsDefaultInstance();
   static S2D_StpReportStatus* default_instance_;
+};
+// -------------------------------------------------------------------
+
+class StpToken : public ::google::protobuf::Message {
+ public:
+  StpToken();
+  virtual ~StpToken();
+
+  StpToken(const StpToken& from);
+
+  inline StpToken& operator=(const StpToken& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
+    return _unknown_fields_;
+  }
+
+  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
+    return &_unknown_fields_;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const StpToken& default_instance();
+
+  void Swap(StpToken* other);
+
+  // implements Message ----------------------------------------------
+
+  StpToken* New() const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const StpToken& from);
+  void MergeFrom(const StpToken& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  int ByteSize() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional uint64 stp_guid = 1;
+  inline bool has_stp_guid() const;
+  inline void clear_stp_guid();
+  static const int kStpGuidFieldNumber = 1;
+  inline ::google::protobuf::uint64 stp_guid() const;
+  inline void set_stp_guid(::google::protobuf::uint64 value);
+
+  // optional int32 group = 2;
+  inline bool has_group() const;
+  inline void clear_group();
+  static const int kGroupFieldNumber = 2;
+  inline ::google::protobuf::int32 group() const;
+  inline void set_group(::google::protobuf::int32 value);
+
+  // optional int32 idx = 3;
+  inline bool has_idx() const;
+  inline void clear_idx();
+  static const int kIdxFieldNumber = 3;
+  inline ::google::protobuf::int32 idx() const;
+  inline void set_idx(::google::protobuf::int32 value);
+
+  // optional int64 expires = 4;
+  inline bool has_expires() const;
+  inline void clear_expires();
+  static const int kExpiresFieldNumber = 4;
+  inline ::google::protobuf::int64 expires() const;
+  inline void set_expires(::google::protobuf::int64 value);
+
+  // @@protoc_insertion_point(class_scope:rpc.StpToken)
+ private:
+  inline void set_has_stp_guid();
+  inline void clear_has_stp_guid();
+  inline void set_has_group();
+  inline void clear_has_group();
+  inline void set_has_idx();
+  inline void clear_has_idx();
+  inline void set_has_expires();
+  inline void clear_has_expires();
+
+  ::google::protobuf::UnknownFieldSet _unknown_fields_;
+
+  ::google::protobuf::uint64 stp_guid_;
+  ::google::protobuf::int32 group_;
+  ::google::protobuf::int32 idx_;
+  ::google::protobuf::int64 expires_;
+
+  mutable int _cached_size_;
+  ::google::protobuf::uint32 _has_bits_[(4 + 31) / 32];
+
+  friend void  protobuf_AddDesc_rpc_2eproto();
+  friend void protobuf_AssignDesc_rpc_2eproto();
+  friend void protobuf_ShutdownFile_rpc_2eproto();
+
+  void InitAsDefaultInstance();
+  static StpToken* default_instance_;
 };
 // ===================================================================
 
@@ -1332,7 +1445,7 @@ inline void S2C_StpCryptoRsp::set_allocated_data(::std::string* data) {
 
 // C2S_StpCryptoNegotiate
 
-// optional int64 stp_guid = 1;
+// optional uint64 stp_guid = 1;
 inline bool C2S_StpCryptoNegotiate::has_stp_guid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1343,13 +1456,13 @@ inline void C2S_StpCryptoNegotiate::clear_has_stp_guid() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void C2S_StpCryptoNegotiate::clear_stp_guid() {
-  stp_guid_ = GOOGLE_LONGLONG(0);
+  stp_guid_ = GOOGLE_ULONGLONG(0);
   clear_has_stp_guid();
 }
-inline ::google::protobuf::int64 C2S_StpCryptoNegotiate::stp_guid() const {
+inline ::google::protobuf::uint64 C2S_StpCryptoNegotiate::stp_guid() const {
   return stp_guid_;
 }
-inline void C2S_StpCryptoNegotiate::set_stp_guid(::google::protobuf::int64 value) {
+inline void C2S_StpCryptoNegotiate::set_stp_guid(::google::protobuf::uint64 value) {
   set_has_stp_guid();
   stp_guid_ = value;
 }
@@ -1381,7 +1494,7 @@ inline void S2C_StpCryptoNegotiate::set_res(::rpc::StpResult value) {
   res_ = value;
 }
 
-// optional int64 stp_guid = 2;
+// optional uint64 stp_guid = 2;
 inline bool S2C_StpCryptoNegotiate::has_stp_guid() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
@@ -1392,13 +1505,13 @@ inline void S2C_StpCryptoNegotiate::clear_has_stp_guid() {
   _has_bits_[0] &= ~0x00000002u;
 }
 inline void S2C_StpCryptoNegotiate::clear_stp_guid() {
-  stp_guid_ = GOOGLE_LONGLONG(0);
+  stp_guid_ = GOOGLE_ULONGLONG(0);
   clear_has_stp_guid();
 }
-inline ::google::protobuf::int64 S2C_StpCryptoNegotiate::stp_guid() const {
+inline ::google::protobuf::uint64 S2C_StpCryptoNegotiate::stp_guid() const {
   return stp_guid_;
 }
-inline void S2C_StpCryptoNegotiate::set_stp_guid(::google::protobuf::int64 value) {
+inline void S2C_StpCryptoNegotiate::set_stp_guid(::google::protobuf::uint64 value) {
   set_has_stp_guid();
   stp_guid_ = value;
 }
@@ -1477,7 +1590,7 @@ inline void S2C_StpCryptoNegotiate::set_allocated_token(::std::string* token) {
 
 // S2D_StpReportStatus
 
-// optional int64 stp_guid = 1;
+// optional uint64 stp_guid = 1;
 inline bool S2D_StpReportStatus::has_stp_guid() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
@@ -1488,13 +1601,13 @@ inline void S2D_StpReportStatus::clear_has_stp_guid() {
   _has_bits_[0] &= ~0x00000001u;
 }
 inline void S2D_StpReportStatus::clear_stp_guid() {
-  stp_guid_ = GOOGLE_LONGLONG(0);
+  stp_guid_ = GOOGLE_ULONGLONG(0);
   clear_has_stp_guid();
 }
-inline ::google::protobuf::int64 S2D_StpReportStatus::stp_guid() const {
+inline ::google::protobuf::uint64 S2D_StpReportStatus::stp_guid() const {
   return stp_guid_;
 }
-inline void S2D_StpReportStatus::set_stp_guid(::google::protobuf::int64 value) {
+inline void S2D_StpReportStatus::set_stp_guid(::google::protobuf::uint64 value) {
   set_has_stp_guid();
   stp_guid_ = value;
 }
@@ -1751,6 +1864,98 @@ inline void S2D_StpReportStatus::set_allocated_ip(::std::string* ip) {
     clear_has_ip();
     ip_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   }
+}
+
+// -------------------------------------------------------------------
+
+// StpToken
+
+// optional uint64 stp_guid = 1;
+inline bool StpToken::has_stp_guid() const {
+  return (_has_bits_[0] & 0x00000001u) != 0;
+}
+inline void StpToken::set_has_stp_guid() {
+  _has_bits_[0] |= 0x00000001u;
+}
+inline void StpToken::clear_has_stp_guid() {
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline void StpToken::clear_stp_guid() {
+  stp_guid_ = GOOGLE_ULONGLONG(0);
+  clear_has_stp_guid();
+}
+inline ::google::protobuf::uint64 StpToken::stp_guid() const {
+  return stp_guid_;
+}
+inline void StpToken::set_stp_guid(::google::protobuf::uint64 value) {
+  set_has_stp_guid();
+  stp_guid_ = value;
+}
+
+// optional int32 group = 2;
+inline bool StpToken::has_group() const {
+  return (_has_bits_[0] & 0x00000002u) != 0;
+}
+inline void StpToken::set_has_group() {
+  _has_bits_[0] |= 0x00000002u;
+}
+inline void StpToken::clear_has_group() {
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline void StpToken::clear_group() {
+  group_ = 0;
+  clear_has_group();
+}
+inline ::google::protobuf::int32 StpToken::group() const {
+  return group_;
+}
+inline void StpToken::set_group(::google::protobuf::int32 value) {
+  set_has_group();
+  group_ = value;
+}
+
+// optional int32 idx = 3;
+inline bool StpToken::has_idx() const {
+  return (_has_bits_[0] & 0x00000004u) != 0;
+}
+inline void StpToken::set_has_idx() {
+  _has_bits_[0] |= 0x00000004u;
+}
+inline void StpToken::clear_has_idx() {
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline void StpToken::clear_idx() {
+  idx_ = 0;
+  clear_has_idx();
+}
+inline ::google::protobuf::int32 StpToken::idx() const {
+  return idx_;
+}
+inline void StpToken::set_idx(::google::protobuf::int32 value) {
+  set_has_idx();
+  idx_ = value;
+}
+
+// optional int64 expires = 4;
+inline bool StpToken::has_expires() const {
+  return (_has_bits_[0] & 0x00000008u) != 0;
+}
+inline void StpToken::set_has_expires() {
+  _has_bits_[0] |= 0x00000008u;
+}
+inline void StpToken::clear_has_expires() {
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline void StpToken::clear_expires() {
+  expires_ = GOOGLE_LONGLONG(0);
+  clear_has_expires();
+}
+inline ::google::protobuf::int64 StpToken::expires() const {
+  return expires_;
+}
+inline void StpToken::set_expires(::google::protobuf::int64 value) {
+  set_has_expires();
+  expires_ = value;
 }
 
 
