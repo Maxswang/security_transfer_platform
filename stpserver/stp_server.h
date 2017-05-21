@@ -11,6 +11,8 @@ public:
     
     static void QuitStpServerCallback(int sig, short events, void *data);
     
+    bool StartRun();
+    
     // 新建连接成功后，会调用该函数
 	virtual void HandleConnectionEvent(Connection *conn);
 

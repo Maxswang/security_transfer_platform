@@ -25,6 +25,9 @@ bool ConfigParser::ParseProfile(const char *file)
 	
     svr_ip_ = parser.GetString("svr_ip", "127.0.0.1");
     svr_port_ = static_cast<int16_t>(parser.GetInteger("svr_port", 9999));
+    
+    path_ = parser.GetString("path", "");
+    flag_ = parser.GetInteger("max_idx", 100);
 	
 	return true;
 }

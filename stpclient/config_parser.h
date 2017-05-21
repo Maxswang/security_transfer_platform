@@ -14,6 +14,9 @@ public:
     const char* svr_ip() { return svr_ip_.c_str(); }
     int16_t svr_port() const { return svr_port_; }
     
+    const std::string& path() const { return path_; }
+    int flag() const { return flag_; }
+    
 	
 private:
     ConfigParser();
@@ -21,7 +24,8 @@ private:
     
 	std::string svr_ip_;
     int16_t svr_port_;
-	
+    std::string path_;
+    int flag_;
 };
 
 #endif 

@@ -13,6 +13,10 @@ public:
  
     int16_t svr_port() const { return svr_port_; }
     int event_thread_cnt () const { return event_thread_cnt_; }
+    int max_group() const { return max_group_; }
+    int max_idx() const { return max_idx_; }
+    const std::string& path() const { return path_; }
+    int flag() const { return flag_; }
 	
 private:
     ConfigParser();
@@ -20,6 +24,10 @@ private:
     
     int16_t svr_port_;
     int event_thread_cnt_;
+    int max_group_;
+    int max_idx_;
+    std::string path_;
+    int flag_;
 	
 };
 

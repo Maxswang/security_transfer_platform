@@ -1,5 +1,6 @@
 #include "stp_token.h"
 #include "stputil/json/json.h"
+#include <glog/logging.h>
 
 std::string StpToken::GenerateToken(int64_t stp_guid, uint32_t group, uint32_t idx, time_t expires)
 {
@@ -24,7 +25,7 @@ bool StpToken::ValidateToken(const std::string &token)
     
     time_t now = time(NULL);
     
-    if (now <= root["expires"].asInt())
+    if (now >= root["expires"].asInt64())
     {
         return false;
     }

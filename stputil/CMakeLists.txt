@@ -10,6 +10,7 @@ tcp_event_server.cc
 security/aes_core.c
 security/md5.cpp
 security/base64.cpp
+shm.cc
 )	                                                                                                                                                                            
 add_library(stputil ${STPUTIL_SRCS})
 target_link_libraries(stputil pthread rt glog.a event.a)		                                                                                                                                                                            

@@ -1,4 +1,7 @@
 {
 	"svr_ip" : "127.0.0.1",
-	"svr_port" : 9999
+	"svr_port" : 9999,
+	"path": "/home/git/build/stp-Debug/bin",
+	"flag" : 0,
+	"comment" : "path 指stpsvr部署的路径；flag为1代表服务器，为0代表客户端"
 }

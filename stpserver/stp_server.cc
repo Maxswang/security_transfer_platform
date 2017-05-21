@@ -3,6 +3,7 @@
 #include "stpsvr_msg_dispatcher.h"
 #include "stputil/connection.h"
 #include "codec/proto_msg_serialization.h"
+#include "stpcomm/stp_crypto_negotiate.h"
 
 #include <glog/logging.h>
 
@@ -18,6 +19,24 @@ void StpServer::QuitStpServerCallback(int sig, short events, void *data)
     StpServer *me = reinterpret_cast<StpServer*>(data);
     timeval tv = {1, 0};
     me->StopRun(&tv);
+}
+
+bool StpServer::StartRun()
+{
+    if (!StpCryptoNegotiate::GetInstance().Init())
+    {
+        LOG(ERROR) << "stp crypto negotiate init failed!";
+        return false;
+    }
+    
+    if (!TcpEventServer::StartRun())
+    {
+        LOG(ERROR) << "star run tcp event server failed!";
+        return false;
+    }
+    
+    LOG(INFO) << "stp server start run over!";
+    return true;
 }
 
 void StpServer::HandleConnectionEvent(Connection *conn)

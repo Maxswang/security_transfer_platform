@@ -37,6 +37,8 @@ void WriteUint32(uchar_t *buf, uint32_t data)
 extern "C" {
 #endif
 
+// 根据标记获取token和密钥，打包数据，加密
+
 int EncryptPlain(const char* plain, uint32_t plain_len, char** cipher, uint32_t& cipher_len)
 {
     if(plain == NULL|| plain_len <=0 )
