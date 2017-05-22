@@ -16,6 +16,7 @@ public:
     
     const std::string& path() const { return path_; }
     int flag() const { return flag_; }
+    uint64_t stp_guid() const { return stp_guid_; }
     
 	
 private:
@@ -26,6 +27,7 @@ private:
     int16_t svr_port_;
     std::string path_;
     int flag_;
+    uint64_t stp_guid_;
 };
 
 #endif 

@@ -16,8 +16,13 @@
 StpSvrMsgDispatcher::StpSvrMsgDispatcher()
 {
 	REGISTER_CALLBACK_IMP(C2S_Ping);
+    REGISTER_CALLBACK_IMP(C2S_StpCryptoNegotiate);
 }
 
 PROCESS_MESSAGE_START(C2S_Ping)
     StpServer::GetInstance().HandleProtocol_Ping(conn, rst);
+PROCESS_MESSAGE_END
+
+PROCESS_MESSAGE_START(C2S_StpCryptoNegotiate)
+    StpServer::GetInstance().HandleProtocol_StpCryptoNegotiate(conn, rst);
 PROCESS_MESSAGE_END

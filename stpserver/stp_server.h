@@ -27,7 +27,7 @@ public:
     
 public:
     void HandleProtocol_Ping(Connection* conn, rpc::C2S_Ping* msg);
-    
+    void HandleProtocol_StpCryptoNegotiate(Connection* conn, rpc::C2S_StpCryptoNegotiate* req);
 private:
     StpServer(int16_t port);
     virtual ~StpServer();

@@ -10,6 +10,7 @@ public:
     StpSvrMsgDispatcher();
 
 	DEFINE_MESSAGE(C2S_Ping);
+    DEFINE_MESSAGE(C2S_StpCryptoNegotiate);
 };
 
 

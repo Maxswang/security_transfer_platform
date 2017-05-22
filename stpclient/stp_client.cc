@@ -5,6 +5,8 @@
 #include "codec/proto_msg_serialization.h"
 #include <glog/logging.h>
 
+char StpClient::buf_[2048];
+
 StpClient& StpClient::GetInstance()
 {
     static StpClient s_Instance(ConfigParser::GetInstance().svr_ip(), 
@@ -25,11 +27,23 @@ void StpClient::TimerHeartBeatCallback(int sig, short events, void *data)
     LOG(INFO) << "process heart beat";
     StpClient *me = reinterpret_cast<StpClient*>(data);
     rpc::C2S_Ping req;
-    char send_buf[2048];
-    int size = static_cast<int>(sizeof(send_buf));
-    if (SerializeToArray(req, send_buf, size))
+    int size = static_cast<int>(sizeof(buf_));
+    if (SerializeToArray(req, buf_, size))
     {
-        me->conn_->SendNetMessage(send_buf, size);
+        me->conn_->SendNetMessage(buf_, size);
+    }
+}
+
+void StpClient::CryptoNegotiateCallback(int sig, short events, void *data)
+{
+    LOG(INFO) << "process crypto negotiate";
+    StpClient *me = reinterpret_cast<StpClient*>(data);
+    rpc::C2S_StpCryptoNegotiate req;
+    req.set_stp_guid(ConfigParser::GetInstance().stp_guid());
+    int size = static_cast<int>(sizeof(buf_));
+    if (SerializeToArray(req, buf_, size))
+    {
+        me->conn_->SendNetMessage(buf_, size);
     }
 }
 
@@ -68,6 +82,14 @@ void StpClient::HandleProtocol_Ping(Connection *conn, rpc::S2C_Ping *msg)
         return;
     
     LOG(INFO) << "recv S2C_Ping";
+}
+
+void StpClient::HandleProtocol_CryptoNegotiate(Connection *conn, rpc::S2C_StpCryptoNegotiate *rsp)
+{
+    if (conn == NULL || rsp == NULL)
+        return;
+    
+    
 }
 
 StpClient::StpClient(const char *ip, int16_t port)

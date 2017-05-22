@@ -13,6 +13,8 @@ public:
     
     static void TimerHeartBeatCallback(int sig, short events, void *data);
     
+    static void CryptoNegotiateCallback(int sig, short events, void *data);
+    
     // 新建连接成功后，会调用该函数
 	virtual void HandleConnectionEvent(Connection *conn);
 
@@ -27,10 +29,12 @@ public:
     
 public:
     void HandleProtocol_Ping(Connection* conn, rpc::S2C_Ping* msg);
+    void HandleProtocol_CryptoNegotiate(Connection* conn, rpc::S2C_StpCryptoNegotiate* msg);
     
 private:
     StpClient(const char* ip, int16_t port);
     virtual ~StpClient();
+    static char buf_[2048];
 };
 
 #endif

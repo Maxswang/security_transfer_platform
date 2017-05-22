@@ -28,6 +28,7 @@ bool ConfigParser::ParseProfile(const char *file)
     
     path_ = parser.GetString("path", "");
     flag_ = parser.GetInteger("max_idx", 100);
+    stp_guid_ = parser.GetUint64("stp_guid", 0);
 	
 	return true;
 }

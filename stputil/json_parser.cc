@@ -42,6 +42,11 @@ int JsonParser::GetInteger(const std::string &key, int default_value)
     return root_.get(key, default_value).asInt();
 }
 
+uint64_t JsonParser::GetUint64(const std::string &key, uint64_t default_value)
+{
+    return root_.get(key, default_value).asUInt64();
+}
+
 bool JsonParser::GetBoolean(const std::string &key, bool default_value)
 {
     return root_.get(key, default_value).asBool();

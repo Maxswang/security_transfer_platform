@@ -17,8 +17,13 @@
 StpClntMsgDispatcher::StpClntMsgDispatcher()
 {
 	REGISTER_CALLBACK_IMP(S2C_Ping);
+    REGISTER_CALLBACK_IMP(S2C_StpCryptoNegotiate);
 }
 
 PROCESS_MESSAGE_START(S2C_Ping)
      StpClient::GetInstance().HandleProtocol_Ping(conn, rst);
+PROCESS_MESSAGE_END
+
+PROCESS_MESSAGE_START(S2C_StpCryptoNegotiate)
+     StpClient::GetInstance().HandleProtocol_CryptoNegotiate(conn, rst);
 PROCESS_MESSAGE_END

@@ -83,6 +83,14 @@ void StpServer::HandleProtocol_Ping(Connection *conn, rpc::C2S_Ping *msg)
     LOG(INFO) << "recv client heart beat";
 }
 
+void StpServer::HandleProtocol_StpCryptoNegotiate(Connection *conn, rpc::C2S_StpCryptoNegotiate *req)
+{
+    if (conn == NULL || req == NULL)
+        return;
+    
+    
+}
+
 StpServer::StpServer(int16_t port)
     : TcpEventServer(port)
 {

@@ -10,6 +10,7 @@ public:
     StpClntMsgDispatcher();
 
 	DEFINE_MESSAGE(S2C_Ping);
+    DEFINE_MESSAGE(S2C_StpCryptoNegotiate);
 };
 
 #endif

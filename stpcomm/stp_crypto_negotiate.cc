@@ -28,6 +28,7 @@ bool StpCryptoNegotiate::Init()
         {
             cg.shm_addr = shm_addr;
             shm_map_.insert(std::make_pair(i, cg));
+            cur_group_ = i;
             LOG(INFO) << "try attach shm in group " << i << " succeed!";
         }
     }
@@ -41,6 +42,7 @@ bool StpCryptoNegotiate::Init()
             LOG(ERROR) << "create a empty crypto group failed!" ;
             return false;
         }
+        cur_group_ = 0;
         shm_map_.insert(std::make_pair(0, cg));
         LOG(INFO) << "create a empty crypto group succeed!" ;
     }

@@ -17,6 +17,8 @@ public:
     
     int GetInteger(const std::string & key, int default_value = 0);
     
+    uint64_t GetUint64(const std::string & key, uint64_t default_value = 0);
+    
     bool GetBoolean(const std::string & key, bool default_value = false);
     
     double GetDouble(const std::string & key, double default_value = 0.0);
