@@ -8,12 +8,13 @@
 int main()
 {
     google::InstallFailureSignalHandler();
-    StpIdxMgr::GetInstance();
     ConfigParser& parser = ConfigParser::GetInstance();
     if (!parser.ParseProfile())
     {
         LOG(FATAL) << "StpServer parse config file failed!";
     }
+    
+    StpIdxMgr::GetInstance();
     
     StpServer& server = StpServer::GetInstance();
     server.AddSignalEvent(SIGUSR2, StpServer::QuitStpServerCallback);

@@ -29,7 +29,7 @@ public:
     
 public:
     void HandleProtocol_Ping(Connection* conn, rpc::S2C_Ping* msg);
-    void HandleProtocol_CryptoNegotiate(Connection* conn, rpc::S2C_StpCryptoNegotiate* msg);
+    void HandleProtocol_CryptoNegotiate(Connection* conn, rpc::S2C_StpCryptoNegotiate* rsp);
     
 private:
     StpClient(const char* ip, int16_t port);

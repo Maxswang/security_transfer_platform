@@ -89,7 +89,13 @@ void StpClient::HandleProtocol_CryptoNegotiate(Connection *conn, rpc::S2C_StpCry
     if (conn == NULL || rsp == NULL)
         return;
     
+    if (rsp->res() != rpc::SR_OK)
+    {
+        LOG(ERROR) << "CryptoNegotiate failed, res is " << rsp->res();
+        return;
+    }
     
+    LOG(INFO) << "CryptoNegotiate token is " << rsp->token();
 }
 
 StpClient::StpClient(const char *ip, int16_t port)

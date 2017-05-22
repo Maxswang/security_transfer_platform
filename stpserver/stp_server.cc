@@ -4,6 +4,8 @@
 #include "stputil/connection.h"
 #include "codec/proto_msg_serialization.h"
 #include "stpcomm/stp_crypto_negotiate.h"
+#include "stp_dao.h"
+#include "stpcomm/stp_token.h"
 
 #include <glog/logging.h>
 
@@ -88,7 +90,37 @@ void StpServer::HandleProtocol_StpCryptoNegotiate(Connection *conn, rpc::C2S_Stp
     if (conn == NULL || req == NULL)
         return;
     
+    rpc::S2C_StpCryptoNegotiate rsp;
     
+    // 没有guid或者验证不通过
+    if (!req->has_stp_guid() || !StpDao::CheckStpGuidValid(req->stp_guid()))
+    {
+        rsp.set_res(rpc::SR_InvalidGuid);
+    }
+    else
+    {
+        // 密钥协商
+        int group = -1;
+        int idx = -1;
+        StpCryptoNegotiate& scn = StpCryptoNegotiate::GetInstance();
+        if (scn.CryptoNegotiate(group, idx))
+        {
+            rsp.set_res(rpc::SR_OK);
+            rsp.set_stp_guid(req->stp_guid());
+            time_t token_expires = time(NULL) + ConfigParser::GetInstance().token_expires();
+            rsp.set_token(StpToken::GenerateToken(req->stp_guid(), group, idx, token_expires));
+        }
+        else
+        {
+            rsp.set_res(rpc::SR_NegotiateFailed);
+        }
+    }
+    
+    int size = sizeof(send_buf_);
+    if (SerializeToArray(rsp, send_buf_, size))
+    {
+        conn->SendNetMessage(send_buf_, size);
+    }
 }
 
 StpServer::StpServer(int16_t port)

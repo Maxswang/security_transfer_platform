@@ -43,6 +43,7 @@ public:
     bool Init();
     
     CryptoItem* GetCryptoItem(int group, int idx);
+    bool CryptoNegotiate(int& group, int& idx);
     
 private:
     StpCryptoNegotiate();

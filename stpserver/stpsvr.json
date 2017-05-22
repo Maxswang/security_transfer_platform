@@ -5,5 +5,11 @@
 	"max_idx_": 100,
 	"path": "/home/git/build/stp-Debug/bin",
 	"flag" : 1,
+	"token_expires" : 7200,
+	"db_addr" : "192.168.0.106",
+	"db_user" : "root",
+	"db_passwd" : "root",
+	"db_port" : 3306,
+	"database" : "stp",
 	"comment" : "path 指stpsvr部署的路径；flag为1代表服务器，为0代表客户端"
 }

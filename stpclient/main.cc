@@ -13,8 +13,8 @@ int main()
     StpClient& client = StpClient::GetInstance();
     timeval tv = {30, 0};
     client.AddTimerEvent(StpClient::TimerHeartBeatCallback, tv, false);
-    tv.tv_sec = 300;
-    client.AddTimerEvent(StpClient::TimerHeartBeatCallback, tv, false);
+    tv.tv_sec = 10;
+    client.AddTimerEvent(StpClient::CryptoNegotiateCallback, tv, false);
     
     if (!client.StartRun())
     {

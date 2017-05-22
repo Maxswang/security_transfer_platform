@@ -52,6 +52,11 @@ bool StpCryptoNegotiate::Init()
     return initialized_;
 }
 
+bool StpCryptoNegotiate::CryptoNegotiate(int &group, int &idx)
+{
+    
+}
+
 StpCryptoNegotiate::StpCryptoNegotiate()
     : cur_group_(0), initialized_(false)
 {
