@@ -1,10 +1,13 @@
 #include "stp_dao.h"
 #include "config_parser.h"
-#include "stputil/mysql/mysql_connection.h"
-#include "stputil/mysql/prepared_statement.h"
-#include "stputil/mysql/resultset.h"
+#include "stputil/mysql_connection_pool.h"
 
+#include <cppconn/prepared_statement.h>
+#include <cppconn/resultset.h>
 #include <glog/logging.h>
+
+#include <stdio.h>
+#include <stdlib.h>
 
 #define SAFE_DELETE(ptr) \
     if (ptr != NULL) \
@@ -13,43 +16,55 @@
         ptr = NULL; \
     }
 
+StpDao::StpDao() 
+    : driver_(::get_driver_instance())
+{
+    
+}
+
+StpDao::~StpDao()
+{
+    
+}
+
+StpDao &StpDao::GetInstance()
+{
+    static StpDao s_Instance;
+    return s_Instance;
+}
+
 bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
 {
-    ConfigParser& parser = ConfigParser::GetInstance();
+    MySQLConnectionPool& pool = MySQLConnectionPool::GetInstance();
     bool res = false;
     try
     {
-        MySQLConnection conn(parser.db_addr().c_str(),
-                             parser.db_user().c_str(),
-                             parser.db_passwd().c_str(),
-                             parser.database().c_str(),
-                             parser.db_port());
         
-        if (!conn.Connect("utf8", 15, true))
+        sql::Connection * conn = pool.GetConnection();
+        if (conn == NULL)
         {
-            LOG(ERROR) << "get db connection failed!";\
+            LOG(ERROR) << "get connection failed!";
             return false;
         }
         
-        PreparedStatement* stmt = conn.PrepareStatement("select * from stp_deploy where stp_guid=?;");
+        sql::PreparedStatement* stmt = conn->prepareStatement("select stp_guid from stp_deploy where stp_guid=?;");
         if (stmt == NULL)
         {
-            LOG(ERROR) << "prepare stmt failed!";\
+            LOG(ERROR) << "prepare stmt failed!";
+            pool.ReleaseConnection(conn);
             return false;
         }
         
-        stmt->SetBigInt(0, stp_guid);
+        stmt->setInt64(1, stp_guid);
         
-        ResultSet* result = stmt->ExecuteQuery();
-        if (result != NULL && result->Next())
+        sql::ResultSet* result = stmt->executeQuery();
+        if (result != NULL && result->next())
         {
             res = true;
         }
-        
-        conn.Close();
-        
-//        SAFE_DELETE(result);
-//        SAFE_DELETE(stmt);
+        SAFE_DELETE(result);
+        SAFE_DELETE(stmt);
+        pool.ReleaseConnection(conn);
     }
     catch(std::exception& e)
     {

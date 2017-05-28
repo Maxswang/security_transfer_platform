@@ -6,7 +6,9 @@
 class StpIdxMgr
 {
 public:
-    static StpIdxMgr& GetInstance();
+//    static StpIdxMgr& GetInstance();
+    StpIdxMgr(int max_idx);
+    ~StpIdxMgr();
     
     int PopIdx();
     
@@ -15,11 +17,10 @@ public:
     int max_idx() const { return max_idx_; }
     
 private:
-    StpIdxMgr(int max_idx);
-    ~StpIdxMgr();
+
     
-    StpIdxMgr(const StpIdxMgr&);
-    StpIdxMgr& operator=(const StpIdxMgr&);
+//    StpIdxMgr(const StpIdxMgr&);
+//    StpIdxMgr& operator=(const StpIdxMgr&);
     
 private:
     int max_idx_;

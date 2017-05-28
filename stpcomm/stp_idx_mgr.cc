@@ -19,11 +19,11 @@ StpIdxMgr::~StpIdxMgr()
     idx_set_.clear();
 }
 
-StpIdxMgr &StpIdxMgr::GetInstance()
-{
-    static StpIdxMgr s_Instance(ConfigParser::GetInstance().max_idx());
-    return s_Instance;
-}
+//StpIdxMgr &StpIdxMgr::GetInstance()
+//{
+//    static StpIdxMgr s_Instance(ConfigParser::GetInstance().max_idx());
+//    return s_Instance;
+//}
 
 int StpIdxMgr::PopIdx()
 {

@@ -95,7 +95,8 @@ void StpClient::HandleProtocol_CryptoNegotiate(Connection *conn, rpc::S2C_StpCry
         return;
     }
     
-    LOG(INFO) << "CryptoNegotiate token is " << rsp->token();
+    
+    LOG(INFO) << "CryptoNegotiate token is " << rsp->token().DebugString();
 }
 
 StpClient::StpClient(const char *ip, int16_t port)

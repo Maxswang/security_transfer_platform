@@ -1,4 +1,5 @@
 #include "stpcomm/stp_token.h"
+#include "codec/rpc.pb.h"
 
 #include <iostream>
 using namespace std;
@@ -6,8 +7,9 @@ using namespace std;
 int main()
 {
     
-    std::string token = StpToken::GenerateToken(1234567, 0, 0, time(NULL) + 2000);
-    std::cout << token << std::endl;
+    rpc::StpToken token;
+    std::string key;
+    StpToken::GenerateToken(1234567, 0, 0, time(NULL) + 2000,key, token);
     
     if (StpToken::ValidateToken(token))
     {

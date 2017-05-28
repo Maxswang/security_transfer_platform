@@ -91,24 +91,26 @@ void StpServer::HandleProtocol_StpCryptoNegotiate(Connection *conn, rpc::C2S_Stp
         return;
     
     rpc::S2C_StpCryptoNegotiate rsp;
-    
+    StpDao& dao = StpDao::GetInstance();
     // 没有guid或者验证不通过
-    if (!req->has_stp_guid() || !StpDao::CheckStpGuidValid(req->stp_guid()))
+    if (!req->has_stp_guid() || !dao.CheckStpGuidValid(req->stp_guid()))
     {
         rsp.set_res(rpc::SR_InvalidGuid);
     }
     else
     {
         // 密钥协商
-        int group = -1;
-        int idx = -1;
+        int group = req->token().group();
+        int idx = req->token().idx();
+        std::string key;
         StpCryptoNegotiate& scn = StpCryptoNegotiate::GetInstance();
-        if (scn.CryptoNegotiate(group, idx))
+        if (scn.CryptoNegotiate(group, idx, key))
         {
             rsp.set_res(rpc::SR_OK);
             rsp.set_stp_guid(req->stp_guid());
             time_t token_expires = time(NULL) + ConfigParser::GetInstance().token_expires();
-            rsp.set_token(StpToken::GenerateToken(req->stp_guid(), group, idx, token_expires));
+            rpc::StpToken* token = rsp.mutable_token();
+            StpToken::GenerateToken(req->stp_guid(), group, idx, token_expires, key, *token);
         }
         else
         {

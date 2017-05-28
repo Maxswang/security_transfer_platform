@@ -16,12 +16,14 @@ struct CryptoItem
 {
     char key[36]; // 只用其中32-35位
     char zero[28]; // 扩展用
+    
+    bool GenerateRandomKey();
 }__attribute__((packed));
 
 struct CryptoGroup
 {
 public:
-    CryptoGroup(int g);
+    CryptoGroup(int g = -1);
     ~CryptoGroup() {}
     
     CryptoItem* GetCryptoItemByIdx(int idx);
@@ -32,7 +34,7 @@ public:
     SharedMemoryOper shm_oper;
     int shmid;
     void* shm_addr;
-    StpIdxMgr& idx_mgr;
+    StpIdxMgr idx_mgr;
 };
 
 class StpCryptoNegotiate
@@ -43,7 +45,7 @@ public:
     bool Init();
     
     CryptoItem* GetCryptoItem(int group, int idx);
-    bool CryptoNegotiate(int& group, int& idx);
+    bool CryptoNegotiate(int& group, int& idx, std::string& key);
     
 private:
     StpCryptoNegotiate();
@@ -54,6 +56,7 @@ private:
     
 private:
     std::map<int, CryptoGroup> shm_map_; // <组id, 共享内存地址> 
+    typedef std::map<int, CryptoGroup>::iterator ShmMapIter;
     int cur_group_; // 当前创建的是第几组
     bool initialized_;
 };

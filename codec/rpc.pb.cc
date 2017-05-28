@@ -136,8 +136,9 @@ void protobuf_AssignDesc_rpc_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(S2C_StpCryptoRsp));
   C2S_StpCryptoNegotiate_descriptor_ = file->message_type(5);
-  static const int C2S_StpCryptoNegotiate_offsets_[1] = {
+  static const int C2S_StpCryptoNegotiate_offsets_[2] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(C2S_StpCryptoNegotiate, stp_guid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(C2S_StpCryptoNegotiate, token_),
   };
   C2S_StpCryptoNegotiate_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -188,11 +189,12 @@ void protobuf_AssignDesc_rpc_2eproto() {
       ::google::protobuf::MessageFactory::generated_factory(),
       sizeof(S2D_StpReportStatus));
   StpToken_descriptor_ = file->message_type(8);
-  static const int StpToken_offsets_[4] = {
+  static const int StpToken_offsets_[5] = {
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, stp_guid_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, group_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, idx_),
     GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, expires_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(StpToken, key_),
   };
   StpToken_reflection_ =
     new ::google::protobuf::internal::GeneratedMessageReflection(
@@ -270,21 +272,24 @@ void protobuf_AddDesc_rpc_2eproto() {
   ::google::protobuf::DescriptorPool::InternalAddGeneratedFile(
     "\n\trpc.proto\022\003rpc\"5\n\007Request\022\016\n\006method\030\001 "
     "\002(\t\022\032\n\022serialized_request\030\002 \001(\014\"\n\n\010C2S_P"
-    "ing\"\n\n\010S2C_Ping\"/\n\020C2S_StpCryptoReq\022\r\n\005t"
-    "oken\030\001 \001(\t\022\014\n\004data\030\002 \001(\014\"L\n\020S2C_StpCrypt"
-    "oRsp\022\033\n\003res\030\001 \001(\0162\016.rpc.StpResult\022\r\n\005tok"
-    "en\030\002 \001(\t\022\014\n\004data\030\003 \001(\014\"*\n\026C2S_StpCryptoN"
-    "egotiate\022\020\n\010stp_guid\030\001 \001(\004\"V\n\026S2C_StpCry"
-    "ptoNegotiate\022\033\n\003res\030\001 \001(\0162\016.rpc.StpResul"
-    "t\022\020\n\010stp_guid\030\002 \001(\004\022\r\n\005token\030\003 \001(\t\"m\n\023S2"
-    "D_StpReportStatus\022\020\n\010stp_guid\030\001 \001(\004\022\013\n\003k"
-    "ey\030\002 \001(\t\022\017\n\007expires\030\003 \001(\t\022\r\n\005group\030\004 \001(\005"
-    "\022\013\n\003idx\030\005 \001(\005\022\n\n\002ip\030\006 \001(\t\"I\n\010StpToken\022\020\n"
-    "\010stp_guid\030\001 \001(\004\022\r\n\005group\030\002 \001(\005\022\013\n\003idx\030\003 "
-    "\001(\005\022\017\n\007expires\030\004 \001(\003*\207\001\n\tStpResult\022\t\n\005SR"
-    "_OK\020\000\022\026\n\022SR_NegotiateFailed\020\001\022\023\n\017SR_Inva"
-    "lidToken\020\002\022\023\n\017SR_TokenExpired\020\003\022\022\n\016SR_In"
-    "validGuid\020\004\022\031\n\025SR_ReportStatusFailed\020\005", 678);
+    "ing\"\n\n\010S2C_Ping\">\n\020C2S_StpCryptoReq\022\034\n\005t"
+    "oken\030\001 \001(\0132\r.rpc.StpToken\022\014\n\004data\030\002 \001(\014\""
+    "[\n\020S2C_StpCryptoRsp\022\033\n\003res\030\001 \001(\0162\016.rpc.S"
+    "tpResult\022\034\n\005token\030\002 \001(\0132\r.rpc.StpToken\022\014"
+    "\n\004data\030\003 \001(\014\"H\n\026C2S_StpCryptoNegotiate\022\020"
+    "\n\010stp_guid\030\001 \001(\004\022\034\n\005token\030\002 \001(\0132\r.rpc.St"
+    "pToken\"e\n\026S2C_StpCryptoNegotiate\022\033\n\003res\030"
+    "\001 \001(\0162\016.rpc.StpResult\022\020\n\010stp_guid\030\002 \001(\004\022"
+    "\034\n\005token\030\003 \001(\0132\r.rpc.StpToken\"m\n\023S2D_Stp"
+    "ReportStatus\022\020\n\010stp_guid\030\001 \001(\004\022\013\n\003key\030\002 "
+    "\001(\t\022\017\n\007expires\030\003 \001(\t\022\r\n\005group\030\004 \001(\005\022\013\n\003i"
+    "dx\030\005 \001(\005\022\n\n\002ip\030\006 \001(\t\"V\n\010StpToken\022\020\n\010stp_"
+    "guid\030\001 \001(\004\022\r\n\005group\030\002 \001(\005\022\013\n\003idx\030\003 \001(\005\022\017"
+    "\n\007expires\030\004 \001(\003\022\013\n\003key\030\005 \001(\t*\207\001\n\tStpResu"
+    "lt\022\t\n\005SR_OK\020\000\022\026\n\022SR_NegotiateFailed\020\001\022\023\n"
+    "\017SR_InvalidToken\020\002\022\023\n\017SR_TokenExpired\020\003\022"
+    "\022\n\016SR_InvalidGuid\020\004\022\031\n\025SR_ReportStatusFa"
+    "iled\020\005", 766);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "rpc.proto", &protobuf_RegisterTypes);
   Request::default_instance_ = new Request();
@@ -932,6 +937,7 @@ C2S_StpCryptoReq::C2S_StpCryptoReq()
 }
 
 void C2S_StpCryptoReq::InitAsDefaultInstance() {
+  token_ = const_cast< ::rpc::StpToken*>(&::rpc::StpToken::default_instance());
 }
 
 C2S_StpCryptoReq::C2S_StpCryptoReq(const C2S_StpCryptoReq& from)
@@ -942,7 +948,7 @@ C2S_StpCryptoReq::C2S_StpCryptoReq(const C2S_StpCryptoReq& from)
 
 void C2S_StpCryptoReq::SharedCtor() {
   _cached_size_ = 0;
-  token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  token_ = NULL;
   data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -952,13 +958,11 @@ C2S_StpCryptoReq::~C2S_StpCryptoReq() {
 }
 
 void C2S_StpCryptoReq::SharedDtor() {
-  if (token_ != &::google::protobuf::internal::kEmptyString) {
-    delete token_;
-  }
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     delete data_;
   }
   if (this != default_instance_) {
+    delete token_;
   }
 }
 
@@ -986,9 +990,7 @@ C2S_StpCryptoReq* C2S_StpCryptoReq::New() const {
 void C2S_StpCryptoReq::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (has_token()) {
-      if (token_ != &::google::protobuf::internal::kEmptyString) {
-        token_->clear();
-      }
+      if (token_ != NULL) token_->::rpc::StpToken::Clear();
     }
     if (has_data()) {
       if (data_ != &::google::protobuf::internal::kEmptyString) {
@@ -1006,15 +1008,12 @@ bool C2S_StpCryptoReq::MergePartialFromCodedStream(
   ::google::protobuf::uint32 tag;
   while ((tag = input->ReadTag()) != 0) {
     switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
-      // optional string token = 1;
+      // optional .rpc.StpToken token = 1;
       case 1: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_token()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->token().data(), this->token().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_token()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1054,12 +1053,9 @@ bool C2S_StpCryptoReq::MergePartialFromCodedStream(
 
 void C2S_StpCryptoReq::SerializeWithCachedSizes(
     ::google::protobuf::io::CodedOutputStream* output) const {
-  // optional string token = 1;
+  // optional .rpc.StpToken token = 1;
   if (has_token()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       1, this->token(), output);
   }
 
@@ -1077,13 +1073,10 @@ void C2S_StpCryptoReq::SerializeWithCachedSizes(
 
 ::google::protobuf::uint8* C2S_StpCryptoReq::SerializeWithCachedSizesToArray(
     ::google::protobuf::uint8* target) const {
-  // optional string token = 1;
+  // optional .rpc.StpToken token = 1;
   if (has_token()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
         1, this->token(), target);
   }
 
@@ -1105,10 +1098,10 @@ int C2S_StpCryptoReq::ByteSize() const {
   int total_size = 0;
 
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
-    // optional string token = 1;
+    // optional .rpc.StpToken token = 1;
     if (has_token()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->token());
     }
 
@@ -1147,7 +1140,7 @@ void C2S_StpCryptoReq::MergeFrom(const C2S_StpCryptoReq& from) {
   GOOGLE_CHECK_NE(&from, this);
   if (from._has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     if (from.has_token()) {
-      set_token(from.token());
+      mutable_token()->::rpc::StpToken::MergeFrom(from.token());
     }
     if (from.has_data()) {
       set_data(from.data());
@@ -1206,6 +1199,7 @@ S2C_StpCryptoRsp::S2C_StpCryptoRsp()
 }
 
 void S2C_StpCryptoRsp::InitAsDefaultInstance() {
+  token_ = const_cast< ::rpc::StpToken*>(&::rpc::StpToken::default_instance());
 }
 
 S2C_StpCryptoRsp::S2C_StpCryptoRsp(const S2C_StpCryptoRsp& from)
@@ -1217,7 +1211,7 @@ S2C_StpCryptoRsp::S2C_StpCryptoRsp(const S2C_StpCryptoRsp& from)
 void S2C_StpCryptoRsp::SharedCtor() {
   _cached_size_ = 0;
   res_ = 0;
-  token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  token_ = NULL;
   data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
@@ -1227,13 +1221,11 @@ S2C_StpCryptoRsp::~S2C_StpCryptoRsp() {
 }
 
 void S2C_StpCryptoRsp::SharedDtor() {
-  if (token_ != &::google::protobuf::internal::kEmptyString) {
-    delete token_;
-  }
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     delete data_;
   }
   if (this != default_instance_) {
+    delete token_;
   }
 }
 
@@ -1262,9 +1254,7 @@ void S2C_StpCryptoRsp::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     res_ = 0;
     if (has_token()) {
-      if (token_ != &::google::protobuf::internal::kEmptyString) {
-        token_->clear();
-      }
+      if (token_ != NULL) token_->::rpc::StpToken::Clear();
     }
     if (has_data()) {
       if (data_ != &::google::protobuf::internal::kEmptyString) {
@@ -1302,16 +1292,13 @@ bool S2C_StpCryptoRsp::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string token = 2;
+      // optional .rpc.StpToken token = 2;
       case 2: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_token:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_token()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->token().data(), this->token().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_token()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1357,12 +1344,9 @@ void S2C_StpCryptoRsp::SerializeWithCachedSizes(
       1, this->res(), output);
   }
 
-  // optional string token = 2;
+  // optional .rpc.StpToken token = 2;
   if (has_token()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       2, this->token(), output);
   }
 
@@ -1386,13 +1370,10 @@ void S2C_StpCryptoRsp::SerializeWithCachedSizes(
       1, this->res(), target);
   }
 
-  // optional string token = 2;
+  // optional .rpc.StpToken token = 2;
   if (has_token()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
         2, this->token(), target);
   }
 
@@ -1420,10 +1401,10 @@ int S2C_StpCryptoRsp::ByteSize() const {
         ::google::protobuf::internal::WireFormatLite::EnumSize(this->res());
     }
 
-    // optional string token = 2;
+    // optional .rpc.StpToken token = 2;
     if (has_token()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->token());
     }
 
@@ -1465,7 +1446,7 @@ void S2C_StpCryptoRsp::MergeFrom(const S2C_StpCryptoRsp& from) {
       set_res(from.res());
     }
     if (from.has_token()) {
-      set_token(from.token());
+      mutable_token()->::rpc::StpToken::MergeFrom(from.token());
     }
     if (from.has_data()) {
       set_data(from.data());
@@ -1515,6 +1496,7 @@ void S2C_StpCryptoRsp::Swap(S2C_StpCryptoRsp* other) {
 
 #ifndef _MSC_VER
 const int C2S_StpCryptoNegotiate::kStpGuidFieldNumber;
+const int C2S_StpCryptoNegotiate::kTokenFieldNumber;
 #endif  // !_MSC_VER
 
 C2S_StpCryptoNegotiate::C2S_StpCryptoNegotiate()
@@ -1523,6 +1505,7 @@ C2S_StpCryptoNegotiate::C2S_StpCryptoNegotiate()
 }
 
 void C2S_StpCryptoNegotiate::InitAsDefaultInstance() {
+  token_ = const_cast< ::rpc::StpToken*>(&::rpc::StpToken::default_instance());
 }
 
 C2S_StpCryptoNegotiate::C2S_StpCryptoNegotiate(const C2S_StpCryptoNegotiate& from)
@@ -1534,6 +1517,7 @@ C2S_StpCryptoNegotiate::C2S_StpCryptoNegotiate(const C2S_StpCryptoNegotiate& fro
 void C2S_StpCryptoNegotiate::SharedCtor() {
   _cached_size_ = 0;
   stp_guid_ = GOOGLE_ULONGLONG(0);
+  token_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1543,6 +1527,7 @@ C2S_StpCryptoNegotiate::~C2S_StpCryptoNegotiate() {
 
 void C2S_StpCryptoNegotiate::SharedDtor() {
   if (this != default_instance_) {
+    delete token_;
   }
 }
 
@@ -1570,6 +1555,9 @@ C2S_StpCryptoNegotiate* C2S_StpCryptoNegotiate::New() const {
 void C2S_StpCryptoNegotiate::Clear() {
   if (_has_bits_[0 / 32] & (0xffu << (0 % 32))) {
     stp_guid_ = GOOGLE_ULONGLONG(0);
+    if (has_token()) {
+      if (token_ != NULL) token_->::rpc::StpToken::Clear();
+    }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -1589,6 +1577,20 @@ bool C2S_StpCryptoNegotiate::MergePartialFromCodedStream(
                    ::google::protobuf::uint64, ::google::protobuf::internal::WireFormatLite::TYPE_UINT64>(
                  input, &stp_guid_)));
           set_has_stp_guid();
+        } else {
+          goto handle_uninterpreted;
+        }
+        if (input->ExpectTag(18)) goto parse_token;
+        break;
+      }
+
+      // optional .rpc.StpToken token = 2;
+      case 2: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_token:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_token()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1619,6 +1621,12 @@ void C2S_StpCryptoNegotiate::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(1, this->stp_guid(), output);
   }
 
+  // optional .rpc.StpToken token = 2;
+  if (has_token()) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      2, this->token(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -1630,6 +1638,13 @@ void C2S_StpCryptoNegotiate::SerializeWithCachedSizes(
   // optional uint64 stp_guid = 1;
   if (has_stp_guid()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(1, this->stp_guid(), target);
+  }
+
+  // optional .rpc.StpToken token = 2;
+  if (has_token()) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
+        2, this->token(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -1648,6 +1663,13 @@ int C2S_StpCryptoNegotiate::ByteSize() const {
       total_size += 1 +
         ::google::protobuf::internal::WireFormatLite::UInt64Size(
           this->stp_guid());
+    }
+
+    // optional .rpc.StpToken token = 2;
+    if (has_token()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->token());
     }
 
   }
@@ -1680,6 +1702,9 @@ void C2S_StpCryptoNegotiate::MergeFrom(const C2S_StpCryptoNegotiate& from) {
     if (from.has_stp_guid()) {
       set_stp_guid(from.stp_guid());
     }
+    if (from.has_token()) {
+      mutable_token()->::rpc::StpToken::MergeFrom(from.token());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -1704,6 +1729,7 @@ bool C2S_StpCryptoNegotiate::IsInitialized() const {
 void C2S_StpCryptoNegotiate::Swap(C2S_StpCryptoNegotiate* other) {
   if (other != this) {
     std::swap(stp_guid_, other->stp_guid_);
+    std::swap(token_, other->token_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);
@@ -1733,6 +1759,7 @@ S2C_StpCryptoNegotiate::S2C_StpCryptoNegotiate()
 }
 
 void S2C_StpCryptoNegotiate::InitAsDefaultInstance() {
+  token_ = const_cast< ::rpc::StpToken*>(&::rpc::StpToken::default_instance());
 }
 
 S2C_StpCryptoNegotiate::S2C_StpCryptoNegotiate(const S2C_StpCryptoNegotiate& from)
@@ -1745,7 +1772,7 @@ void S2C_StpCryptoNegotiate::SharedCtor() {
   _cached_size_ = 0;
   res_ = 0;
   stp_guid_ = GOOGLE_ULONGLONG(0);
-  token_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
+  token_ = NULL;
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -1754,10 +1781,8 @@ S2C_StpCryptoNegotiate::~S2C_StpCryptoNegotiate() {
 }
 
 void S2C_StpCryptoNegotiate::SharedDtor() {
-  if (token_ != &::google::protobuf::internal::kEmptyString) {
-    delete token_;
-  }
   if (this != default_instance_) {
+    delete token_;
   }
 }
 
@@ -1787,9 +1812,7 @@ void S2C_StpCryptoNegotiate::Clear() {
     res_ = 0;
     stp_guid_ = GOOGLE_ULONGLONG(0);
     if (has_token()) {
-      if (token_ != &::google::protobuf::internal::kEmptyString) {
-        token_->clear();
-      }
+      if (token_ != NULL) token_->::rpc::StpToken::Clear();
     }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
@@ -1838,16 +1861,13 @@ bool S2C_StpCryptoNegotiate::MergePartialFromCodedStream(
         break;
       }
 
-      // optional string token = 3;
+      // optional .rpc.StpToken token = 3;
       case 3: {
         if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
             ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
          parse_token:
-          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
-                input, this->mutable_token()));
-          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-            this->token().data(), this->token().length(),
-            ::google::protobuf::internal::WireFormat::PARSE);
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtual(
+               input, mutable_token()));
         } else {
           goto handle_uninterpreted;
         }
@@ -1884,12 +1904,9 @@ void S2C_StpCryptoNegotiate::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteUInt64(2, this->stp_guid(), output);
   }
 
-  // optional string token = 3;
+  // optional .rpc.StpToken token = 3;
   if (has_token()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    ::google::protobuf::internal::WireFormatLite::WriteString(
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
       3, this->token(), output);
   }
 
@@ -1912,13 +1929,10 @@ void S2C_StpCryptoNegotiate::SerializeWithCachedSizes(
     target = ::google::protobuf::internal::WireFormatLite::WriteUInt64ToArray(2, this->stp_guid(), target);
   }
 
-  // optional string token = 3;
+  // optional .rpc.StpToken token = 3;
   if (has_token()) {
-    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
-      this->token().data(), this->token().length(),
-      ::google::protobuf::internal::WireFormat::SERIALIZE);
-    target =
-      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+    target = ::google::protobuf::internal::WireFormatLite::
+      WriteMessageNoVirtualToArray(
         3, this->token(), target);
   }
 
@@ -1946,10 +1960,10 @@ int S2C_StpCryptoNegotiate::ByteSize() const {
           this->stp_guid());
     }
 
-    // optional string token = 3;
+    // optional .rpc.StpToken token = 3;
     if (has_token()) {
       total_size += 1 +
-        ::google::protobuf::internal::WireFormatLite::StringSize(
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
           this->token());
     }
 
@@ -1987,7 +2001,7 @@ void S2C_StpCryptoNegotiate::MergeFrom(const S2C_StpCryptoNegotiate& from) {
       set_stp_guid(from.stp_guid());
     }
     if (from.has_token()) {
-      set_token(from.token());
+      mutable_token()->::rpc::StpToken::MergeFrom(from.token());
     }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
@@ -2496,6 +2510,7 @@ const int StpToken::kStpGuidFieldNumber;
 const int StpToken::kGroupFieldNumber;
 const int StpToken::kIdxFieldNumber;
 const int StpToken::kExpiresFieldNumber;
+const int StpToken::kKeyFieldNumber;
 #endif  // !_MSC_VER
 
 StpToken::StpToken()
@@ -2518,6 +2533,7 @@ void StpToken::SharedCtor() {
   group_ = 0;
   idx_ = 0;
   expires_ = GOOGLE_LONGLONG(0);
+  key_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
 }
 
@@ -2526,6 +2542,9 @@ StpToken::~StpToken() {
 }
 
 void StpToken::SharedDtor() {
+  if (key_ != &::google::protobuf::internal::kEmptyString) {
+    delete key_;
+  }
   if (this != default_instance_) {
   }
 }
@@ -2557,6 +2576,11 @@ void StpToken::Clear() {
     group_ = 0;
     idx_ = 0;
     expires_ = GOOGLE_LONGLONG(0);
+    if (has_key()) {
+      if (key_ != &::google::protobuf::internal::kEmptyString) {
+        key_->clear();
+      }
+    }
   }
   ::memset(_has_bits_, 0, sizeof(_has_bits_));
   mutable_unknown_fields()->Clear();
@@ -2627,6 +2651,23 @@ bool StpToken::MergePartialFromCodedStream(
         } else {
           goto handle_uninterpreted;
         }
+        if (input->ExpectTag(42)) goto parse_key;
+        break;
+      }
+
+      // optional string key = 5;
+      case 5: {
+        if (::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_LENGTH_DELIMITED) {
+         parse_key:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_key()));
+          ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+            this->key().data(), this->key().length(),
+            ::google::protobuf::internal::WireFormat::PARSE);
+        } else {
+          goto handle_uninterpreted;
+        }
         if (input->ExpectAtEnd()) return true;
         break;
       }
@@ -2669,6 +2710,15 @@ void StpToken::SerializeWithCachedSizes(
     ::google::protobuf::internal::WireFormatLite::WriteInt64(4, this->expires(), output);
   }
 
+  // optional string key = 5;
+  if (has_key()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->key().data(), this->key().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    ::google::protobuf::internal::WireFormatLite::WriteString(
+      5, this->key(), output);
+  }
+
   if (!unknown_fields().empty()) {
     ::google::protobuf::internal::WireFormat::SerializeUnknownFields(
         unknown_fields(), output);
@@ -2695,6 +2745,16 @@ void StpToken::SerializeWithCachedSizes(
   // optional int64 expires = 4;
   if (has_expires()) {
     target = ::google::protobuf::internal::WireFormatLite::WriteInt64ToArray(4, this->expires(), target);
+  }
+
+  // optional string key = 5;
+  if (has_key()) {
+    ::google::protobuf::internal::WireFormat::VerifyUTF8String(
+      this->key().data(), this->key().length(),
+      ::google::protobuf::internal::WireFormat::SERIALIZE);
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->key(), target);
   }
 
   if (!unknown_fields().empty()) {
@@ -2736,6 +2796,13 @@ int StpToken::ByteSize() const {
           this->expires());
     }
 
+    // optional string key = 5;
+    if (has_key()) {
+      total_size += 1 +
+        ::google::protobuf::internal::WireFormatLite::StringSize(
+          this->key());
+    }
+
   }
   if (!unknown_fields().empty()) {
     total_size +=
@@ -2775,6 +2842,9 @@ void StpToken::MergeFrom(const StpToken& from) {
     if (from.has_expires()) {
       set_expires(from.expires());
     }
+    if (from.has_key()) {
+      set_key(from.key());
+    }
   }
   mutable_unknown_fields()->MergeFrom(from.unknown_fields());
 }
@@ -2802,6 +2872,7 @@ void StpToken::Swap(StpToken* other) {
     std::swap(group_, other->group_);
     std::swap(idx_, other->idx_);
     std::swap(expires_, other->expires_);
+    std::swap(key_, other->key_);
     std::swap(_has_bits_[0], other->_has_bits_[0]);
     _unknown_fields_.Swap(&other->_unknown_fields_);
     std::swap(_cached_size_, other->_cached_size_);

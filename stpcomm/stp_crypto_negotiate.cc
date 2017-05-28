@@ -3,6 +3,8 @@
 #include "stputil/shm.h"
 #include <glog/logging.h>
 
+#include <stdlib.h>
+
 StpCryptoNegotiate &StpCryptoNegotiate::GetInstance()
 {
     static StpCryptoNegotiate s_Instance;
@@ -52,9 +54,62 @@ bool StpCryptoNegotiate::Init()
     return initialized_;
 }
 
-bool StpCryptoNegotiate::CryptoNegotiate(int &group, int &idx)
+bool StpCryptoNegotiate::CryptoNegotiate(int &group, int &idx, std::string &key)
 {
+    const ConfigParser& config = ConfigParser::GetInstance();
+    if (cur_group_ < 0 || cur_group_ >= config.max_group())
+    {
+        LOG(ERROR) << "invalid cur group:" << cur_group_;
+        return false;
+    }
     
+    CryptoGroup& cg = shm_map_[cur_group_];
+    if (cg.group == -1)
+    {
+        LOG(ERROR) << "invalid cur group:" << cur_group_;
+        return false;
+    }
+    
+    // 首次协商
+    if (group == -1 || idx == -1)
+    {
+        int unused_idx = cg.idx_mgr.PopIdx();
+        if (unused_idx == -1)
+        {
+            ++cur_group_;
+            cg = shm_map_[cur_group_];
+            cg.group = group;
+            unused_idx = cg.idx_mgr.PopIdx();
+            if (!cg.CreateShm(config.max_idx() * sizeof(CryptoItem)))
+            {
+                LOG(ERROR) << "create a empty crypto group failed!" ;
+                --cur_group_;
+                cg.group = -1;
+                return false;
+            }
+            else
+            {
+                CryptoItem* item = cg.GetCryptoItemByIdx(unused_idx);
+                memset(item, 0x00, sizeof(CryptoItem));
+                group = cur_group_;
+                idx = unused_idx;
+            }
+        }
+    }
+    
+    // 开始协商
+    CryptoItem* item = cg.GetCryptoItemByIdx(idx);
+    if (item == NULL)
+    {
+        LOG(ERROR) << "item can't be NULL";
+        return false;
+    }
+    
+    item->GenerateRandomKey();
+    key = item->key;
+    
+    LOG(INFO) << "group is " << group << ", idx is " << idx;
+    return true;
 }
 
 StpCryptoNegotiate::StpCryptoNegotiate()
@@ -69,10 +124,8 @@ StpCryptoNegotiate::~StpCryptoNegotiate()
 }
 
 
-
-
 CryptoGroup::CryptoGroup(int g) 
-    : group(g), idx_mgr(StpIdxMgr::GetInstance()) 
+    : group(g), idx_mgr(ConfigParser::GetInstance().max_idx()) 
 {}
 
 CryptoItem *CryptoGroup::GetCryptoItemByIdx(int idx) 
@@ -158,5 +211,22 @@ bool CryptoGroup::CreateShm(size_t size)
     }
     
     LOG(INFO) << "CreateShm succeed, shmid=" << shmid << ", addr=" << shm_addr;
+    return true;
+}
+
+bool CryptoItem::GenerateRandomKey()
+{
+    LOG(INFO) << "old key is " << key ;
+    memset(key, 0, sizeof(key));
+    const char* key_tab = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int key_tab_len = strlen(key_tab);
+    
+    srandom(time(NULL));
+    
+    for (int i = 0; i < 32; ++i)
+    {
+        key[i] = key_tab[random() % key_tab_len];
+    }
+    LOG(INFO) << "new key is " << key ;
     return true;
 }

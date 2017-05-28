@@ -2,30 +2,21 @@
 #include "stputil/json/json.h"
 #include <glog/logging.h>
 
-std::string StpToken::GenerateToken(int64_t stp_guid, uint32_t group, uint32_t idx, time_t expires)
+bool StpToken::GenerateToken(int64_t stp_guid, int32_t group, int32_t idx, time_t expires, std::string &key, rpc::StpToken &token)
 {
-    Json::Value value;
-    value["stp_guid"] = Json::Int64(stp_guid);
-    value["group"] = Json::UInt(group);
-    value["idx"] = Json::UInt(idx);
-    value["expires"] = Json::Int64(expires);
-    
-    Json::FastWriter writer;
-    return writer.write(value);
+    token.set_expires(expires);
+    token.set_group(group);
+    token.set_idx(idx);
+    token.set_stp_guid(stp_guid);
+    token.set_key(key);
+    return true;
 }
 
-bool StpToken::ValidateToken(const std::string &token)
-{   
-    Json::Value root;
-    Json::Reader reader;
-    if (!reader.parse(token, root, false))
-    {
-        return false;
-    }
-    
+bool StpToken::ValidateToken(const rpc::StpToken &token)
+{
     time_t now = time(NULL);
     
-    if (now >= root["expires"].asInt64())
+    if (now >= token.expires())
     {
         return false;
     }

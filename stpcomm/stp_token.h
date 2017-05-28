@@ -3,13 +3,14 @@
 
 #include <string>
 #include <stdint.h>
+#include "codec/rpc.pb.h"
 
 class StpToken
 {
 public:
-    static std::string GenerateToken(int64_t stp_guid, uint32_t group, uint32_t idx, time_t expires);
+    static bool GenerateToken(int64_t stp_guid, int32_t group, int32_t idx, time_t expires, std::string&, rpc::StpToken&);
     
-    static bool ValidateToken(const std::string& token);
+    static bool ValidateToken(const rpc::StpToken& token);
 };
 
 #endif
