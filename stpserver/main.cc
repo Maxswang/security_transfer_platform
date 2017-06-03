@@ -1,7 +1,7 @@
 #include "stp_server.h"
 #include "config_parser.h"
 #include "stpcomm/stp_idx_mgr.h"
-#include "stputil/mysql_connection_pool.h"
+#include "stputil/mysql/mysql_connection_pool.h"
 #include <glog/logging.h>
 #include <errno.h>
 #include <signal.h>

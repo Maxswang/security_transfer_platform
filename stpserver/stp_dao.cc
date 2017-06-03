@@ -1,9 +1,12 @@
 #include "stp_dao.h"
 #include "config_parser.h"
-#include "stputil/mysql_connection_pool.h"
+#include "stputil/mysql/mysql_connection_pool.h"
+#include "stputil/mysql/mysql_connection.h"
+#include "stputil/mysql/mysql_exception.h"
+#include "stputil/mysql/statement.h"
+#include "stputil/mysql/prepared_statement.h"
+#include "stputil/mysql/resultset.h"
 
-#include <cppconn/prepared_statement.h>
-#include <cppconn/resultset.h>
 #include <glog/logging.h>
 
 #include <stdio.h>
@@ -17,7 +20,6 @@
     }
 
 StpDao::StpDao() 
-    : driver_(::get_driver_instance())
 {
     
 }
@@ -40,14 +42,14 @@ bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
     try
     {
         
-        sql::Connection * conn = pool.GetConnection();
+        MySQLConnection* conn = pool.GetConnection();
         if (conn == NULL)
         {
             LOG(ERROR) << "get connection failed!";
             return false;
         }
         
-        sql::PreparedStatement* stmt = conn->prepareStatement("select stp_guid from stp_deploy where stp_guid=?;");
+        PreparedStatement* stmt = conn->PrepareStatement("select stp_guid from stp_deploy where stp_guid=?;");
         if (stmt == NULL)
         {
             LOG(ERROR) << "prepare stmt failed!";
@@ -55,10 +57,10 @@ bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
             return false;
         }
         
-        stmt->setInt64(1, stp_guid);
+        stmt->SetInt64(0, stp_guid);
         
-        sql::ResultSet* result = stmt->executeQuery();
-        if (result != NULL && result->next())
+        ResultSet* result = stmt->ExecuteQuery();
+        if (result != NULL && result->Next())
         {
             res = true;
         }
@@ -72,4 +74,48 @@ bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
     }
     
     return res;
+}
+
+bool StpDao::InsertCryptoStatus(uint64_t stp_guid, int32_t group, int32_t idx, int64_t expires, const std::string &key)
+{
+    MySQLConnectionPool& pool = MySQLConnectionPool::GetInstance();
+    bool res = false;
+    try
+    {
+        
+        MySQLConnection* conn = pool.GetConnection();
+        if (conn == NULL)
+        {
+            LOG(ERROR) << "get connection failed!";
+            return false;
+        }
+    
+        std::string sql = "insert into stp_status(stp_guid, stp_key, expires, stp_group, idx, insert_time, stp_desc) values(?,?,?,?,?,now(),?);";
+        PreparedStatement* stmt = conn->PrepareStatement(sql);
+        if (stmt == NULL)
+        {
+            LOG(ERROR) << "prepare stmt failed!";
+            pool.ReleaseConnection(conn);
+            return false;
+        }
+        stmt->SetInt64(0, stp_guid);
+        stmt->SetString(1, key.c_str());
+        stmt->SetInt(2, group);
+        stmt->SetInt(3, idx);
+        stmt->SetInt64(4, expires);
+        stmt->SetString(5, "密钥协商");
+
+        if (stmt->ExecuteUpdate() != -1)
+        {
+            res = true;
+        }
+        SAFE_DELETE(stmt);
+        pool.ReleaseConnection(conn);
+    }
+    catch(std::exception& e)
+    {
+        LOG(ERROR) << "catch db exception, reason is " << e.what();
+    }
+    
+    return res;;
 }

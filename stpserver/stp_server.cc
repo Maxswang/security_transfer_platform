@@ -111,6 +111,8 @@ void StpServer::HandleProtocol_StpCryptoNegotiate(Connection *conn, rpc::C2S_Stp
             time_t token_expires = time(NULL) + ConfigParser::GetInstance().token_expires();
             rpc::StpToken* token = rsp.mutable_token();
             StpToken::GenerateToken(req->stp_guid(), group, idx, token_expires, key, *token);
+            
+            dao.InsertCryptoStatus(req->stp_guid(), group, idx, token->expires(), token->key());
         }
         else
         {
