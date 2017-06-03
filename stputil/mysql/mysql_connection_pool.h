@@ -4,23 +4,15 @@
 #include <string>
 #include <list>
 
-//#include "muduo/base/Mutex.h"
-//#include "muduo/base/CurrentThread.h"
-
-#include <boost/noncopyable.hpp>
 #include <boost/thread/mutex.hpp>
-#include <cppconn/driver.h>
-#include <cppconn/connection.h>
 
-#include "singleton.h"
+class MySQLConnection;
 
-class MySQLConnectionPool : boost::noncopyable
+class MySQLConnectionPool
 {
 public:
-    typedef std::list<sql::Connection*> ConnectionList;
+    typedef std::list<MySQLConnection*> ConnectionList;
     typedef ConnectionList::iterator ConnectionListIter;
-    
-    friend class Singleton<MySQLConnectionPool>;
     
     static MySQLConnectionPool& GetInstance();
 
@@ -28,18 +20,21 @@ public:
     void InitConnectionPool(const std::string& ip, int port, const std::string& user, const std::string& password, 
                             const std::string& database, int max_pool_size, int init_size);
     
-    sql::Connection* GetConnection();
+    MySQLConnection* GetConnection();
     
     // 把连接放回池中
-    void ReleaseConnection(sql::Connection * connection);
+    void ReleaseConnection(MySQLConnection* connection);
     
 private:
     MySQLConnectionPool();
 	~MySQLConnectionPool();
     
-    sql::Connection* CreateConnection();
+    MySQLConnectionPool(const MySQLConnectionPool&);
+    MySQLConnectionPool& operator=(const MySQLConnectionPool&);
+    
+    MySQLConnection* CreateConnection();
     void DestroyConnectionPool();
-    void DestroyConnection(sql::Connection * connection);
+    void DestroyConnection(MySQLConnection* connection);
 
     std::string ip_;
     int port_;
@@ -53,9 +48,7 @@ private:
     ConnectionList idle_conns_;
     ConnectionList occupiped_conns_;
     
-    sql::Driver * driver_;
     boost::mutex mutex_;
-//        muduo::MutexLock mutex_;
 };
 
 #endif // MYSQL_CONNECTION_POOL_H_

@@ -11,10 +11,15 @@ security/aes_core.c
 security/md5.cpp
 security/base64.cpp
 shm.cc
-mysql_connection_pool.cc
+mysql/mysql_connection.cc
+mysql/mysql_connection_pool.cc
+mysql/mysql_prepared_statement.cc
+mysql/mysql_ps_resultset.cc
+mysql/mysql_resultset.cc
+mysql/mysql_statement.cc
 )	                                                                                                                                                                            
 add_library(stputil ${STPUTIL_SRCS})
-target_link_libraries(stputil pthread rt glog.a event.a /usr/lib64/mysql/libmysqlclient.so dl boost_system)		                                                                                                                                                                            
+target_link_libraries(stputil pthread rt glog.a event.a /usr/lib64/mysql/libmysqlclient.a dl boost_system dl )		                                                                                                                                                                            
 install(TARGETS stputil DESTINATION lib)
 file(GLOB HEADERS "*.h")
 #install(FILES ${HEADERS} DESTINATION include/stpcomm)		                                                                                                                                                                            

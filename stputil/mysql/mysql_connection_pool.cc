@@ -1,10 +1,11 @@
 #include "mysql_connection_pool.h"
 
 #include <stdio.h>
-#include <cppconn/exception.h>
+#include "mysql_exception.h"
+#include "mysql_connection.h"
 #include <boost/thread/lock_guard.hpp>
 
-MySQLConnectionPool::MySQLConnectionPool() : current_pool_size_(0), driver_(::get_driver_instance()) // unsafe
+MySQLConnectionPool::MySQLConnectionPool() : current_pool_size_(0)
 {
 }
 
@@ -15,14 +16,14 @@ MySQLConnectionPool::~MySQLConnectionPool()
 
 MySQLConnectionPool& MySQLConnectionPool::GetInstance()
 {
-    return Singleton<MySQLConnectionPool>::GetInstance();
+    static MySQLConnectionPool s_Instance;
+    return s_Instance;
 }
 
 void MySQLConnectionPool::InitConnectionPool(const std::string &ip, int port, const std::string &user, 
                                              const std::string &password, const std::string &database, int max_pool_size, int init_size)
 {
     boost::lock_guard<boost::mutex> guard(mutex_);
-//    muduo::MutexLockGuard guard(mutex_);
     
     ip_ = ip;
     port_ = port;
@@ -33,7 +34,7 @@ void MySQLConnectionPool::InitConnectionPool(const std::string &ip, int port, co
     
     assert(init_size <= max_pool_size_);
     
-    sql::Connection * connection = NULL;
+    MySQLConnection * connection = NULL;
     while (current_pool_size_ < init_size)
     {
         if ((connection = CreateConnection()) != NULL)
@@ -44,18 +45,17 @@ void MySQLConnectionPool::InitConnectionPool(const std::string &ip, int port, co
     }
 }
 
-sql::Connection *MySQLConnectionPool::GetConnection()
+MySQLConnection *MySQLConnectionPool::GetConnection()
 {
     boost::lock_guard<boost::mutex> guard(mutex_);
-//    muduo::MutexLockGuard guard(mutex_);
     
-    sql::Connection* connection = NULL;
+    MySQLConnection* connection = NULL;
     if (!idle_conns_.empty())
     {
         connection = idle_conns_.front();
         idle_conns_.pop_front();
         
-        if (connection->isClosed())
+        if (!connection->IsConnected())
         {
             delete connection;
             connection = CreateConnection();
@@ -85,10 +85,9 @@ sql::Connection *MySQLConnectionPool::GetConnection()
     }
 }
 
-void MySQLConnectionPool::ReleaseConnection(sql::Connection *connection)
+void MySQLConnectionPool::ReleaseConnection(MySQLConnection *connection)
 {
     boost::lock_guard<boost::mutex> guard(mutex_);
-//    muduo::MutexLockGuard guard(mutex_);
     
     if (connection != NULL)
     {
@@ -97,23 +96,16 @@ void MySQLConnectionPool::ReleaseConnection(sql::Connection *connection)
     }
 }
 
-sql::Connection *MySQLConnectionPool::CreateConnection()
+MySQLConnection *MySQLConnectionPool::CreateConnection()
 {
-    sql::Connection * connection = NULL;
-    
-    char host[256] = {0};
-    snprintf(host, 255, "tcp://%s:%d/%s", ip_.c_str(), port_, database_.c_str());
-    
+    MySQLConnection * connection = NULL;
+
     try
     {
-        connection = driver_->connect(host, user_, password_);
-        if (connection != NULL)
-        {
-            // TODO 设置一定时间内断开
-            connection->setClientOption("OPT_CHARSET_NAME", "utf8");
-        }
+        connection = new MySQLConnection(ip_.c_str(), user_.c_str(), password_.c_str(), database_.c_str(), port_);
+        connection->Connect("utf8", 15, true);
     }
-    catch (sql::SQLException & e)
+    catch (MySQLException & e)
     {
         fprintf(stderr, "%s\n", e.what());
     }
@@ -141,15 +133,15 @@ void MySQLConnectionPool::DestroyConnectionPool()
     current_pool_size_ = 0;
 }
 
-void MySQLConnectionPool::DestroyConnection(sql::Connection * connection)
+void MySQLConnectionPool::DestroyConnection(MySQLConnection* connection)
 {
     if (connection)
     {
         try
         {
-            connection->close();
+            connection->Close();
         }
-        catch (sql::SQLException & e)
+        catch (MySQLException & e)
         {
             fprintf(stderr, "%s\n", e.what());
         }
