@@ -92,9 +92,12 @@ void StpClient::HandleProtocol_CryptoNegotiate(Connection *conn, rpc::S2C_StpCry
     if (rsp->res() != rpc::SR_OK)
     {
         LOG(ERROR) << "CryptoNegotiate failed, res is " << rsp->res();
+        // 更新共享内存密钥信息
         return;
     }
     
+    
+    // 更新共享内存密钥信息
     
     LOG(INFO) << "CryptoNegotiate token is " << rsp->token().DebugString();
 }

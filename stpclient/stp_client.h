@@ -35,6 +35,7 @@ private:
     StpClient(const char* ip, int16_t port);
     virtual ~StpClient();
     static char buf_[2048];
+    
 };
 
 #endif

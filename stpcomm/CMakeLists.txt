@@ -2,6 +2,7 @@ set(STPCOMM_SRCS
 stp_token.cc
 stp_idx_mgr.cc
 stp_crypto_negotiate.cc
+stp_crypto_detail.cc
 )	                                                                                                                                                                            
 add_library(stpcomm ${STPCOMM_SRCS})
 target_link_libraries(stpcomm stputil pthread rt glog.a event.a)		                                                                                                                                                                            
