@@ -1,6 +1,4 @@
 #include "stp_crypto_detail.h"
-#include "stpserver/config_parser.h"
-
 
 #include <glog/logging.h>
 #include <stdlib.h>
@@ -22,8 +20,8 @@ bool CryptoItem::GenerateRandomKey()
     return true;
 }
 
-CryptoGroup::CryptoGroup(int g, int max_idx) 
-    : group(g), idx_mgr(max_idx) 
+CryptoGroup::CryptoGroup(int g, int max_idx, key_t key) 
+    : key_(key), group(g), idx_mgr(max_idx)
 {}
 
 CryptoItem *CryptoGroup::GetCryptoItemByIdx(int idx) 
@@ -37,17 +35,15 @@ CryptoItem *CryptoGroup::GetCryptoItemByIdx(int idx)
 
 void *CryptoGroup::TryAttachShm(size_t size) 
 {
-    ConfigParser& config = ConfigParser::GetInstance();
     do
     {
-        key_t key = ftok(config.path().c_str(), group);
-        if (key == -1)
+        if (key_ == -1)
         {
-            LOG(ERROR) << "ftok " << config.path() << " , group " << group << " failed!";
+            LOG(ERROR) << "invalid key!";
             break;
         }
         
-        shmid = shm_oper.shmget(key, size, IPC_CREAT | IPC_EXCL | 0666);
+        shmid = shm_oper.shmget(key_, size, IPC_CREAT | IPC_EXCL | 0666);
         if (shmid != -1)
         {
             LOG(ERROR) << "try attach failed, because not created before!"; // TODO
@@ -60,7 +56,7 @@ void *CryptoGroup::TryAttachShm(size_t size)
             break;
         }
         
-        shmid = shm_oper.shmget(key, size, IPC_CREAT | 0666);
+        shmid = shm_oper.shmget(key_, size, IPC_CREAT | 0666);
         if (shmid == -1)
         {
             LOG(ERROR) << "try attach failed!";
@@ -85,15 +81,13 @@ void *CryptoGroup::TryAttachShm(size_t size)
 
 bool CryptoGroup::CreateShm(size_t size) 
 {
-    ConfigParser& config = ConfigParser::GetInstance();
-    key_t key = ftok(config.path().c_str(), group);
-    if (key == -1)
+    if (key_ == -1)
     {
-        LOG(ERROR) << "ftok " << config.path() << " , group " << group << " failed!";
+        LOG(ERROR) << "invalid key!";
         return false;
     }
     
-    shmid = shm_oper.shmget(key, size, IPC_CREAT | 0666);
+    shmid = shm_oper.shmget(key_, size, IPC_CREAT | 0666);
     if (shmid == -1)
     {
         LOG(ERROR) << "shmget failed!";

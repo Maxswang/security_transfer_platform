@@ -1,5 +1,4 @@
 #include "stp_idx_mgr.h"
-#include "stpserver/config_parser.h"
 #include <stdlib.h>
 
 StpIdxMgr::StpIdxMgr(int max_idx)

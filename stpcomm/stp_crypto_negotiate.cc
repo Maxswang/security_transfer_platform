@@ -23,7 +23,7 @@ bool StpCryptoNegotiate::Init()
     int group = config.max_group();
     for (int i = 0; i < group; ++i)
     {
-        CryptoGroup cg(i, config.max_idx());
+        CryptoGroup cg(i, config.max_idx(), ftok(config.path().c_str(), i));
         void* shm_addr = cg.TryAttachShm(config.max_idx() * sizeof(CryptoItem));
         if (shm_addr != NULL)
         {
@@ -37,7 +37,7 @@ bool StpCryptoNegotiate::Init()
     // 2、没有创建共享内存，则创建一组
     if (shm_map_.empty())
     {
-        CryptoGroup cg(0, config.max_idx());
+        CryptoGroup cg(0, config.max_idx(), ftok(config.path().c_str(), 0));
         if (!cg.CreateShm(config.max_idx() * sizeof(CryptoItem)))
         {
             LOG(ERROR) << "create a empty crypto group failed!" ;

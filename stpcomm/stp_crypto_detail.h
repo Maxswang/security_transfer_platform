@@ -19,13 +19,14 @@ struct CryptoItem
 struct CryptoGroup
 {
 public:
-    CryptoGroup(int g = -1, int max_idx = -1);
+    CryptoGroup(int g = -1, int max_idx = -1, key_t key = -1);
     ~CryptoGroup() {}
     
     CryptoItem* GetCryptoItemByIdx(int idx);
     void* TryAttachShm(size_t size);
     bool CreateShm(size_t size); 
 
+    key_t key_;
     int group;
     SharedMemoryOper shm_oper;
     int shmid;

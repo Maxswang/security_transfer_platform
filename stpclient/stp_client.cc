@@ -160,7 +160,9 @@ bool StpClient::UpdateCryptoShmInfo(rpc::StpResult res, const rpc::StpToken &tok
 }
 
 StpClient::StpClient(const char *ip, int16_t port)
-    : TcpEventClient(ip, port), cg_(0, ConfigParser::GetInstance().max_idx())
+    : TcpEventClient(ip, port), 
+      cg_(0, ConfigParser::GetInstance().max_idx(),
+          ftok(ConfigParser::GetInstance().path().c_str(), 0))
 {
     
 }
