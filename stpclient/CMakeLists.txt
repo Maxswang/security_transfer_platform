@@ -6,7 +6,7 @@ main.cc
 )	 
 ADD_EXECUTABLE(stpclient ${STPCLNT_SRCS})                                                                                                                                                                           
 
-target_link_libraries(stpclient pthread rt glog.a event.a stputil codec)                                                                                                                              
+target_link_libraries(stpclient stpcomm pthread rt glog.a event.a stputil codec)                                                                                                                              
 	                                                                                                                                                                            
 if(NOT CMAKE_BUILD_NO_EXAMPLES)
  add_subdirectory(tests)

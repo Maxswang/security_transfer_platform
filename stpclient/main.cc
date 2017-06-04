@@ -9,6 +9,7 @@ int main()
     {
         LOG(FATAL) << "StpClient parse config file failed!";
     }
+    LOG(INFO) << "StpClient parse config file succeed!";
     
     StpClient& client = StpClient::GetInstance();
     timeval tv = {30, 0};
@@ -16,12 +17,18 @@ int main()
     tv.tv_sec = 10;
     client.AddTimerEvent(StpClient::CryptoNegotiateCallback, tv, false);
     
+    if (!client.Init())
+    {
+        LOG(FATAL) << "StpClient init failed!";
+    }
+    LOG(INFO) << "StpClient init succeed!";
+    
     if (!client.StartRun())
     {
         LOG(FATAL) << "Start run StpServer failed!";
     }
     
-    LOG(INFO) << "Start run StpServer suceed!";
+    LOG(INFO) << "Start run StpServer over!";
     
     return 0;
 }

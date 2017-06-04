@@ -2,6 +2,7 @@
 #define STP_SERVER_H_
 
 #include "stputil/tcp_event_client.h"
+#include "stpcomm/stp_crypto_detail.h"
 #include "codec/rpc.pb.h"
 
 class StpClient : public TcpEventClient
@@ -28,14 +29,20 @@ public:
 	virtual void HandleCloseEvent(Connection *conn, short events);
     
 public:
+    bool Init();
+    
+public:
     void HandleProtocol_Ping(Connection* conn, rpc::S2C_Ping* msg);
     void HandleProtocol_CryptoNegotiate(Connection* conn, rpc::S2C_StpCryptoNegotiate* rsp);
     
+private:
+    bool UpdateCryptoShmInfo(::rpc::StpResult res, const rpc::StpToken& token);
 private:
     StpClient(const char* ip, int16_t port);
     virtual ~StpClient();
     static char buf_[2048];
     
+    CryptoGroup cg_;
 };
 
 #endif

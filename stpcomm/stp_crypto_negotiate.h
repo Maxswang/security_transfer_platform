@@ -22,7 +22,7 @@ public:
     bool Init();
     
     CryptoItem* GetCryptoItem(int group, int idx);
-    bool CryptoNegotiate(int& group, int& idx, std::string& key);
+    bool CryptoNegotiate(int& group, int& idx, int64_t& expires, std::string& key);
     
 private:
     StpCryptoNegotiate();

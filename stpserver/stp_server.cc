@@ -102,15 +102,15 @@ void StpServer::HandleProtocol_StpCryptoNegotiate(Connection *conn, rpc::C2S_Stp
         // 密钥协商
         int group = req->token().group();
         int idx = req->token().idx();
+        int64_t expires = req->token().expires();
         std::string key;
         StpCryptoNegotiate& scn = StpCryptoNegotiate::GetInstance();
-        if (scn.CryptoNegotiate(group, idx, key))
+        if (scn.CryptoNegotiate(group, idx, expires, key))
         {
             rsp.set_res(rpc::SR_OK);
             rsp.set_stp_guid(req->stp_guid());
-            time_t token_expires = time(NULL) + ConfigParser::GetInstance().token_expires();
             rpc::StpToken* token = rsp.mutable_token();
-            StpToken::GenerateToken(req->stp_guid(), group, idx, token_expires, key, *token);
+            StpToken::GenerateToken(req->stp_guid(), group, idx, expires, key, *token);
             
             dao.InsertCryptoStatus(req->stp_guid(), group, idx, token->expires(), token->key());
         }

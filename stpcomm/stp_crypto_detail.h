@@ -10,7 +10,8 @@ struct CryptoItem
     int idx;         // 索引的下标
     char key[36];    // 只用其中32-35位
     bool use_crypto; // 是否使用协商的密钥
-    char zero[19];   // 扩展用
+    int64_t expires; // 过期时间
+    char zero[11];   // 扩展用
     
     bool GenerateRandomKey();
 }__attribute__((packed));
@@ -18,7 +19,7 @@ struct CryptoItem
 struct CryptoGroup
 {
 public:
-    CryptoGroup(int g = -1);
+    CryptoGroup(int g = -1, int max_idx = -1);
     ~CryptoGroup() {}
     
     CryptoItem* GetCryptoItemByIdx(int idx);

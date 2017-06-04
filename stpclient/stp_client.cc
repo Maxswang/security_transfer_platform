@@ -5,6 +5,8 @@
 #include "codec/proto_msg_serialization.h"
 #include <glog/logging.h>
 
+#include <string.h>
+
 char StpClient::buf_[2048];
 
 StpClient& StpClient::GetInstance()
@@ -76,6 +78,27 @@ void StpClient::HandleCloseEvent(Connection *conn, short events)
     
 }
 
+bool StpClient::Init()
+{
+    void* shm_addr = cg_.TryAttachShm(sizeof(CryptoItem));
+    if (shm_addr != NULL)
+    {
+        cg_.shm_addr = shm_addr;
+        LOG(INFO) << "try attach shm succeed!";
+        return true;
+    }
+    else
+    {
+        if (!cg_.CreateShm(sizeof(CryptoItem)))
+        {
+            LOG(ERROR) << "create a empty crypto group failed!" ;
+            return false;
+        }
+        LOG(INFO) << "create a empty crypto group succeed!" ;
+        return true;
+    }
+}
+
 void StpClient::HandleProtocol_Ping(Connection *conn, rpc::S2C_Ping *msg)
 {
     if (conn == NULL || msg == NULL)
@@ -93,17 +116,51 @@ void StpClient::HandleProtocol_CryptoNegotiate(Connection *conn, rpc::S2C_StpCry
     {
         LOG(ERROR) << "CryptoNegotiate failed, res is " << rsp->res();
         // 更新共享内存密钥信息
+        UpdateCryptoShmInfo(rsp->res(), rsp->token());
         return;
     }
-    
-    
     // 更新共享内存密钥信息
+    UpdateCryptoShmInfo(rsp->res(), rsp->token());
     
     LOG(INFO) << "CryptoNegotiate token is " << rsp->token().DebugString();
 }
 
+bool StpClient::UpdateCryptoShmInfo(rpc::StpResult res, const rpc::StpToken &token)
+{
+    bool ret = false;
+    
+    CryptoItem* item = cg_.GetCryptoItemByIdx(0);
+    if (item != NULL)
+    {
+        item->group = token.group();
+        item->idx = token.idx();
+        
+        if (res != rpc::SR_OK)
+        {
+            memset(item->key, 0x00, sizeof(item->key));
+            item->use_crypto = false;
+            item->expires = -1;
+            ret = true;
+        }
+        else
+        {
+            memset(item->key, 0x00, sizeof(item->key));
+            strcpy(item->key, token.key().c_str());
+            item->use_crypto = true;
+            item->expires = token.expires();
+            ret = true;
+        }
+        LOG(INFO) << "update stpclient crypto info succeed!";
+    }
+    else
+    {
+        LOG(ERROR) << "CryptoItem is NULL";
+    }
+    return ret;
+}
+
 StpClient::StpClient(const char *ip, int16_t port)
-    : TcpEventClient(ip, port)
+    : TcpEventClient(ip, port), cg_(0, ConfigParser::GetInstance().max_idx())
 {
     
 }

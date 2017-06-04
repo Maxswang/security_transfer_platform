@@ -23,7 +23,7 @@ bool StpCryptoNegotiate::Init()
     int group = config.max_group();
     for (int i = 0; i < group; ++i)
     {
-        CryptoGroup cg(i);
+        CryptoGroup cg(i, config.max_idx());
         void* shm_addr = cg.TryAttachShm(config.max_idx() * sizeof(CryptoItem));
         if (shm_addr != NULL)
         {
@@ -37,7 +37,7 @@ bool StpCryptoNegotiate::Init()
     // 2、没有创建共享内存，则创建一组
     if (shm_map_.empty())
     {
-        CryptoGroup cg(0);
+        CryptoGroup cg(0, config.max_idx());
         if (!cg.CreateShm(config.max_idx() * sizeof(CryptoItem)))
         {
             LOG(ERROR) << "create a empty crypto group failed!" ;
@@ -53,7 +53,7 @@ bool StpCryptoNegotiate::Init()
     return initialized_;
 }
 
-bool StpCryptoNegotiate::CryptoNegotiate(int &group, int &idx, std::string &key)
+bool StpCryptoNegotiate::CryptoNegotiate(int &group, int &idx, int64_t &expires, std::string &key)
 {
     const ConfigParser& config = ConfigParser::GetInstance();
     if (cur_group_ < 0 || cur_group_ >= config.max_group())
@@ -103,6 +103,11 @@ bool StpCryptoNegotiate::CryptoNegotiate(int &group, int &idx, std::string &key)
         LOG(ERROR) << "item can't be NULL";
         return false;
     }
+    item->group = group;
+    item->idx = idx;
+    item->use_crypto = true;
+    expires = time(NULL) + ConfigParser::GetInstance().token_expires();
+    item->expires = expires;
     
     item->GenerateRandomKey();
     key = item->key;

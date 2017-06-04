@@ -22,8 +22,8 @@ bool CryptoItem::GenerateRandomKey()
     return true;
 }
 
-CryptoGroup::CryptoGroup(int g) 
-    : group(g), idx_mgr(ConfigParser::GetInstance().max_idx()) 
+CryptoGroup::CryptoGroup(int g, int max_idx) 
+    : group(g), idx_mgr(max_idx) 
 {}
 
 CryptoItem *CryptoGroup::GetCryptoItemByIdx(int idx) 

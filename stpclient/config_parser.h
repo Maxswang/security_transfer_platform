@@ -17,6 +17,7 @@ public:
     const std::string& path() const { return path_; }
     int flag() const { return flag_; }
     uint64_t stp_guid() const { return stp_guid_; }
+    int max_idx() const { return max_idx_; }
     
 	
 private:
@@ -28,6 +29,7 @@ private:
     std::string path_;
     int flag_;
     uint64_t stp_guid_;
+    int max_idx_;
 };
 
 #endif 
