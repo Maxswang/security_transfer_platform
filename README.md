@@ -6,5 +6,6 @@ protobuf-2.5.0
 glog-0.3.4
 mysql-5.6.25
 
-
-
+git clone https://github.com/wx7217242/security_transfer_platform.git
+cd security_transfer_platform
+git submodule update --init --recursive
