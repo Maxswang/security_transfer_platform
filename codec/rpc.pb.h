@@ -37,8 +37,7 @@ void protobuf_ShutdownFile_rpc_2eproto();
 class Request;
 class C2S_Ping;
 class S2C_Ping;
-class C2S_StpCryptoReq;
-class S2C_StpCryptoRsp;
+class StpCryptoMsg;
 class C2S_StpCryptoNegotiate;
 class S2C_StpCryptoNegotiate;
 class S2D_StpReportStatus;
@@ -315,14 +314,14 @@ class S2C_Ping : public ::google::protobuf::Message {
 };
 // -------------------------------------------------------------------
 
-class C2S_StpCryptoReq : public ::google::protobuf::Message {
+class StpCryptoMsg : public ::google::protobuf::Message {
  public:
-  C2S_StpCryptoReq();
-  virtual ~C2S_StpCryptoReq();
+  StpCryptoMsg();
+  virtual ~StpCryptoMsg();
 
-  C2S_StpCryptoReq(const C2S_StpCryptoReq& from);
+  StpCryptoMsg(const StpCryptoMsg& from);
 
-  inline C2S_StpCryptoReq& operator=(const C2S_StpCryptoReq& from) {
+  inline StpCryptoMsg& operator=(const StpCryptoMsg& from) {
     CopyFrom(from);
     return *this;
   }
@@ -336,17 +335,17 @@ class C2S_StpCryptoReq : public ::google::protobuf::Message {
   }
 
   static const ::google::protobuf::Descriptor* descriptor();
-  static const C2S_StpCryptoReq& default_instance();
+  static const StpCryptoMsg& default_instance();
 
-  void Swap(C2S_StpCryptoReq* other);
+  void Swap(StpCryptoMsg* other);
 
   // implements Message ----------------------------------------------
 
-  C2S_StpCryptoReq* New() const;
+  StpCryptoMsg* New() const;
   void CopyFrom(const ::google::protobuf::Message& from);
   void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const C2S_StpCryptoReq& from);
-  void MergeFrom(const C2S_StpCryptoReq& from);
+  void CopyFrom(const StpCryptoMsg& from);
+  void MergeFrom(const StpCryptoMsg& from);
   void Clear();
   bool IsInitialized() const;
 
@@ -390,7 +389,7 @@ class C2S_StpCryptoReq : public ::google::protobuf::Message {
   inline ::std::string* release_data();
   inline void set_allocated_data(::std::string* data);
 
-  // @@protoc_insertion_point(class_scope:rpc.C2S_StpCryptoReq)
+  // @@protoc_insertion_point(class_scope:rpc.StpCryptoMsg)
  private:
   inline void set_has_token();
   inline void clear_has_token();
@@ -410,116 +409,7 @@ class C2S_StpCryptoReq : public ::google::protobuf::Message {
   friend void protobuf_ShutdownFile_rpc_2eproto();
 
   void InitAsDefaultInstance();
-  static C2S_StpCryptoReq* default_instance_;
-};
-// -------------------------------------------------------------------
-
-class S2C_StpCryptoRsp : public ::google::protobuf::Message {
- public:
-  S2C_StpCryptoRsp();
-  virtual ~S2C_StpCryptoRsp();
-
-  S2C_StpCryptoRsp(const S2C_StpCryptoRsp& from);
-
-  inline S2C_StpCryptoRsp& operator=(const S2C_StpCryptoRsp& from) {
-    CopyFrom(from);
-    return *this;
-  }
-
-  inline const ::google::protobuf::UnknownFieldSet& unknown_fields() const {
-    return _unknown_fields_;
-  }
-
-  inline ::google::protobuf::UnknownFieldSet* mutable_unknown_fields() {
-    return &_unknown_fields_;
-  }
-
-  static const ::google::protobuf::Descriptor* descriptor();
-  static const S2C_StpCryptoRsp& default_instance();
-
-  void Swap(S2C_StpCryptoRsp* other);
-
-  // implements Message ----------------------------------------------
-
-  S2C_StpCryptoRsp* New() const;
-  void CopyFrom(const ::google::protobuf::Message& from);
-  void MergeFrom(const ::google::protobuf::Message& from);
-  void CopyFrom(const S2C_StpCryptoRsp& from);
-  void MergeFrom(const S2C_StpCryptoRsp& from);
-  void Clear();
-  bool IsInitialized() const;
-
-  int ByteSize() const;
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input);
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const;
-  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const;
-  int GetCachedSize() const { return _cached_size_; }
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const;
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // optional .rpc.StpResult res = 1;
-  inline bool has_res() const;
-  inline void clear_res();
-  static const int kResFieldNumber = 1;
-  inline ::rpc::StpResult res() const;
-  inline void set_res(::rpc::StpResult value);
-
-  // optional .rpc.StpToken token = 2;
-  inline bool has_token() const;
-  inline void clear_token();
-  static const int kTokenFieldNumber = 2;
-  inline const ::rpc::StpToken& token() const;
-  inline ::rpc::StpToken* mutable_token();
-  inline ::rpc::StpToken* release_token();
-  inline void set_allocated_token(::rpc::StpToken* token);
-
-  // optional bytes data = 3;
-  inline bool has_data() const;
-  inline void clear_data();
-  static const int kDataFieldNumber = 3;
-  inline const ::std::string& data() const;
-  inline void set_data(const ::std::string& value);
-  inline void set_data(const char* value);
-  inline void set_data(const void* value, size_t size);
-  inline ::std::string* mutable_data();
-  inline ::std::string* release_data();
-  inline void set_allocated_data(::std::string* data);
-
-  // @@protoc_insertion_point(class_scope:rpc.S2C_StpCryptoRsp)
- private:
-  inline void set_has_res();
-  inline void clear_has_res();
-  inline void set_has_token();
-  inline void clear_has_token();
-  inline void set_has_data();
-  inline void clear_has_data();
-
-  ::google::protobuf::UnknownFieldSet _unknown_fields_;
-
-  ::rpc::StpToken* token_;
-  ::std::string* data_;
-  int res_;
-
-  mutable int _cached_size_;
-  ::google::protobuf::uint32 _has_bits_[(3 + 31) / 32];
-
-  friend void  protobuf_AddDesc_rpc_2eproto();
-  friend void protobuf_AssignDesc_rpc_2eproto();
-  friend void protobuf_ShutdownFile_rpc_2eproto();
-
-  void InitAsDefaultInstance();
-  static S2C_StpCryptoRsp* default_instance_;
+  static StpCryptoMsg* default_instance_;
 };
 // -------------------------------------------------------------------
 
@@ -1150,37 +1040,37 @@ inline void Request::set_allocated_serialized_request(::std::string* serialized_
 
 // -------------------------------------------------------------------
 
-// C2S_StpCryptoReq
+// StpCryptoMsg
 
 // optional .rpc.StpToken token = 1;
-inline bool C2S_StpCryptoReq::has_token() const {
+inline bool StpCryptoMsg::has_token() const {
   return (_has_bits_[0] & 0x00000001u) != 0;
 }
-inline void C2S_StpCryptoReq::set_has_token() {
+inline void StpCryptoMsg::set_has_token() {
   _has_bits_[0] |= 0x00000001u;
 }
-inline void C2S_StpCryptoReq::clear_has_token() {
+inline void StpCryptoMsg::clear_has_token() {
   _has_bits_[0] &= ~0x00000001u;
 }
-inline void C2S_StpCryptoReq::clear_token() {
+inline void StpCryptoMsg::clear_token() {
   if (token_ != NULL) token_->::rpc::StpToken::Clear();
   clear_has_token();
 }
-inline const ::rpc::StpToken& C2S_StpCryptoReq::token() const {
+inline const ::rpc::StpToken& StpCryptoMsg::token() const {
   return token_ != NULL ? *token_ : *default_instance_->token_;
 }
-inline ::rpc::StpToken* C2S_StpCryptoReq::mutable_token() {
+inline ::rpc::StpToken* StpCryptoMsg::mutable_token() {
   set_has_token();
   if (token_ == NULL) token_ = new ::rpc::StpToken;
   return token_;
 }
-inline ::rpc::StpToken* C2S_StpCryptoReq::release_token() {
+inline ::rpc::StpToken* StpCryptoMsg::release_token() {
   clear_has_token();
   ::rpc::StpToken* temp = token_;
   token_ = NULL;
   return temp;
 }
-inline void C2S_StpCryptoReq::set_allocated_token(::rpc::StpToken* token) {
+inline void StpCryptoMsg::set_allocated_token(::rpc::StpToken* token) {
   delete token_;
   token_ = token;
   if (token) {
@@ -1191,53 +1081,53 @@ inline void C2S_StpCryptoReq::set_allocated_token(::rpc::StpToken* token) {
 }
 
 // optional bytes data = 2;
-inline bool C2S_StpCryptoReq::has_data() const {
+inline bool StpCryptoMsg::has_data() const {
   return (_has_bits_[0] & 0x00000002u) != 0;
 }
-inline void C2S_StpCryptoReq::set_has_data() {
+inline void StpCryptoMsg::set_has_data() {
   _has_bits_[0] |= 0x00000002u;
 }
-inline void C2S_StpCryptoReq::clear_has_data() {
+inline void StpCryptoMsg::clear_has_data() {
   _has_bits_[0] &= ~0x00000002u;
 }
-inline void C2S_StpCryptoReq::clear_data() {
+inline void StpCryptoMsg::clear_data() {
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     data_->clear();
   }
   clear_has_data();
 }
-inline const ::std::string& C2S_StpCryptoReq::data() const {
+inline const ::std::string& StpCryptoMsg::data() const {
   return *data_;
 }
-inline void C2S_StpCryptoReq::set_data(const ::std::string& value) {
+inline void StpCryptoMsg::set_data(const ::std::string& value) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(value);
 }
-inline void C2S_StpCryptoReq::set_data(const char* value) {
+inline void StpCryptoMsg::set_data(const char* value) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(value);
 }
-inline void C2S_StpCryptoReq::set_data(const void* value, size_t size) {
+inline void StpCryptoMsg::set_data(const void* value, size_t size) {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   data_->assign(reinterpret_cast<const char*>(value), size);
 }
-inline ::std::string* C2S_StpCryptoReq::mutable_data() {
+inline ::std::string* StpCryptoMsg::mutable_data() {
   set_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     data_ = new ::std::string;
   }
   return data_;
 }
-inline ::std::string* C2S_StpCryptoReq::release_data() {
+inline ::std::string* StpCryptoMsg::release_data() {
   clear_has_data();
   if (data_ == &::google::protobuf::internal::kEmptyString) {
     return NULL;
@@ -1247,142 +1137,7 @@ inline ::std::string* C2S_StpCryptoReq::release_data() {
     return temp;
   }
 }
-inline void C2S_StpCryptoReq::set_allocated_data(::std::string* data) {
-  if (data_ != &::google::protobuf::internal::kEmptyString) {
-    delete data_;
-  }
-  if (data) {
-    set_has_data();
-    data_ = data;
-  } else {
-    clear_has_data();
-    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-  }
-}
-
-// -------------------------------------------------------------------
-
-// S2C_StpCryptoRsp
-
-// optional .rpc.StpResult res = 1;
-inline bool S2C_StpCryptoRsp::has_res() const {
-  return (_has_bits_[0] & 0x00000001u) != 0;
-}
-inline void S2C_StpCryptoRsp::set_has_res() {
-  _has_bits_[0] |= 0x00000001u;
-}
-inline void S2C_StpCryptoRsp::clear_has_res() {
-  _has_bits_[0] &= ~0x00000001u;
-}
-inline void S2C_StpCryptoRsp::clear_res() {
-  res_ = 0;
-  clear_has_res();
-}
-inline ::rpc::StpResult S2C_StpCryptoRsp::res() const {
-  return static_cast< ::rpc::StpResult >(res_);
-}
-inline void S2C_StpCryptoRsp::set_res(::rpc::StpResult value) {
-  assert(::rpc::StpResult_IsValid(value));
-  set_has_res();
-  res_ = value;
-}
-
-// optional .rpc.StpToken token = 2;
-inline bool S2C_StpCryptoRsp::has_token() const {
-  return (_has_bits_[0] & 0x00000002u) != 0;
-}
-inline void S2C_StpCryptoRsp::set_has_token() {
-  _has_bits_[0] |= 0x00000002u;
-}
-inline void S2C_StpCryptoRsp::clear_has_token() {
-  _has_bits_[0] &= ~0x00000002u;
-}
-inline void S2C_StpCryptoRsp::clear_token() {
-  if (token_ != NULL) token_->::rpc::StpToken::Clear();
-  clear_has_token();
-}
-inline const ::rpc::StpToken& S2C_StpCryptoRsp::token() const {
-  return token_ != NULL ? *token_ : *default_instance_->token_;
-}
-inline ::rpc::StpToken* S2C_StpCryptoRsp::mutable_token() {
-  set_has_token();
-  if (token_ == NULL) token_ = new ::rpc::StpToken;
-  return token_;
-}
-inline ::rpc::StpToken* S2C_StpCryptoRsp::release_token() {
-  clear_has_token();
-  ::rpc::StpToken* temp = token_;
-  token_ = NULL;
-  return temp;
-}
-inline void S2C_StpCryptoRsp::set_allocated_token(::rpc::StpToken* token) {
-  delete token_;
-  token_ = token;
-  if (token) {
-    set_has_token();
-  } else {
-    clear_has_token();
-  }
-}
-
-// optional bytes data = 3;
-inline bool S2C_StpCryptoRsp::has_data() const {
-  return (_has_bits_[0] & 0x00000004u) != 0;
-}
-inline void S2C_StpCryptoRsp::set_has_data() {
-  _has_bits_[0] |= 0x00000004u;
-}
-inline void S2C_StpCryptoRsp::clear_has_data() {
-  _has_bits_[0] &= ~0x00000004u;
-}
-inline void S2C_StpCryptoRsp::clear_data() {
-  if (data_ != &::google::protobuf::internal::kEmptyString) {
-    data_->clear();
-  }
-  clear_has_data();
-}
-inline const ::std::string& S2C_StpCryptoRsp::data() const {
-  return *data_;
-}
-inline void S2C_StpCryptoRsp::set_data(const ::std::string& value) {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  data_->assign(value);
-}
-inline void S2C_StpCryptoRsp::set_data(const char* value) {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  data_->assign(value);
-}
-inline void S2C_StpCryptoRsp::set_data(const void* value, size_t size) {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  data_->assign(reinterpret_cast<const char*>(value), size);
-}
-inline ::std::string* S2C_StpCryptoRsp::mutable_data() {
-  set_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    data_ = new ::std::string;
-  }
-  return data_;
-}
-inline ::std::string* S2C_StpCryptoRsp::release_data() {
-  clear_has_data();
-  if (data_ == &::google::protobuf::internal::kEmptyString) {
-    return NULL;
-  } else {
-    ::std::string* temp = data_;
-    data_ = const_cast< ::std::string*>(&::google::protobuf::internal::kEmptyString);
-    return temp;
-  }
-}
-inline void S2C_StpCryptoRsp::set_allocated_data(::std::string* data) {
+inline void StpCryptoMsg::set_allocated_data(::std::string* data) {
   if (data_ != &::google::protobuf::internal::kEmptyString) {
     delete data_;
   }

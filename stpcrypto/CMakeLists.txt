@@ -1,5 +1,7 @@
 set(STP_CRYPTO_SRCS
 stp_crypto.cc
+stp_msg_packer.cc
+stp_crypto_access.cc
 )	                                                                                                                                                                            
 add_library(stpcrypto ${STP_CRYPTO_SRCS})
 #target_link_libraries(stpcrypto pthread rt glog.a event.a)		                                                                                                                                                                            

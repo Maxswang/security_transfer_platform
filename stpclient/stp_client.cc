@@ -150,7 +150,7 @@ bool StpClient::UpdateCryptoShmInfo(rpc::StpResult res, const rpc::StpToken &tok
             item->expires = token.expires();
             ret = true;
         }
-        LOG(INFO) << "update stpclient crypto info succeed!";
+        LOG(INFO) << "update stpclient crypto succeed!";
     }
     else
     {
@@ -161,7 +161,8 @@ bool StpClient::UpdateCryptoShmInfo(rpc::StpResult res, const rpc::StpToken &tok
 
 StpClient::StpClient(const char *ip, int16_t port)
     : TcpEventClient(ip, port), 
-      cg_(0, ConfigParser::GetInstance().max_idx(),
+      cg_(0, 
+          ConfigParser::GetInstance().max_idx(),
           ftok(ConfigParser::GetInstance().path().c_str(), 0))
 {
     

@@ -8,6 +8,7 @@
 #include "stputil/security/aes_locl.h"
 #include "stputil/security/base64.h"
 #include "stputil/security/md5.h"
+#include "codec/rpc.pb.h"
 
 using std::string;
 
@@ -37,14 +38,47 @@ void WriteUint32(uchar_t *buf, uint32_t data)
 extern "C" {
 #endif
 
+int g_clnt_or_svr = -1;
+
+int InitStpCrypto(int clnt_or_svr)
+{
+    int res = 0;
+    switch(clnt_or_svr)
+    {
+    case 0:
+        break;
+    case 1:
+        break;
+    default:
+        res = -1;
+        break;
+    }
+    
+    return res;
+}
+
 // 根据标记获取token和密钥，打包数据，加密
 
-int EncryptPlain(const char* plain, uint32_t plain_len, char** cipher, uint32_t& cipher_len)
+int EncryptPlain(const char* plain, 
+                 uint32_t plain_len, 
+                 char** cipher, 
+                 uint32_t& cipher_len,
+                 const char* token)
 {
     if(plain == NULL|| plain_len <=0 )
     {
         return -1;
     }
+    
+    
+    if (g_clnt_or_svr == -1)
+    {
+        return -1;
+    }
+    
+    
+    // pack
+    
     
     uint32_t remain = plain_len % 16;
     uint32_t blocks = (plain_len + 15) / 16;
@@ -82,7 +116,11 @@ int EncryptPlain(const char* plain, uint32_t plain_len, char** cipher, uint32_t&
 }
 
 
-int DecryptCipher(const char* cipher, uint32_t cipher_len, char** plain, uint32_t& plain_len)
+int DecryptCipher(const char* cipher, 
+                  uint32_t cipher_len, 
+                  char** plain, 
+                  uint32_t& plain_len,
+                  char** token)
 {
     if(cipher == NULL|| cipher_len <=0 )
     {
@@ -139,4 +177,8 @@ void Free(char* ptr)
     
 #ifdef __cplusplus
 }
+
+
+
+
 #endif

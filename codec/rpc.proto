@@ -24,19 +24,10 @@ message S2C_Ping
 {
 };
 
-// 通用请求
-message C2S_StpCryptoReq
+message StpCryptoMsg
 {
 	optional StpToken token = 1;
 	optional bytes data = 2;
-};
-
-// 通用回复
-message S2C_StpCryptoRsp
-{
-	optional StpResult res = 1;
-	optional StpToken token = 2;
-	optional bytes 	data = 3;
 };
 
 // 密钥协商

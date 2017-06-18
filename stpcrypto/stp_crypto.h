@@ -27,7 +27,18 @@ typedef unsigned char	uchar_t;
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
+
+/**
+*  
+*
+*  @param clnt_or_svr  0:client, 1 svr
+*  @param plain_len   待加密消息内容长度
+*  @param cipher 加密后的文本
+*  @param cipher_len  加密后的文本长度
+*
+*  @return 返回 0-成功; 其他-失败
+*/
+DLL_MODIFIER int InitStpCrypto(int clnt_or_svr);
 
 /**
 *  对消息加密
@@ -39,7 +50,11 @@ extern "C" {
 *
 *  @return 返回 0-成功; 其他-失败
 */
-DLL_MODIFIER int EncryptPlain(const char* plain, uint32_t plain_len, char** cipher, uint32_t& cipher_len);
+DLL_MODIFIER int EncryptPlain(const char* plain, 
+                              uint32_t plain_len, 
+                              char** cipher, 
+                              uint32_t& cipher_len,
+                              const char* token);
 /**
 *  对消息解密
 *
@@ -47,10 +62,15 @@ DLL_MODIFIER int EncryptPlain(const char* plain, uint32_t plain_len, char** ciph
 *  @param cipher_len   待解密消息内容长度
 *  @param plain 解密后的文本
 *  @param plain_len  解密后的文本长度
+*  @param token  
 *
 *  @return 返回 0-成功; 其他-失败
 */
-DLL_MODIFIER int DecryptCipher(const char* cipher, uint32_t cipher_len, char** plain, uint32_t& plain_len);
+DLL_MODIFIER int DecryptCipher(const char* cipher, 
+                               uint32_t cipher_len, 
+                               char** plain, 
+                               uint32_t& plain_len,
+                               char** token);
 
 /**
 *  释放资源
