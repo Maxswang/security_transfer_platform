@@ -1,10 +1,8 @@
 #include "stp_dao.h"
 #include "config_parser.h"
-#include "stputil/mysql/mysql_connection_pool.h"
-#include "stputil/mysql/mysql_connection.h"
-#include "stputil/mysql/mysql_exception.h"
+#include "stputil/mysql/connection_pool.h"
+#include "stputil/mysql/connection.h"
 #include "stputil/mysql/statement.h"
-#include "stputil/mysql/prepared_statement.h"
 #include "stputil/mysql/resultset.h"
 
 #include <glog/logging.h>
@@ -37,19 +35,19 @@ StpDao &StpDao::GetInstance()
 
 bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
 {
-    MySQLConnectionPool& pool = MySQLConnectionPool::GetInstance();
+    mysql::ConnectionPool& pool = mysql::ConnectionPool::GetInstance();
     bool res = false;
     try
     {
         
-        MySQLConnection* conn = pool.GetConnection();
+        mysql::Connection* conn = pool.GetConnection();
         if (conn == NULL)
         {
             LOG(ERROR) << "get connection failed!";
             return false;
         }
         
-        PreparedStatement* stmt = conn->PrepareStatement("select stp_guid from stp_deploy where stp_guid=?;");
+        mysql::PreparedStatement* stmt = conn->PrepareStatement("select stp_guid from stp_deploy where stp_guid=?;");
         if (stmt == NULL)
         {
             LOG(ERROR) << "prepare stmt failed!";
@@ -59,7 +57,7 @@ bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
         
         stmt->SetInt64(0, stp_guid);
         
-        ResultSet* result = stmt->ExecuteQuery();
+        mysql::ResultSet* result = stmt->ExecuteQuery();
         if (result != NULL && result->Next())
         {
             res = true;
@@ -78,12 +76,12 @@ bool StpDao::CheckStpGuidValid(uint64_t stp_guid)
 
 bool StpDao::InsertCryptoStatus(uint64_t stp_guid, int32_t group, int32_t idx, int64_t expires, const std::string &key)
 {
-    MySQLConnectionPool& pool = MySQLConnectionPool::GetInstance();
+    mysql::ConnectionPool& pool = mysql::ConnectionPool::GetInstance();
     bool res = false;
     try
     {
         
-        MySQLConnection* conn = pool.GetConnection();
+        mysql::Connection* conn = pool.GetConnection();
         if (conn == NULL)
         {
             LOG(ERROR) << "get connection failed!";
@@ -91,7 +89,7 @@ bool StpDao::InsertCryptoStatus(uint64_t stp_guid, int32_t group, int32_t idx, i
         }
     
         std::string sql = "insert into stp_status(stp_guid, stp_key, expires, stp_group, idx, insert_time, stp_desc) values(?,?,?,?,?,now(),?);";
-        PreparedStatement* stmt = conn->PrepareStatement(sql);
+        mysql::PreparedStatement* stmt = conn->PrepareStatement(sql);
         if (stmt == NULL)
         {
             LOG(ERROR) << "prepare stmt failed!";
