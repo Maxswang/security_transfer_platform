@@ -1,0 +1,3 @@
+[submodule "stputil/mysql"]
+	path = stputil/mysql
+	url = https://github.com/wx7217242/mysql_cpp_wrapper.git
